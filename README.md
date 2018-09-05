@@ -1,7 +1,7 @@
 # CultFiction
 
 Watch the following cult cinema scenes very carefully, chose one detail, ANY DETAIL big or small to make a micro-game or game  prototype out of.
-The idea is to show off your programming skills, your creativity and your organizational, production and decision making  skills. Therefore you should try to balance your game on these grading criteria:
+The idea is to show off your programming skills, your creativity and your organizational/production/decision making  skills. Therefore you should try to balance your game on these grading criteria:
 
    * Code organisation and complexity - 25 points max
    * Creativity and concept - 25 points max
