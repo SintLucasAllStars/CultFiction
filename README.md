@@ -25,6 +25,8 @@ https://www.youtube.com/watch?v=IVG3D1JlQ2Q
 
 https://www.youtube.com/watch?v=GZR58d77a4A
 
+https://www.youtube.com/watch?v=tLCTSMBUfmE
+
 ## Delivery:
 You will deliver the assignment by forking this repository, developing the game on your fork and sending a pull request.
 On the pull request description should be your name, a small text explaining what scene and the elements of the scene that inspired the game. 
