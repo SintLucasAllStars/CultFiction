@@ -5,23 +5,38 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+	public static PlayerController Instance;
+	
 	[SerializeField] private float _rotation;
 	[SerializeField] private float _startRotation;
-	[SerializeField] private float _power;
+	[SerializeField] public float Power { get; private set; }
 
 	[Range(1, 100)] public int PowerChangeModifier;
 
-	public GameObject _ball;
+	public GameObject Ball;
 	private Rigidbody _ballRB;
+
+	private void Awake()
+	{
+		if (Instance == null)
+		{
+			Instance = this;	
+			DontDestroyOnLoad(this);
+		}
+		else
+		{
+			Destroy(this);
+		}
+	}
 
 	private void Start()
 	{
-		_ballRB = _ball.GetComponent<Rigidbody>();
+		_ballRB = Ball.GetComponent<Rigidbody>();
 	}
 
 	private void Update()
 	{
-		_power = (Mathf.Sin(Time.time / (PowerChangeModifier / 10f)) + 1) / 2;
+		Power = (Mathf.Sin(Time.time / (PowerChangeModifier / 10f)) + 1) / 2;
 	}
 
 	public void ChangeRotation(float rot)
@@ -30,11 +45,19 @@ public class PlayerController : MonoBehaviour
 		transform.rotation = Quaternion.Euler(0, _rotation, 0);
 	}
 
+	public void SetPlayerToBall()
+	{
+		transform.position = Ball.transform.position;
+	}
+
 	public void LaunchBall()
 	{
+		if(_ballRB == null)
+			_ballRB = Ball.GetComponent<Rigidbody>();
+		
 		_ballRB.velocity = Vector3.zero;
-		_ball.transform.position = transform.forward;
-		_ballRB.AddForce((transform.forward + (transform.up*_power)) * _power * 20, ForceMode.Impulse);
+		Ball.transform.position = transform.position;
+		_ballRB.AddForce((transform.right + (transform.up*Power)) * Power * 20, ForceMode.Impulse);
 	}
 
 
@@ -59,6 +82,14 @@ public class PlayerController : MonoBehaviour
 			if (GUILayout.Button("Launch"))
 			{
 				controller.LaunchBall();
+			}
+			
+			EditorGUILayout.Space();
+
+
+			if (GUILayout.Button("Set player to ball"))
+			{
+				controller.SetPlayerToBall();
 			}
 		}
 	}
