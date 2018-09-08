@@ -15,6 +15,10 @@ public class PlayerController : MonoBehaviour
 
 	public GameObject Ball;
 	private Rigidbody _ballRB;
+	
+	public delegate void HitBall();
+	public static event HitBall onHitBall;
+
 
 	private void Awake()
 	{
@@ -52,6 +56,9 @@ public class PlayerController : MonoBehaviour
 
 	public void LaunchBall()
 	{
+		if(onHitBall != null)
+		onHitBall();
+		
 		if(_ballRB == null)
 			_ballRB = Ball.GetComponent<Rigidbody>();
 		
