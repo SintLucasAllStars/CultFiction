@@ -80,10 +80,9 @@ public class PlayerController : MonoBehaviour
 
 			base.OnInspectorGUI();
 			EditorGUILayout.Space();
-
-			EditorGUILayout.LabelField("Rotation:");
-			_editorRotation = EditorGUILayout.Slider(_editorRotation, 0, 360);
-			controller.ChangeRotation(_editorRotation);
+//			EditorGUILayout.LabelField("Rotation:");
+//			_editorRotation = EditorGUILayout.Slider(_editorRotation, 0, 360);
+//			controller.ChangeRotation(_editorRotation);
 
 
 			if (GUILayout.Button("Launch"))
