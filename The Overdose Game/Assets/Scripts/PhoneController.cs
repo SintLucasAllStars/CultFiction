@@ -1,19 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PhoneController : MonoBehaviour, Iinteractable
 {
     public bool pickedUpPhone;
     public bool ringing;
+
     private GameObject dialogBox;
+    private Text dialogText;
+
     private List<Caller> callers;
+    private Caller currentCaller;
 
 	void Start ()
     {
         pickedUpPhone = false;
         ringing = false;
         dialogBox = GameObject.Find("DialogBox");
+        dialogText = GameObject.Find("DialogText").GetComponent<Text>();
         dialogBox.SetActive(false);
         GetCallers();
         StartCoroutine(PhoneCoroutine());
@@ -24,8 +30,14 @@ public class PhoneController : MonoBehaviour, Iinteractable
         if (ringing)
         {
             pickedUpPhone = true;
-            dialogBox.SetActive(true);
+            OpenDialog();
         }
+    }
+
+    public void OpenDialog()
+    {
+        dialogBox.SetActive(true);
+        dialogText.text = currentCaller.dialog;
     }
 
     public void CloseDialog(bool accepted)
@@ -35,11 +47,24 @@ public class PhoneController : MonoBehaviour, Iinteractable
 
         if (accepted)
         {
+            if (currentCaller.isNarc)
+            {
+                Debug.Log("GAME OVER, SOLD TO A NARC");
+                // game over call
+                return;
+            }
             Debug.Log("sold some weed");
         }
         else
         {
             Debug.Log("denied weed");
+        }
+
+        if(callers.Count <= 0)
+        {
+            Debug.Log("YOU FINISHED THE GAME, NO MORE CALLERS LEFT");
+            // game over call
+            return;
         }
 
         StartCoroutine(PhoneCoroutine());
@@ -52,13 +77,19 @@ public class PhoneController : MonoBehaviour, Iinteractable
 
     private void GetCallers()
     {
-        TextAsset test = Resources.Load<TextAsset>("Callers/test");
-        Caller testCaller = JsonUtility.FromJson<Caller>(test.text);
-        Debug.Log(testCaller.dialog);
+        callers = new List<Caller>();
+        TextAsset[] textAssets = Resources.LoadAll<TextAsset>("Callers");
+        foreach(TextAsset asset in textAssets)
+        {
+            callers.Add(JsonUtility.FromJson<Caller>(asset.text));
+        }
     }
 
     private IEnumerator PhoneCoroutine()
     {
+        currentCaller = callers[Random.Range(0, callers.Count)];
+        callers.Remove(currentCaller);
+
         yield return new WaitForSeconds(3f);
 
         ringing = true;
