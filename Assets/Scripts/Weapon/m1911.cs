@@ -14,21 +14,11 @@ public class m1911 : Weapon
         animator = GetComponent<Animator>();
     }
 
-    public override void Fire()
+    protected override void FireExtra()
     {
         if(ammo > 0)
         {
             animator.Play("Fire");
-
-            RaycastHit hit = new RaycastHit();
-            if(RaycastForward(ref hit))
-            {
-                Enemy enemy = hit.collider.GetComponent<Enemy>();
-                if(enemy != null)
-                    enemy.Damage(10);
-                Debug.Log(enemy);
-            }
-            MuzzleFlash();
             PlayGunAudio(gunSounds[0]);
         }
         else
@@ -41,10 +31,5 @@ public class m1911 : Weapon
     {
         animator.Play("Reload");
         PlayGunAudio(gunSounds[1]);
-    }
-
-    public override void Toggle(bool active)
-    {
-        gameObject.SetActive(active);
     }
 }

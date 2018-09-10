@@ -160,4 +160,7 @@ public class PlayerController : MonoBehaviour
         secondaryWeapon = weapon;
         weapon.Toggle(false);
     }
+
+
+
 }

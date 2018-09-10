@@ -6,8 +6,8 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] Muzzle muzzleFlash;
 
     [Header("Audio")]
-    [SerializeField] AudioSource audioSource;
-
+    [SerializeField]
+    AudioSource audioSource;
 
     [Header("Weapon Settings")]
     [SerializeField] protected int ammo;
@@ -16,17 +16,60 @@ public abstract class Weapon : MonoBehaviour
 
     [SerializeField] protected float fireDistance = 1000;
 
+    [Header("Weapon Damage")]
+    [SerializeField] int defaultDamage;
+    [SerializeField] int headShotDamage;
+    [SerializeField] int armLegDamage;
+
     Transform cameraTransform;
 
-    public abstract void Fire();
+    public void Fire()
+    {
+        RaycastHit hit = new RaycastHit();
+        if(RaycastForward(ref hit))
+        {
+            Enemy enemy = hit.collider.GetComponentInParent<Enemy>();
+            if(enemy != null)
+                enemy.Damage(GetDamge(hit.collider.tag));
+            Debug.Log(enemy);
+        }
+        FireExtra();
+        MuzzleFlash();
+        ammo--;
+    }
 
-    protected void MuzzleFlash()
+    int GetDamge(string tag)
+    {
+        switch(tag)
+        {
+            case "Head":
+                Debug.Log("Boom Headshot");
+                return headShotDamage;
+            case "Body":
+                Debug.Log("Body Damage");
+                return defaultDamage;
+            case "Arm":
+            case "Leg":
+                Debug.Log("I once was an adventurer like you but then I took a bullet to the leg or arm");
+                return armLegDamage;
+        }
+
+        return defaultDamage;
+    }
+
+    protected virtual void FireExtra()
+    {
+
+    }
+
+
+    void MuzzleFlash()
     {
         if(muzzleFlash != null)
             muzzleFlash.Enable();
     }
 
-    protected bool RaycastForward(ref RaycastHit hit)
+    bool RaycastForward(ref RaycastHit hit)
     {
         if(cameraTransform == null)
             cameraTransform = Camera.main.transform;
@@ -73,6 +116,9 @@ public abstract class Weapon : MonoBehaviour
 
     }
 
-    public abstract void Toggle(bool active);
+    public virtual void Toggle(bool active)
+    {
+        gameObject.SetActive(active);
 
+    }
 }
