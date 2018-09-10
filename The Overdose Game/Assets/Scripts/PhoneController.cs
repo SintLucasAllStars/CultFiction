@@ -7,6 +7,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
     public bool pickedUpPhone;
     public bool ringing;
     private GameObject dialogBox;
+    private List<Caller> callers;
 
 	void Start ()
     {
@@ -14,6 +15,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
         ringing = false;
         dialogBox = GameObject.Find("DialogBox");
         dialogBox.SetActive(false);
+        GetCallers();
         StartCoroutine(PhoneCoroutine());
 	}
 
@@ -48,6 +50,13 @@ public class PhoneController : MonoBehaviour, Iinteractable
         Debug.Log("RING!");
     }
 
+    private void GetCallers()
+    {
+        TextAsset test = Resources.Load<TextAsset>("Callers/test");
+        Caller testCaller = JsonUtility.FromJson<Caller>(test.text);
+        Debug.Log(testCaller.dialog);
+    }
+
     private IEnumerator PhoneCoroutine()
     {
         yield return new WaitForSeconds(3f);
@@ -62,4 +71,11 @@ public class PhoneController : MonoBehaviour, Iinteractable
 
         ringing = false;
     }
+}
+
+public struct Caller
+{
+    public bool isNarc;
+    public int payment;
+    public string dialog;
 }
