@@ -8,6 +8,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
     public bool pickedUpPhone;
     public bool ringing;
 
+    private GameManager manager;
     private GameObject dialogBox;
     private Text dialogText;
 
@@ -18,6 +19,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
     {
         pickedUpPhone = false;
         ringing = false;
+        manager = FindObjectOfType<GameManager>();
         dialogBox = GameObject.Find("DialogBox");
         dialogText = GameObject.Find("DialogText").GetComponent<Text>();
         dialogBox.SetActive(false);
@@ -49,8 +51,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
         {
             if (currentCaller.isNarc)
             {
-                Debug.Log("GAME OVER, SOLD TO A NARC");
-                // game over call
+                manager.EndGame(false, "Sold to a narc you dummy!");
                 return;
             }
             Debug.Log("sold some weed");
@@ -62,8 +63,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
 
         if(callers.Count <= 0)
         {
-            Debug.Log("YOU FINISHED THE GAME, NO MORE CALLERS LEFT");
-            // game over call
+            manager.EndGame(true, "No more buyers left!");
             return;
         }
 

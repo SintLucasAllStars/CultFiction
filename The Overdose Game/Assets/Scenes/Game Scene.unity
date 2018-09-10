@@ -765,12 +765,12 @@ GameObject:
   - component: {fileID: 832790521}
   - component: {fileID: 832790520}
   m_Layer: 5
-  m_Name: LoseBox
+  m_Name: EndGameBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &832790519
 RectTransform:
   m_ObjectHideFlags: 0
@@ -803,7 +803,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.6431373}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1493,6 +1493,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acade139555b5c64186c3defc1d2f38a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiredAmountToWin: 0
+  amountOfClientsToDeny: 0
 --- !u!1 &1385815877
 GameObject:
   m_ObjectHideFlags: 0
@@ -2401,7 +2403,7 @@ GameObject:
   - component: {fileID: 2104844485}
   - component: {fileID: 2104844484}
   m_Layer: 5
-  m_Name: Text
+  m_Name: EndGameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
