@@ -14,17 +14,22 @@ public class Rifle : Weapon
         animator = GetComponent<Animator>();
     }
 
-    protected override void FireExtra()
+    public override void Fire()
     {
+        if(!canFire)
+            return;
+
+        base.Fire();
         animator.Play("Fire");
-        //if(ammo <= 0)
-        //    animator.SetBool("isEmpty", true);
         PlayAudioSource(fire);
     }
 
-    protected override void ReloadAnimation()
+    public override void Reload()
     {
-        //animator.SetBool("isEmpty", false);
+        if(ammo == maxAmmo || ammoStockPile == 0)
+            return;
+
+        base.Reload();
         if(ammo > 0)
         {
             animator.Play("Reload");

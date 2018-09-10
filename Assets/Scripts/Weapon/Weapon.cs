@@ -23,7 +23,7 @@ public abstract class Weapon : MonoBehaviour
 
     Transform cameraTransform;
     float currentResetTime;
-    bool canFire = true;
+    protected bool canFire = true;
 
     private void Update()
     {
@@ -31,7 +31,7 @@ public abstract class Weapon : MonoBehaviour
             canFire = true;
     }
 
-    public void Fire()
+    public virtual void Fire()
     {
         Debug.Log("Fire");
         if(!canFire)
@@ -50,7 +50,6 @@ public abstract class Weapon : MonoBehaviour
             }
             ammo--;
             MuzzleFlash();
-            FireExtra();
             currentResetTime = Time.time + shootDelay;
         }
         else
@@ -76,12 +75,6 @@ public abstract class Weapon : MonoBehaviour
         return defaultDamage;
     }
 
-    protected virtual void FireExtra()
-    {
-
-    }
-
-
     void MuzzleFlash()
     {
         if(muzzleFlash != null)
@@ -100,21 +93,13 @@ public abstract class Weapon : MonoBehaviour
         return false;
     }
 
-    protected void PlayAudioSource(AudioSource audioSource)
-    {
-        if(audioSource != null)
-        {
-            audioSource.Play();
-        }
-    }
-
-    public void Reload()
+    public virtual void Reload()
     {
         if(ammo == maxAmmo || ammoStockPile == 0)
             return;
+
         currentResetTime = Time.time + reloadTime;
         canFire = false;
-        ReloadAnimation();
 
         if(ammo > 0)
         {
@@ -138,10 +123,12 @@ public abstract class Weapon : MonoBehaviour
         }
     }
 
-
-    protected virtual void ReloadAnimation()
+    protected void PlayAudioSource(AudioSource audioSource)
     {
-
+        if(audioSource != null)
+        {
+            audioSource.Play();
+        }
     }
 
     public virtual void Toggle(bool active)
