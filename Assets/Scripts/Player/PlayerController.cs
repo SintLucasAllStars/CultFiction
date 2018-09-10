@@ -56,16 +56,29 @@ public class PlayerController : MonoBehaviour
             IsGrounded();
         else if(Input.GetKey(KeyCode.Space))
             Jump();
-
-        if(Input.GetMouseButtonDown(0))
+        if(currentWeapon != null)
         {
-            if(currentWeapon != null)
-                currentWeapon.Fire();
+            if(currentWeapon.isAutomatic)
+            {
+                if(Input.GetMouseButton(0))
+                    currentWeapon.Fire();
+            }
+            else
+            {
+                if(Input.GetMouseButtonDown(0))
+                    currentWeapon.Fire();
+            }
+
         }
         if(Input.GetKey(KeyCode.R))
         {
             if(currentWeapon != null)
                 currentWeapon.Reload();
+        }
+        float scrollWheel = Input.GetAxis("Mouse ScrollWheel"); ;
+        if(scrollWheel > 0|| scrollWheel < 0)
+        {
+            SwapWeapon();
         }
     }
 
@@ -152,6 +165,9 @@ public class PlayerController : MonoBehaviour
 
     void SwapWeapon()
     {
+        if(currentWeapon == null || secondaryWeapon == null)
+            return;
+
         Weapon weapon = currentWeapon;
 
         currentWeapon = secondaryWeapon;

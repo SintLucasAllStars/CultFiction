@@ -1,18 +1,16 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
     [Header("Visual")]
     [SerializeField] Muzzle muzzleFlash;
 
-    [Header("Audio")]
-    [SerializeField]
-    AudioSource audioSource;
-
     [Header("Weapon Settings")]
     [SerializeField] protected int ammo;
     [SerializeField] protected int maxAmmo;
     [SerializeField] protected int ammoStockPile;
+    [SerializeField] protected float reloadTime;
 
     [SerializeField] protected float fireDistance = 1000;
 
@@ -20,22 +18,43 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] int defaultDamage;
     [SerializeField] int headShotDamage;
     [SerializeField] int armLegDamage;
+    [SerializeField] float shootDelay;
+    public bool isAutomatic = false;
 
     Transform cameraTransform;
+    float currentResetTime;
+    bool canFire = true;
+
+    private void Update()
+    {
+        if(!canFire && Time.time > currentResetTime)
+            canFire = true;
+    }
 
     public void Fire()
     {
-        RaycastHit hit = new RaycastHit();
-        if(RaycastForward(ref hit))
+        Debug.Log("Fire");
+        if(!canFire)
+            return;
+
+        if(ammo > 0)
         {
-            Enemy enemy = hit.collider.GetComponentInParent<Enemy>();
-            if(enemy != null)
-                enemy.Damage(GetDamge(hit.collider.tag));
-            Debug.Log(enemy);
+            canFire = false;
+            RaycastHit hit = new RaycastHit();
+            if(RaycastForward(ref hit))
+            {
+                Enemy enemy = hit.collider.GetComponentInParent<Enemy>();
+                if(enemy != null)
+                    enemy.Damage(GetDamge(hit.collider.tag));
+                Debug.Log(enemy);
+            }
+            ammo--;
+            MuzzleFlash();
+            FireExtra();
+            currentResetTime = Time.time + shootDelay;
         }
-        FireExtra();
-        MuzzleFlash();
-        ammo--;
+        else
+            Reload();
     }
 
     int GetDamge(string tag)
@@ -81,19 +100,28 @@ public abstract class Weapon : MonoBehaviour
         return false;
     }
 
-    protected void PlayGunAudio(AudioClip currentClip)
+    protected void PlayAudioSource(AudioSource audioSource)
     {
         if(audioSource != null)
         {
-            if(audioSource.clip != currentClip)
-                audioSource.clip = currentClip;
             audioSource.Play();
         }
     }
 
     public void Reload()
     {
-        if(ammoStockPile > maxAmmo)
+        if(ammo == maxAmmo || ammoStockPile == 0)
+            return;
+        currentResetTime = Time.time + reloadTime;
+        canFire = false;
+        ReloadAnimation();
+
+        if(ammo > 0)
+        {
+            ammo = maxAmmo;
+            ammoStockPile -= maxAmmo - ammo;
+        }
+        if(ammoStockPile >= maxAmmo)
         {
             ammo = maxAmmo;
             ammoStockPile -= maxAmmo;
@@ -108,8 +136,8 @@ public abstract class Weapon : MonoBehaviour
             Debug.Log("Out of Ammo");
             return;
         }
-        ReloadAnimation();
     }
+
 
     protected virtual void ReloadAnimation()
     {

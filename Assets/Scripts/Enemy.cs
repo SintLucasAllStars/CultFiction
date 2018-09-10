@@ -21,7 +21,8 @@ public class Enemy : MonoBehaviour
     {
         running = 3,
         walking = 1,
-        attack = 0
+        attack = 0,
+        none = 2
     }
     public Movement currentMovenent = Movement.running;
 
@@ -60,28 +61,52 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        navMesh.SetDestination(player.position);
         if(!canAttack && currentMovenent == Movement.walking && currentWaitTime < Time.time)
         {
             Debug.Log("Reset");
             canAttack = true;
-            SetMovementSpeed(Movement.running);
+            if(Vector3.Distance(transform.position, player.position) <= minDistance)
+            {
+                Debug.Log("Close");
+                SetMovementSpeed(Movement.none);
+            }
+            else
+            {
+                Debug.Log("Far Away");
+                SetMovementSpeed(Movement.running);
+            }
         }
 
-        navMesh.SetDestination(player.position);
-        if(Vector3.Distance(transform.position, player.position) <= minDistance && canAttack)
+        if(Vector3.Distance(transform.position, player.position) <= minDistance)
         {
-            canAttack = false;
-            StartCoroutine(Attack());
+            if(canAttack)
+            {
+                canAttack = false;
+                StartCoroutine(Attack());
+            }
+            if(currentMovenent != Movement.attack || currentMovenent != Movement.none)
+                SetAnimationByMovement(Movement.none);
+
+            navMesh.SetDestination(transform.position);
+
         }
+        else
+        {
+            //if(currentMovenent != Movement.attack && currentMovenent != Movement.running && currentWaitTime < Time.time)
+            //    SetAnimationByMovement(Movement.running);
+
+            navMesh.SetDestination(player.position);
+        }
+
 
     }
 
     IEnumerator Attack()
     {
+        Debug.Log("Attack");
         SetMovementSpeed(Movement.attack);
         animator.Play("Attack" + (int)Random.Range(0, 2));
-        SetAnimationByMovement(Movement.walking);
+        SetAnimationByMovement(Movement.none);
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
         SetMovementSpeed(Movement.walking);
         playerScript.Damage(50);
@@ -99,27 +124,13 @@ public class Enemy : MonoBehaviour
 
     void SetAnimationByMovement()
     {
-        switch(currentMovenent)
-        {
-            case Movement.walking:
-                animator.SetBool("isRunning", false);
-                break;
-            case Movement.running:
-                animator.SetBool("isRunning", true);
-                break;
-        }
+        if(currentMovenent != Movement.attack)
+            animator.SetInteger("Movement", (int)currentMovenent);
     }
 
     void SetAnimationByMovement(Movement movement)
     {
-        switch(movement)
-        {
-            case Movement.walking:
-                animator.SetBool("isRunning", false);
-                break;
-            case Movement.running:
-                animator.SetBool("isRunning", true);
-                break;
-        }
+        if(movement != Movement.attack)
+            animator.SetInteger("Movement", (int)movement);
     }
 }
