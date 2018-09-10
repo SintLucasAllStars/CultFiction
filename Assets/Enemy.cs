@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using UnityEngine.AI;
 using UnityEngine;
 using System.Collections;
@@ -37,3 +38,21 @@ public class Enemy : MonoBehaviour
     }
 }
 
+=======
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Enemy : MonoBehaviour
+{
+
+    int health = 100;
+
+    public void Damage(int damge)
+    {
+        health -= damge;
+        if(health < 0)
+            Destroy(gameObject);
+    }
+}
+>>>>>>> 54ec3acd757c6dc1b2e7767c208f1dd4a56d57bb
