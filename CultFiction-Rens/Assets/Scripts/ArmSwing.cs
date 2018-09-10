@@ -14,15 +14,22 @@ public class ArmSwing : MonoBehaviour
 		_animation = GetComponent<Animation>();
 		_animationState = _animation["GolfSwing"];
 	}
-
+	
 	private void OnEnable()
 	{
 		PlayerController.onHitBall += OnHitBall;
+		CourseManager.OnStartRound += OnStartRound;
 	}
 
 	private void OnDisable()
 	{
 		PlayerController.onHitBall -= OnHitBall;
+		CourseManager.OnStartRound -= OnStartRound;
+	}
+	
+	private void OnStartRound()
+	{
+		ResetAnimation();
 	}
 
 	private void OnHitBall()
