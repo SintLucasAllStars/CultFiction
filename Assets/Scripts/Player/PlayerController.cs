@@ -5,13 +5,12 @@ public class PlayerController : MonoBehaviour
 {
     //Movement
     [Header("Movement")]
-    [SerializeField]
-    float walkSpeed;
+    [SerializeField] float walkSpeed;
     [SerializeField] float runSpeed;
     [SerializeField] float jumpSpeed;
 
     public bool grounded = true;
-    private Rigidbody rb;
+    Rigidbody rb;
 
     //Mouse
     [Header("Mouse")]
@@ -24,24 +23,28 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Weapon currentWeapon;
     [SerializeField] Weapon secondaryWeapon;
 
-    private bool lockMouse = true;
-    private new Transform camera;
+    [Header("Player")]
+    const int maxHealth = 100;
+    int health = 100;
+
+    bool lockMouse = true;
+    new Transform camera;
 
     // Use this for initialization
-    private void Start()
+    void Start()
     {
         rb = GetComponent<Rigidbody>();
         camera = transform.GetChild(0);
     }
 
-    private void Update()
+    void Update()
     {
         MouseRotation();
         CheckInteraction();
     }
 
     // Update is called once per frame
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         float speed = (!Input.GetKey(KeyCode.LeftShift)) ? walkSpeed : runSpeed;
 
@@ -50,7 +53,7 @@ public class PlayerController : MonoBehaviour
         transform.position += (transform.forward * vertical + transform.right * horizontal) * Time.deltaTime;
 
         if(!grounded)
-            CheckGroundedStatus();
+            IsGrounded();
         else if(Input.GetKey(KeyCode.Space))
             Jump();
 
@@ -66,7 +69,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void CheckGroundedStatus()
+    public void Damage(int amount)
+    {
+        health -= amount;
+        if(health <= 0)
+            Debug.Log("Dead");
+    }
+
+
+    void IsGrounded()
     {
         RaycastHit hit;
         if(Physics.Raycast(transform.position, -transform.up, out hit, 1))
@@ -75,14 +86,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Jump()
+    void Jump()
     {
         Debug.Log("Jump");
         grounded = false;
         rb.AddForce(transform.up * jumpSpeed, ForceMode.VelocityChange);
     }
 
-    private void MouseRotation()
+    void MouseRotation()
     {
         MouseLock();
         if(!lockMouse)
@@ -96,7 +107,7 @@ public class PlayerController : MonoBehaviour
         camera.localRotation = ClampRotationAroundXAxis(camera.localRotation);
     }
 
-    private void MouseLock()
+    void MouseLock()
     {
         if(lockMouse)
         {
@@ -110,7 +121,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private Quaternion ClampRotationAroundXAxis(Quaternion q)
+    Quaternion ClampRotationAroundXAxis(Quaternion q)
     {
         q.x /= q.w;
         q.y /= q.w;
@@ -127,7 +138,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private void CheckInteraction()
+    void CheckInteraction()
     {
         RaycastHit hit;
         if(Physics.Raycast(camera.position, camera.forward, out hit, range) && hit.collider.CompareTag("Interactable"))
