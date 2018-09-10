@@ -6,40 +6,52 @@ using UnityEngine.Experimental.PlayerLoop;
 public class Syringe : MonoBehaviour
 {
     private Rigidbody _rigidbody;
-    private bool _hit;
+    private bool _hit = false;
+
+    public float Speed;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        
     }
-
-	// Use this for initialization
-	void Start () {
-		
-	}
 
     private void FixedUpdate()
     {
-        if (_rigidbody.useGravity && _hit)
-        {
-
-        }
+     
 
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        _hit = false;;
+        if (_hit)
+        {
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.isKinematic = true;
+            _rigidbody.useGravity = false;
+            GameManager.Instance.GetNewSyringe();
+           
+         
+            Destroy(this);
+       
+        }
+   
+
+
     }
 
     // Update is called once per frame
 	void Update () 
 	{
-	    if (Input.GetMouseButtonDown(0))
+	    if (Input.GetMouseButtonDown(0) && !_hit)
 	    {
 	        transform.SetParent(null);
 	        _rigidbody.useGravity = true;
-	        _rigidbody.AddRelativeForce(0,2000,0);
+	        _rigidbody.AddForce(-transform.forward * Speed, ForceMode.Impulse);
+	        _hit = true;
+	
 	    }
 	}
+
+  
 }

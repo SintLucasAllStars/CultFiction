@@ -56,8 +56,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\HandMovement.cs" />
     <Compile Include="Assets\Scripts\Syringe.cs" />
+    <Compile Include="Assets\Scripts\Tools\Singleton.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/Documents/GitHub/CultFiction/cultfiction2018/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
