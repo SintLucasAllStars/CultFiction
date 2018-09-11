@@ -2,17 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
     public int requiredAmountToWin;
     public int amountOfClientsToDeny;
+    public GameObject endScreen;
+    public Text endText;
 
     private int _money;
     private int _clientsDenied;
+    private bool _gameRunning;
 
-    private GameObject endScreen;
-    private Text endText;
+    public bool GameRunning
+    {
+        get
+        {
+            return _gameRunning;
+        }
+    }
 
     public int Money
     {
@@ -44,14 +54,19 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        endScreen = GameObject.Find("EndGameBox");
-        endText = GameObject.Find("EndGameText").GetComponent<Text>();
         endScreen.SetActive(false);
+        _gameRunning = true;
     }
 
     public void EndGame(bool endstate, string screenMessage)
     {
         endScreen.SetActive(true);
+        _gameRunning = false;
         endText.text = (endstate ? "You've won!\n" : "You've lost\n") + screenMessage;
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

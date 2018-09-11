@@ -456,7 +456,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 284670318}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1368332652}
+        m_MethodName: Restart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &284670318
@@ -590,8 +601,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e790c7f07b2c2f4299e72fb618bee08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  amountOfRings: 3
   pickedUpPhone: 0
   ringing: 0
+  manager: {fileID: 1368332652}
+  dialogBox: {fileID: 1995536052}
+  dialogText: {fileID: 2131261281}
 --- !u!1 &534669902
 GameObject:
   m_ObjectHideFlags: 0
@@ -1493,8 +1508,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acade139555b5c64186c3defc1d2f38a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requiredAmountToWin: 0
-  amountOfClientsToDeny: 0
+  requiredAmountToWin: 900
+  amountOfClientsToDeny: 2
+  endScreen: {fileID: 832790518}
+  endText: {fileID: 2104844484}
 --- !u!1 &1385815877
 GameObject:
   m_ObjectHideFlags: 0

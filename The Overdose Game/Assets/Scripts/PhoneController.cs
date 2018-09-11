@@ -5,12 +5,14 @@ using UnityEngine.UI;
 
 public class PhoneController : MonoBehaviour, Iinteractable
 {
+    public int amountOfRings;
+
     public bool pickedUpPhone;
     public bool ringing;
 
-    private GameManager manager;
-    private GameObject dialogBox;
-    private Text dialogText;
+    public GameManager manager;
+    public GameObject dialogBox;
+    public Text dialogText;
 
     private List<Caller> callers;
     private Caller currentCaller;
@@ -19,9 +21,6 @@ public class PhoneController : MonoBehaviour, Iinteractable
     {
         pickedUpPhone = false;
         ringing = false;
-        manager = FindObjectOfType<GameManager>();
-        dialogBox = GameObject.Find("DialogBox");
-        dialogText = GameObject.Find("DialogText").GetComponent<Text>();
         dialogBox.SetActive(false);
         GetCallers();
         StartCoroutine(PhoneCoroutine());
@@ -54,16 +53,22 @@ public class PhoneController : MonoBehaviour, Iinteractable
                 manager.EndGame(false, "Sold to a narc you dummy!");
                 return;
             }
-            Debug.Log("sold some weed");
+            manager.Money += currentCaller.payment;
         }
         else
         {
             Debug.Log("denied weed");
+            if (!currentCaller.isNarc)
+            {
+                manager.ClientsDenied++;
+            }
         }
 
-        if(callers.Count <= 0)
+        callers.Remove(currentCaller);
+
+        if (callers.Count <= 0)
         {
-            manager.EndGame(true, "No more buyers left!");
+            manager.EndGame(true, "No more callers left!");
             return;
         }
 
@@ -85,18 +90,40 @@ public class PhoneController : MonoBehaviour, Iinteractable
         }
     }
 
+    public void StopCoroutines()
+    {
+        StopAllCoroutines();
+    }
+
     private IEnumerator PhoneCoroutine()
     {
         currentCaller = callers[Random.Range(0, callers.Count)];
-        callers.Remove(currentCaller);
 
         yield return new WaitForSeconds(3f);
 
         ringing = true;
 
-        while (!pickedUpPhone)
+        // start ringing phone, user has a chance to pick up phone for the duration of this loop
+        int timesRang = 0;
+        while(!pickedUpPhone)
         {
+            // if user did not pick up the phone, denied client will be added to manager and coroutine will be called again
+            if (timesRang >= amountOfRings)
+            {
+                ringing = false;
+                manager.ClientsDenied++;
+                Debug.Log("Didn't pick up phone");
+
+                if(manager.GameRunning)
+                    StartCoroutine(PhoneCoroutine());
+
+                yield break;
+            }
+
+            timesRang++;
             Ring();
+
+            Debug.Log("test");
             yield return new WaitForSeconds(2f);
         }
 
