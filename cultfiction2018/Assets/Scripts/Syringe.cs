@@ -30,6 +30,12 @@ public class Syringe : MonoBehaviour
             _rigidbody.isKinematic = true;
             _rigidbody.useGravity = false;
             GameManager.Instance.GetNewSyringe();
+
+            if (other.gameObject.CompareTag("TheBody"))
+            {
+                GameManager.Instance.BodyHit(other.contacts[0].point);
+
+            }
            
          
             Destroy(this);

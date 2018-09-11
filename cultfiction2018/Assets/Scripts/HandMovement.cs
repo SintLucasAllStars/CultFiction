@@ -42,8 +42,12 @@ public class HandMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //MouseMode();
-        KeyBoardMode();
+        if (!GameManager.Instance.UIactive())
+        {
+            //MouseMode();
+            KeyBoardMode();
+        }
+ 
     }
 
     private void KeyBoardMode()
@@ -96,7 +100,7 @@ public class HandMovement : MonoBehaviour
 
     private Vector3 RotationEuler()
     {
-        return transform.eulerAngles + new Vector3(0, 0, ScrollWheelAxis() * Time.deltaTime * RotationSpeed);
+        return transform.eulerAngles + new Vector3(0, 0, Mathf.Sin(Time.realtimeSinceStartup) /10);
     }
 
     private float ScrollWheelAxis()
