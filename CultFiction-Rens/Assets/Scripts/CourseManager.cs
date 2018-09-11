@@ -11,6 +11,8 @@ public class CourseManager : MonoBehaviour
 	public static event StartRound OnStartRound;
 
 	private Rigidbody _ballRb;
+
+	private bool _isPlaying;
 	
 	void Start ()
 	{
@@ -19,16 +21,40 @@ public class CourseManager : MonoBehaviour
 		_ballRb = GameObject.FindWithTag("Ball").GetComponent<Rigidbody>();
 	}
 
+	private void OnEnable()
+	{
+		PlayerController.onHitBall += OnHitBall;
+	}
+
+	private void OnDisable()
+	{
+		PlayerController.onHitBall -= OnHitBall;
+	}
+
+	private void OnHitBall()
+	{
+		_isPlaying = true;
+	}
+
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.A))
 		{
 			OnStartRound();
 		}
+
+		if (_isPlaying)
+		{
+			if (_ballRb.IsSleeping())
+			{
+				StartNewRound();
+			}
+		}
 	}
 
 	public void StartNewRound()
 	{
+		_isPlaying = false;
 		OnStartRound();
 	}
 

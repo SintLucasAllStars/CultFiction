@@ -9,11 +9,13 @@ public class EndPoint : MonoBehaviour
 	private bool _poleEnabled = true;
 	[SerializeField] private float _playerPoleDistance;
 	private CourseManager _course;
+	private GameObject _ball;
 	
 	void Start ()
 	{
 		_poleAnimation = transform.GetComponentInChildren<Animation>();
 		_course = GetComponentInParent<CourseManager>();
+		_ball = GameObject.FindGameObjectWithTag("Ball");
 	}
 
 	private void OnEnable()
@@ -28,8 +30,7 @@ public class EndPoint : MonoBehaviour
 
 	private void OnStartRound()
 	{
-		Debug.Log(Vector3.Distance(PlayerController.Instance.transform.position, transform.position) <= _playerPoleDistance);
-		if (Vector3.Distance(PlayerController.Instance.transform.position, transform.position) <= _playerPoleDistance)
+		if (Vector3.Distance(_ball.transform.position, transform.position) <= _playerPoleDistance)
 		{
 			if (!_poleEnabled) return;
 			_poleAnimation.PlayQueued("RemovePole");
@@ -45,7 +46,7 @@ public class EndPoint : MonoBehaviour
 
 	private void OnCollisionEnter(Collision other)
 	{
-		if (other.collider.CompareTag("Ball"))
+		if (other.gameObject == _ball)
 		{
 			_course.EndGame();
 		}

@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 	private Dictionary<CourseManager, int> _scores;
 
 	private CourseManager currentCourse;
+
+	public bool ArPlaced;
 	
 	private void Awake()
 	{
