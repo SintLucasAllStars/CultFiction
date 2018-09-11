@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WalkAbility : Ability, IPlayerAbilitys
 {
-	private CharacterController _playerController;
+	private CharacterController _characterController;
 	[SerializeField]
 	float speed = 1;
 	[SerializeField]
@@ -17,7 +17,8 @@ public class WalkAbility : Ability, IPlayerAbilitys
 	float turnSpeed = 1;
 	public override void OnStart()
 	{
-		_playerController = GetComponent<CharacterController>();
+		_characterController = GetComponent<CharacterController>();
+		_characterController.callEveryFrame += EveryFrame;
 	}
 
 	public override void EveryFrame()
@@ -27,7 +28,7 @@ public class WalkAbility : Ability, IPlayerAbilitys
 		if (AbilityPermitted)
 		{
 			Vector3 forge = new Vector3(0, 0, 0);
-			if (_playerController.canWalkRight && x > 0)
+			if (_characterController.canWalkRight && x > 0)
 			{
 				if (!walkSideWays)
 				{
@@ -42,7 +43,7 @@ public class WalkAbility : Ability, IPlayerAbilitys
 					forge.x += x;
 				}
 			}
-			if (_playerController.canWalkLeft && x < 0)
+			if (_characterController.canWalkLeft && x < 0)
 			{
 				if (!walkSideWays)
 				{
@@ -57,11 +58,11 @@ public class WalkAbility : Ability, IPlayerAbilitys
 					forge.x += x;
 				}
 			}
-			if (_playerController.canWalkForward && z > 0)
+			if (_characterController.canWalkForward && z > 0)
 			{
 				forge.z += z;
 			}
-			if (_playerController.canWalkBack && z < 0)
+			if (_characterController.canWalkBack && z < 0)
 			{
 				forge.z += z;
 			}
@@ -74,11 +75,11 @@ public class WalkAbility : Ability, IPlayerAbilitys
 			{
 				tSpeed = slowWalkSpeed;
 			}
-			if (z != 0&&!_playerController.stateLocked&&_playerController.grounded)
+			if (z != 0&&!_characterController.stateLocked&&_characterController.grounded)
 			{            
-				_playerController.currentPlayerState = CharacterController.PlayerStates.moving;
+				_characterController.currentPlayerState = CharacterController.PlayerStates.moving;
 			}
-			_playerController.playerSpeed = tSpeed*forge.z;
+			_characterController.playerSpeed = tSpeed*forge.z;
 			transform.Translate(forge * Time.deltaTime * tSpeed);
 		}
 	}

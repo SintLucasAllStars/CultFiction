@@ -14,7 +14,9 @@ public class InputManager : Singleton<InputManager> {
     [HideInInspector]
     public bool runButton;   
     [HideInInspector]
-    public bool slowWalkButton;
+	public bool slowWalkButton;
+    [HideInInspector]
+    public bool attackButton;
 	// Use this for initialization
 	void Start () {
 		
@@ -28,5 +30,6 @@ public class InputManager : Singleton<InputManager> {
 		interactButton = Input.GetButtonDown ("Interact");
 		runButton = Input.GetButton("Run")&&Input.GetButton("Vertical");
 		slowWalkButton = Input.GetButton("SlowWalk")&& Input.GetButton("Vertical");
+		attackButton = Input.GetButtonDown("Fire1");
 	}
 }

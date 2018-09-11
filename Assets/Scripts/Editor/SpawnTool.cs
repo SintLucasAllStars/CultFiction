@@ -33,10 +33,10 @@ public class SpawnTool : EditorWindow
     Vector3 size;
     Vector3 randomPos;
     Vector2 scrollPos;
-   
+	Vector3 offset;
     bool check;
     string tagStr = "";
-    List<GameObject> spawnedTrees;
+	List<GameObject> spawnedTrees = new List<GameObject>();
     SerializedProperty objectsToSpawnProperty;
     [MenuItem("Window/Spawn Tool")]
     public static void ShowWindow()
@@ -57,7 +57,8 @@ public class SpawnTool : EditorWindow
         EditorGUILayout.PropertyField(stringsProperty, true); // True means show children
         so.ApplyModifiedProperties();
         parent = EditorGUILayout.ObjectField("Parent", parent, typeof(Object), true);
-        objectCount = EditorGUILayout.Slider("Objects to spawn", objectCount, 1, 1000);
+		objectCount = EditorGUILayout.Slider("Objects to spawn", objectCount, 1, 1000);
+		offset = EditorGUILayout.Vector3Field("Offset", offset);
         startY = EditorGUILayout.FloatField("Highest Point (Y)", startY);
 		rayLength = EditorGUILayout.FloatField("Ray length", rayLength);
 		maxSurfaceAngle = EditorGUILayout.FloatField("Max surface angle", maxSurfaceAngle);
@@ -77,7 +78,7 @@ public class SpawnTool : EditorWindow
         EditorGUILayout.EndToggleGroup();
         GUILayout.EndScrollView();
         GUILayout.EndVertical();
-        if (GUILayout.Button("Plant Trees!"))
+        if (GUILayout.Button("Spawn Objects!"))
         {
             spawnedTrees.Clear();
             treeCounter = 0;
@@ -89,22 +90,18 @@ public class SpawnTool : EditorWindow
      //       Debug.Log(treeCounter);
     //        treeCounter = 0;
      //   }
-        if (GUILayout.Button("Delete Trees"))
+        if (GUILayout.Button("Undo"))
         {
             foreach (GameObject g in spawnedTrees)
             {
                 DestroyImmediate(g);
             }
         }
-        if (GUILayout.Button("Stop!"))
-        {
-            EditorApplication.update -= EditorUpdate;
-        }
     }
 
     void EditorUpdate()
     {
-        if(EditorUtility.DisplayCancelableProgressBar("Spawning Trees... ", + treeCounter + "/" + objectCount, ((float)treeCounter / (float)objectCount))){
+        if(EditorUtility.DisplayCancelableProgressBar("Spawning Objects... ", + treeCounter + "/" + objectCount, ((float)treeCounter / (float)objectCount))){
             EditorUtility.ClearProgressBar();
             EditorApplication.update -= EditorUpdate;
         }
@@ -135,7 +132,7 @@ public class SpawnTool : EditorWindow
 				if (hit.transform.CompareTag("TreesTag") ||(tagStr !=null && hit.transform.CompareTag(tagStr)))
 				{
 					DestroyImmediate(spawnTreeP);
-					Debug.Log("killed tree");
+					Debug.Log("Destroyed object");
 					treeCounter--;
 				}
 				else

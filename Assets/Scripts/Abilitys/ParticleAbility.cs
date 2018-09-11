@@ -2,21 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParticleAbility : MonoBehaviour {
+public class ParticleAbility : Ability, IPlayerAbilitys {
 	[SerializeField]
 	ParticleSystem runParticle;
 
-	CharacterController characterController;
+	CharacterController _characterController;
 	// Use this for initialization
-	void Start () {
-		characterController = GetComponent<CharacterController>();
+	public override void  OnStart () {
+		_characterController = GetComponent<CharacterController>();
+
+        _characterController.callEveryFrame += EveryFrame;
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+	public override void EveryFrame () {
+		if(AbilityPermitted){
+			WhileAbility();
+		}
+	}
+	public override void BeforeAbility()
+    {
+    }
+
+    public override void WhileAbility()
+    {
 		if (runParticle != null)
 		{
-			if (characterController.playerSpeed > 5)
+			if (_characterController.playerSpeed > 5 && _characterController.grounded)
 			{
 				runParticle.enableEmission = true;
 			}
@@ -25,5 +36,10 @@ public class ParticleAbility : MonoBehaviour {
 				runParticle.enableEmission = false;
 			}
 		}
-	}
+    }
+
+    public override void AfterAbility()
+    {
+
+    }
 }

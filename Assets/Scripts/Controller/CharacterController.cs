@@ -30,16 +30,28 @@ public class CharacterController : MonoBehaviour
 	[SerializeField]
 	LayerMask thingsToGroundWith;
 
-	public enum PlayerStates { idle, moving, jump, die,attack };
+	public enum PlayerStates { idle, moving, jump, die,attacking };
 	public PlayerStates currentPlayerState;
 	[HideInInspector]
 	public bool stateLocked = false;
 	[HideInInspector]
 	public float playerSpeed;
 	Vector3 oldPos;
+	[HideInInspector]
+	public bool dead = false;
+	[HideInInspector]
+	public float health =100;
+
+	public delegate void CallEveryFrame();
+	public  CallEveryFrame callEveryFrame;
+	public delegate void Died();
+    public Died characterDied;
 	// Use this for initialization
 	void Start()
 	{
+		if(transform.CompareTag("Player")){
+			GameController.Instance.player = this;
+		}
 		abilitys = GetComponents<Ability>();
 		foreach (Ability a in abilitys)
 		{
@@ -54,20 +66,29 @@ public class CharacterController : MonoBehaviour
 	}
 	void EveryFrame()
 	{
-
-		CastRayCastToSides();
-		CastRayCastToBackAndForward();
-		CastRaycastToBottom();
-
-		foreach (Ability a in abilitys)
+		if (!dead)
 		{
-			a.EveryFrame();
-		}
-        
-		if(transform.position.x == oldPos.x&&transform.position.z == oldPos.z&&grounded&&!stateLocked){
-			currentPlayerState = PlayerStates.idle;
+			CastRayCastToSides();
+			CastRayCastToBackAndForward();
+			CastRaycastToBottom();
+
+			callEveryFrame();
+			//foreach (Ability a in abilitys)
+			//{
+			//	a.EveryFrame();
+			//}
+
+			if (!stateLocked && (transform.position.x >= oldPos.x - 0.01f && transform.position.x <= oldPos.x + 0.01f) && (transform.position.z >= oldPos.z - 0.01f && transform.position.x <= oldPos.x + 0.01f) && grounded && !stateLocked)
+			{
+				currentPlayerState = PlayerStates.idle;
+			}
+			else
+			{
+				oldPos = transform.position;
+			}
 		}else{
-			oldPos = transform.position;
+			characterDied();
+			this.gameObject.active = false;
 		}
 	}
 	void CastRayCastToSides()

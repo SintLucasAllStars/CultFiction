@@ -4,19 +4,20 @@ using UnityEngine;
 
 public class JumpAbility : Ability , IPlayerAbilitys {
 
-	private CharacterController _playerController;
+	private CharacterController _characterController;
 	Rigidbody rb;
 	public float jumpForce;
 
 	public override void OnStart(){
-		_playerController = GetComponent<CharacterController> ();
+		_characterController = GetComponent<CharacterController> ();
+		_characterController.callEveryFrame += EveryFrame;
 		rb = GetComponent<Rigidbody> ();
 	}
 
 	public override void EveryFrame(){
 		if (AbilityPermitted)
 		{
-			if (InputManager.Instance.jumpButton && _playerController.grounded)
+			if (InputManager.Instance.jumpButton && _characterController.grounded)
 			{
 				BeforeAbility ();
 			}
@@ -25,10 +26,10 @@ public class JumpAbility : Ability , IPlayerAbilitys {
 
 	public override void BeforeAbility(){
 		
-		if (!_playerController.stateLocked)
+		if (!_characterController.stateLocked)
 		{
-			_playerController.currentPlayerState = CharacterController.PlayerStates.jump;
-			_playerController.stateLocked = true;
+			_characterController.currentPlayerState = CharacterController.PlayerStates.jump;
+			_characterController.stateLocked = true;
 		}
 		WhileAbility ();      
 	}
@@ -39,6 +40,6 @@ public class JumpAbility : Ability , IPlayerAbilitys {
 	}
 
 	public override void AfterAbility(){
-		_playerController.stateLocked = false;
+		_characterController.stateLocked = false;
 	}
 }
