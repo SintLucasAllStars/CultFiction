@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public int amountOfClientsToDeny;
     public GameObject endScreen;
     public Text endText;
+    public Text moneyIndicator;
 
     private int _money;
     private int _clientsDenied;
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _money = value;
+            moneyIndicator.text = "Your Money: " + value;
             if (_money >= requiredAmountToWin)
                 EndGame(true, "You collected enough money, nice going!");
         }
@@ -54,6 +56,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        moneyIndicator.text = "Your Money: " + 0;
         endScreen.SetActive(false);
         _gameRunning = true;
     }
