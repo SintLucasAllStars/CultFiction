@@ -43,12 +43,4 @@ public class EndPoint : MonoBehaviour
 			_poleEnabled = true;
 		}
 	}
-
-	private void OnCollisionEnter(Collision other)
-	{
-		if (other.gameObject == _ball)
-		{
-			_course.EndGame();
-		}
-	}
 }

@@ -10,15 +10,19 @@ public class CourseManager : MonoBehaviour
 	public delegate void StartRound();
 	public static event StartRound OnStartRound;
 
-	private Rigidbody _ballRb;
-
 	private bool _isPlaying;
-	
+
+	public static CourseManager Instance;
+
+	private void Awake()
+	{
+		Instance = this;
+	}
+
 	void Start ()
 	{
 		if(OnStartRound != null)
 		OnStartRound();
-		_ballRb = GameObject.FindWithTag("Ball").GetComponent<Rigidbody>();
 	}
 
 	private void OnEnable()
@@ -42,20 +46,19 @@ public class CourseManager : MonoBehaviour
 		{
 			OnStartRound();
 		}
-
-		if (_isPlaying)
-		{
-			if (_ballRb.IsSleeping())
-			{
-				StartNewRound();
-			}
-		}
 	}
 
 	public void StartNewRound()
 	{
 		_isPlaying = false;
+		_rounds++;
 		OnStartRound();
+	}
+
+	public void RestartRound()
+	{
+		_rounds++;
+		
 	}
 
 	public void EndGame()
