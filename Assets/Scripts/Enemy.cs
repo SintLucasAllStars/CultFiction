@@ -22,7 +22,8 @@ public class Enemy : MonoBehaviour
         running = 3,
         walking = 1,
         attack = 0,
-        none = 2
+        none = 2,
+        dead = 100
     }
     public Movement currentMovenent = Movement.running;
 
@@ -39,12 +40,13 @@ public class Enemy : MonoBehaviour
         }
         navMesh = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        currentMovenent = Movement.running;
     }
 
     // Use this for initialization
     void Spawn(Transform player, int health)
     {
-        this.player = player;
+        this.player = player; 
         playerScript = GetComponent<PlayerController>();
         navMesh = GetComponent<NavMeshAgent>();
 
@@ -52,15 +54,31 @@ public class Enemy : MonoBehaviour
 
     public void Damage(int damge)
     {
+        if(currentMovenent == Movement.dead)
+            return;
+
         health -= damge;
-        if(health < 0)
-            Destroy(gameObject);
+        if(health <= 0)
+        {
+            Debug.Log("RIP");
+            animator.Play("Death");
+            Destroy(gameObject, 10);
+            navMesh.speed = 0;
+            currentMovenent = Movement.dead;
+        }
+        else
+        {
+            animator.Play("Hit");
+        }
     }
 
 
     // Update is called once per frame
     void Update()
     {
+        if(currentMovenent == Movement.dead)
+            return;
+
         if(!canAttack && currentMovenent == Movement.walking && currentWaitTime < Time.time)
         {
             Debug.Log("Reset");

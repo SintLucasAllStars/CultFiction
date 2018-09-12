@@ -19,9 +19,12 @@ public class Rifle : Weapon
         if(!canFire)
             return;
 
+        if(ammo > 0)
+        {
+            animator.Play("Fire");
+            PlayAudioSource(fire);
+        }
         base.Fire();
-        animator.Play("Fire");
-        PlayAudioSource(fire);
     }
 
     public override void Reload()
@@ -30,6 +33,7 @@ public class Rifle : Weapon
             return;
 
         base.Reload();
+
         if(ammo > 0)
         {
             animator.Play("Reload");

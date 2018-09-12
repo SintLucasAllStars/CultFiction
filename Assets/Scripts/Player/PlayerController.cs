@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     [Header("Weapon")]
     [SerializeField] Weapon currentWeapon;
     [SerializeField] Weapon secondaryWeapon;
+    [SerializeField] Recoil recoil;
 
     [Header("Player")]
     const int maxHealth = 100;
@@ -34,7 +35,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        camera = transform.GetChild(0);
+        camera = Camera.main.gameObject.transform;
+        recoil.Setup(currentWeapon);
     }
 
     void Update()
@@ -61,12 +63,18 @@ public class PlayerController : MonoBehaviour
             if(currentWeapon.isAutomatic)
             {
                 if(Input.GetMouseButton(0))
+                {
                     currentWeapon.Fire();
+                    recoil.AddRecoil(currentWeapon.recoilTime);
+                }
             }
             else
             {
                 if(Input.GetMouseButtonDown(0))
+                {
                     currentWeapon.Fire();
+                    recoil.AddRecoil(currentWeapon.recoilTime);
+                }
             }
 
         }
@@ -150,7 +158,6 @@ public class PlayerController : MonoBehaviour
         return q;
     }
 
-
     void CheckInteraction()
     {
         RaycastHit hit;
@@ -175,6 +182,7 @@ public class PlayerController : MonoBehaviour
 
         secondaryWeapon = weapon;
         weapon.Toggle(false);
+        recoil.Setup(currentWeapon);
     }
 
 

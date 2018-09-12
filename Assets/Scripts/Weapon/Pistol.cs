@@ -17,14 +17,20 @@ public class Pistol : Weapon
 
     public override void Fire()
     {
+
         if(!canFire)
             return;
 
-        base.Fire();
-        animator.Play("Fire");
-        if(ammo <= 0)
+        if(ammo > 0)
+        {
+            animator.Play("Fire");
+            PlayAudioSource(fire);
+            base.Fire();
+        }
+        if(ammo <=0 ){
             animator.SetBool("isEmpty", true);
-        PlayAudioSource(fire);
+            base.Fire();
+        }
     }
 
     public override void Reload()
@@ -32,16 +38,18 @@ public class Pistol : Weapon
         if(ammo == maxAmmo || ammoStockPile == 0)
             return;
 
-        base.Reload();
         animator.SetBool("isEmpty", false);
         if(ammo > 0)
         {
+            Debug.Log("Reload not empty");
             animator.Play("Reload");
         }
         else if(ammoStockPile >= maxAmmo || ammoStockPile < maxAmmo)
         {
+            Debug.Log("ReloadEmpty");
             animator.Play("ReloadEmpty");
         }
+        base.Reload();
         PlayAudioSource(reload);
     }
 

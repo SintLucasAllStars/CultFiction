@@ -21,6 +21,11 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] float shootDelay;
     public bool isAutomatic = false;
 
+    [Header("Weapon Recoil")]
+    public Vector2 maxRecoil;
+    public float recoilSpeed;
+    public float recoilTime;
+
     Transform cameraTransform;
     float currentResetTime;
     protected bool canFire = true;
@@ -53,7 +58,10 @@ public abstract class Weapon : MonoBehaviour
             currentResetTime = Time.time + shootDelay;
         }
         else
+        {
+            Debug.Log("Reload");
             Reload();
+        }
     }
 
     int GetDamge(string tag)
