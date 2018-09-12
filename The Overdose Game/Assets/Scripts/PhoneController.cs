@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PhoneController : MonoBehaviour, Iinteractable
 {
     public int amountOfRings;
+    public int maxAmountOfSecondsDialog;
 
     public bool pickedUpPhone;
     public bool ringing;
@@ -13,6 +14,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
     public GameManager manager;
     public GameObject dialogBox;
     public Text dialogText;
+    public Text dialogTimer;
 
     private List<Caller> callers;
     private Caller currentCaller;
@@ -39,6 +41,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
     {
         dialogBox.SetActive(true);
         dialogText.text = currentCaller.dialog;
+        StartCoroutine(DialogCoroutine());
     }
 
     public void CloseDialog(bool accepted)
@@ -80,6 +83,11 @@ public class PhoneController : MonoBehaviour, Iinteractable
         Debug.Log("RING!");
     }
 
+    private void UpdateDialogTimer(int secondsElapsed)
+    {
+        dialogTimer.text = secondsElapsed + "/" + maxAmountOfSecondsDialog;
+    }
+
     private void GetCallers()
     {
         callers = new List<Caller>();
@@ -88,11 +96,6 @@ public class PhoneController : MonoBehaviour, Iinteractable
         {
             callers.Add(JsonUtility.FromJson<Caller>(asset.text));
         }
-    }
-
-    public void StopCoroutines()
-    {
-        StopAllCoroutines();
     }
 
     private IEnumerator PhoneCoroutine()
@@ -123,11 +126,29 @@ public class PhoneController : MonoBehaviour, Iinteractable
             timesRang++;
             Ring();
 
-            Debug.Log("test");
             yield return new WaitForSeconds(2f);
         }
 
         ringing = false;
+    }
+
+    private IEnumerator DialogCoroutine()
+    {
+        int time = 0;
+        UpdateDialogTimer(time);
+        yield return new WaitForSeconds(1f);
+
+        while (pickedUpPhone)
+        {
+            if(time >= maxAmountOfSecondsDialog)
+            {
+                CloseDialog(false);
+            }
+
+            time++;
+            UpdateDialogTimer(time);
+            yield return new WaitForSeconds(1f);
+        }
     }
 }
 

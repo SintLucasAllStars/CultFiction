@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public GameObject endScreen;
     public Text endText;
     public Text moneyIndicator;
+    public Text deniedCallersIndicator;
 
     private int _money;
     private int _clientsDenied;
@@ -34,7 +35,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _money = value;
-            moneyIndicator.text = "Your Money: " + value;
+            moneyIndicator.text = "Your Money: " + _money;
             if (_money >= requiredAmountToWin)
                 EndGame(true, "You collected enough money, nice going!");
         }
@@ -49,6 +50,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _clientsDenied = value;
+            deniedCallersIndicator.text = "Callers denied: " + _clientsDenied;
             if (_clientsDenied >= amountOfClientsToDeny)
                 EndGame(false, "You denied too many legit buyers their dope, ain't nobody buying from you anymore...");
         }
@@ -57,6 +59,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         moneyIndicator.text = "Your Money: " + 0;
+        deniedCallersIndicator.text = "Callers denied: " + 0;
         endScreen.SetActive(false);
         _gameRunning = true;
     }
