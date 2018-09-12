@@ -18,6 +18,8 @@ public class GameManager : Singleton<GameManager>
 
     private int _amountOfSyringesIn = 0;
     private bool _uiActive;
+
+    private bool _heartBeatUpgraded;
     
 
     public void GetNewSyringe()
@@ -42,6 +44,7 @@ public class GameManager : Singleton<GameManager>
     {
         PanelText.text = "You win!";
         Panel.gameObject.SetActive(true);
+        Time.timeScale = 0;
         _uiActive = true;
 
     }
@@ -50,7 +53,27 @@ public class GameManager : Singleton<GameManager>
     {
         PanelText.text = "You lose!";
         Panel.gameObject.SetActive(true);
+        Time.timeScale = 0;
         _uiActive = true;
+
+    }
+
+    public void EscapeHit()
+    {
+        if (_uiActive)
+        {
+            Panel.gameObject.SetActive(false);
+            Time.timeScale = 1;
+            _uiActive = false;
+            
+        }
+        else
+        {
+            PanelText.text = "";
+            Panel.gameObject.SetActive(true);
+            Time.timeScale = 1;
+            _uiActive = true;
+        }
 
     }
 
@@ -80,8 +103,22 @@ public class GameManager : Singleton<GameManager>
             {
                 LoseGame();
             }
+
+            if (HealthSlider.value < 30 && !_heartBeatUpgraded)
+            {
+                SoundManager.Instance.IncreaseHeartBeat();
+                _heartBeatUpgraded = true;
+            }
             
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            EscapeHit();
+        }
+
+
+
 
     }
 }

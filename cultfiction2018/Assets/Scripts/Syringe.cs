@@ -34,7 +34,13 @@ public class Syringe : MonoBehaviour
             if (other.gameObject.CompareTag("TheBody"))
             {
                 GameManager.Instance.BodyHit(other.contacts[0].point);
+                SoundManager.Instance.PlaySyringeSounds();
+                SoundManager.Instance.PlayBloodSounds();
 
+            }
+            else
+            {
+                SoundManager.Instance.PlaySyringeHitSound();
             }
            
          
