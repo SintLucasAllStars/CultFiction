@@ -6,13 +6,14 @@ using UnityEngine;
 public class RayCaster : MonoBehaviour
 {
     public Camera cam;
+    public GameManager manager;
 
     void Update ()
     {
         RaycastHit hit;
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         Debug.DrawRay(ray.origin, ray.direction * 100, Color.red);
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit) && manager.GameRunning)
         {
             if (hit.collider.gameObject.tag == "Interactable")
             {

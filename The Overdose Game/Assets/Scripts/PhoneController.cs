@@ -5,20 +5,32 @@ using UnityEngine.UI;
 
 public class PhoneController : MonoBehaviour, Iinteractable
 {
+    public AudioClip phoneRing;
+    public AudioClip phonePickup;
+    public AudioClip dialogBeep;
+    public AudioClip acceptSound;
+    public AudioClip denySound;
+    public AudioClip notPickUpSound;
+    public AudioSource phoneAudio;
+
     public int amountOfRings;
     public int maxAmountOfSecondsDialog;
     public float dialogWriteSpeed;
-
-    public bool pickedUpPhone;
-    public bool ringing;
-
+    
     public GameManager manager;
     public GameObject dialogBox;
     public Text dialogText;
     public Text dialogTimer;
 
+    private bool pickedUpPhone;
+    private bool ringing;
+
     private List<Caller> callers;
     private Caller currentCaller;
+
+    private Coroutine currentPhoneCoroutine;
+    private Coroutine currentDialogTimerCoroutine;
+    private Coroutine currentDialogWriterCoroutine;
 
 	void Start ()
     {
@@ -26,33 +38,42 @@ public class PhoneController : MonoBehaviour, Iinteractable
         ringing = false;
         dialogBox.SetActive(false);
         GetCallers();
-        StartCoroutine(PhoneCoroutine());
+        currentPhoneCoroutine = StartCoroutine(PhoneCoroutine());
 	}
 
     public void OnClick()
     {
-        Debug.Log("test");
-        if (ringing)
+        if (ringing && !pickedUpPhone)
         {
-            pickedUpPhone = true;
             OpenDialog();
         }
     }
 
     public void OpenDialog()
     {
+        phoneAudio.Stop();
+        pickedUpPhone = true;
+        phoneAudio.PlayOneShot(phonePickup);
         dialogBox.SetActive(true);
-        StartCoroutine(DialogWriterCoroutine(currentCaller.dialog));
-        StartCoroutine(DialogTimerCoroutine());
+
+        StopCoroutine(currentPhoneCoroutine);
+
+        currentDialogWriterCoroutine = StartCoroutine(DialogWriterCoroutine(currentCaller.dialog));
+        currentDialogTimerCoroutine = StartCoroutine(DialogTimerCoroutine());
     }
 
     public void CloseDialog(bool accepted)
     {
+        StopCoroutine(currentDialogWriterCoroutine);
+        StopCoroutine(currentDialogTimerCoroutine);
+
+        phoneAudio.Stop();
         pickedUpPhone = false;
         dialogBox.SetActive(false);
 
         if (accepted)
         {
+            phoneAudio.PlayOneShot(acceptSound);
             if (currentCaller.isNarc)
             {
                 manager.EndGame(false, "Sold to a narc you dummy!");
@@ -62,7 +83,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
         }
         else
         {
-            Debug.Log("denied weed");
+            phoneAudio.PlayOneShot(denySound);
             if (!currentCaller.isNarc)
             {
                 manager.ClientsDenied++;
@@ -77,12 +98,17 @@ public class PhoneController : MonoBehaviour, Iinteractable
             return;
         }
 
-        StartCoroutine(PhoneCoroutine());
+        phoneAudio.PlayOneShot(notPickUpSound);
+
+        if(manager.GameRunning)
+            currentPhoneCoroutine = StartCoroutine(PhoneCoroutine());
     }
 
     private void Ring()
     {
-        Debug.Log("RING!");
+        Debug.Log("ring");
+        phoneAudio.Stop();
+        phoneAudio.PlayOneShot(phoneRing);
     }
 
     private void UpdateDialogTimer(int secondsElapsed)
@@ -109,48 +135,33 @@ public class PhoneController : MonoBehaviour, Iinteractable
         ringing = true;
 
         // start ringing phone, user has a chance to pick up phone for the duration of this loop
-        int timesRang = 0;
-        while(!pickedUpPhone)
+        for (int timesRang = 0; timesRang < amountOfRings; timesRang++)
         {
-            // if user did not pick up the phone, denied client will be added to manager and coroutine will be called again
-            if (timesRang >= amountOfRings)
-            {
-                ringing = false;
-                manager.ClientsDenied++;
-                Debug.Log("Didn't pick up phone");
-
-                if(manager.GameRunning)
-                    StartCoroutine(PhoneCoroutine());
-
-                yield break;
-            }
-
-            timesRang++;
             Ring();
-
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(4f);
         }
 
         ringing = false;
+        phoneAudio.PlayOneShot(notPickUpSound);
+        manager.ClientsDenied++;
+        Debug.Log("Didn't pick up phone");
+
+        if (manager.GameRunning)
+            currentPhoneCoroutine = StartCoroutine(PhoneCoroutine());
     }
 
     private IEnumerator DialogTimerCoroutine()
     {
-        int time = 0;
-        UpdateDialogTimer(time);
+        UpdateDialogTimer(0);
         yield return new WaitForSeconds(1f);
 
-        while (pickedUpPhone)
+        for (int time = 0; time < maxAmountOfSecondsDialog; time++)
         {
-            if(time >= maxAmountOfSecondsDialog)
-            {
-                CloseDialog(false);
-            }
-
-            time++;
-            UpdateDialogTimer(time);
+            UpdateDialogTimer(time + 1);
             yield return new WaitForSeconds(1f);
         }
+
+        CloseDialog(false);
     }
 
     private IEnumerator DialogWriterCoroutine(string dialog)
@@ -158,6 +169,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
         dialogText.text = "";
         for(int i = 0; i < dialog.Length; i++)
         {
+            phoneAudio.PlayOneShot(dialogBeep);
             dialogText.text += dialog[i];
             yield return new WaitForSeconds(dialogWriteSpeed);
         }

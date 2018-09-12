@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
 
     public void EndGame(bool endstate, string screenMessage)
     {
+        Time.timeScale = 0;
         endScreen.SetActive(true);
         _gameRunning = false;
         endText.text = (endstate ? "You've won!\n" : "You've lost\n") + screenMessage;
