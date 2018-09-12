@@ -7,6 +7,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
 {
     public int amountOfRings;
     public int maxAmountOfSecondsDialog;
+    public float dialogWriteSpeed;
 
     public bool pickedUpPhone;
     public bool ringing;
@@ -30,6 +31,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
 
     public void OnClick()
     {
+        Debug.Log("test");
         if (ringing)
         {
             pickedUpPhone = true;
@@ -40,8 +42,8 @@ public class PhoneController : MonoBehaviour, Iinteractable
     public void OpenDialog()
     {
         dialogBox.SetActive(true);
-        dialogText.text = currentCaller.dialog;
-        StartCoroutine(DialogCoroutine());
+        StartCoroutine(DialogWriterCoroutine(currentCaller.dialog));
+        StartCoroutine(DialogTimerCoroutine());
     }
 
     public void CloseDialog(bool accepted)
@@ -132,7 +134,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
         ringing = false;
     }
 
-    private IEnumerator DialogCoroutine()
+    private IEnumerator DialogTimerCoroutine()
     {
         int time = 0;
         UpdateDialogTimer(time);
@@ -148,6 +150,16 @@ public class PhoneController : MonoBehaviour, Iinteractable
             time++;
             UpdateDialogTimer(time);
             yield return new WaitForSeconds(1f);
+        }
+    }
+
+    private IEnumerator DialogWriterCoroutine(string dialog)
+    {
+        dialogText.text = "";
+        for(int i = 0; i < dialog.Length; i++)
+        {
+            dialogText.text += dialog[i];
+            yield return new WaitForSeconds(dialogWriteSpeed);
         }
     }
 }

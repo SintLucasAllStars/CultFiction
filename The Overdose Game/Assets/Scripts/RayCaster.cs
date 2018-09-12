@@ -5,12 +5,7 @@ using UnityEngine;
 
 public class RayCaster : MonoBehaviour
 {
-    private Camera cam;
-
-    void Start()
-    {
-        cam = Camera.main;
-    }
+    public Camera cam;
 
     void Update ()
     {
@@ -21,12 +16,13 @@ public class RayCaster : MonoBehaviour
         {
             if (hit.collider.gameObject.tag == "Interactable")
             {
-                if (Input.GetKey(KeyCode.Mouse0))
+                if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
                     hit.collider.GetComponent<Iinteractable>().OnClick();
                 }
             }
 
         }
+
 	}
 }
