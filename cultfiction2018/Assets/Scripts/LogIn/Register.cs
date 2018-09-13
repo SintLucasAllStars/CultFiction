@@ -11,6 +11,8 @@ public class Register : MonoBehaviour
 
     public Button SubmitButton;
 
+    public Text ErrorText;
+
     public void CallRegister()
     {
         StartCoroutine(IERegister());
@@ -31,8 +33,9 @@ public class Register : MonoBehaviour
         else
         {
             Debug.Log("User creation failed Error#" + www.text);
+            ErrorText.text = DBerrorhandeling.TranslateError(www.text);
         }
-        
+
     }
 
     public void VerifyInput()
