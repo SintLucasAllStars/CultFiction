@@ -16,7 +16,8 @@ public class PhoneController : MonoBehaviour, Iinteractable
     public int amountOfRings;
     public int maxAmountOfSecondsDialog;
     public float dialogWriteSpeed;
-    
+
+    public JointController textManipulator;
     public GameManager manager;
     public GameObject dialogBox;
     public Text dialogText;
@@ -24,7 +25,6 @@ public class PhoneController : MonoBehaviour, Iinteractable
 
     private bool pickedUpPhone;
     private bool ringing;
-
     private List<Caller> callers;
     private Caller currentCaller;
 
@@ -51,14 +51,16 @@ public class PhoneController : MonoBehaviour, Iinteractable
 
     public void OpenDialog()
     {
+        StopCoroutine(currentPhoneCoroutine);
         phoneAudio.Stop();
+        ringing = false;
         pickedUpPhone = true;
         phoneAudio.PlayOneShot(phonePickup);
         dialogBox.SetActive(true);
 
-        StopCoroutine(currentPhoneCoroutine);
+        string dialog = textManipulator.Active ? textManipulator.ScrambleText(currentCaller.dialog) : currentCaller.dialog;
 
-        currentDialogWriterCoroutine = StartCoroutine(DialogWriterCoroutine(currentCaller.dialog));
+        currentDialogWriterCoroutine = StartCoroutine(DialogWriterCoroutine(dialog));
         currentDialogTimerCoroutine = StartCoroutine(DialogTimerCoroutine());
     }
 
@@ -106,7 +108,6 @@ public class PhoneController : MonoBehaviour, Iinteractable
 
     private void Ring()
     {
-        Debug.Log("ring");
         phoneAudio.Stop();
         phoneAudio.PlayOneShot(phoneRing);
     }
@@ -129,12 +130,10 @@ public class PhoneController : MonoBehaviour, Iinteractable
     private IEnumerator PhoneCoroutine()
     {
         currentCaller = callers[Random.Range(0, callers.Count)];
-
         yield return new WaitForSeconds(3f);
 
         ringing = true;
 
-        // start ringing phone, user has a chance to pick up phone for the duration of this loop
         for (int timesRang = 0; timesRang < amountOfRings; timesRang++)
         {
             Ring();
@@ -144,7 +143,6 @@ public class PhoneController : MonoBehaviour, Iinteractable
         ringing = false;
         phoneAudio.PlayOneShot(notPickUpSound);
         manager.ClientsDenied++;
-        Debug.Log("Didn't pick up phone");
 
         if (manager.GameRunning)
             currentPhoneCoroutine = StartCoroutine(PhoneCoroutine());

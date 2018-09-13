@@ -6526,7 +6526,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1239083172}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0e790c7f07b2c2f4299e72fb618bee08, type: 3}
   m_Name: 
@@ -6541,6 +6541,7 @@ MonoBehaviour:
   amountOfRings: 3
   maxAmountOfSecondsDialog: 6
   dialogWriteSpeed: 0.025
+  textManipulator: {fileID: 1893210850}
   manager: {fileID: 1368332652}
   dialogBox: {fileID: 1995536052}
   dialogText: {fileID: 2131261281}
@@ -8271,6 +8272,7 @@ GameObject:
   - component: {fileID: 1893210849}
   - component: {fileID: 1893210848}
   - component: {fileID: 1893210847}
+  - component: {fileID: 1893210850}
   m_Layer: 0
   m_Name: Joint
   m_TagString: Untagged
@@ -8340,6 +8342,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: -15.000001, y: -210, z: 0}
+--- !u!114 &1893210850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1893210846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99035a97534a5e141ba91ab0458b6b2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1939973257
 GameObject:
   m_ObjectHideFlags: 0
