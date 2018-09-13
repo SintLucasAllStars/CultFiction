@@ -103,6 +103,18 @@ public class PlayerController : MonoBehaviour
             weaponUI.UpdateAmmo(currentWeapon.ammo, currentWeapon.ammoStockPile);
         }
 
+        if(Input.GetMouseButtonDown(1))
+        {
+            currentWeapon.Aim(true);
+        }
+
+        if(Input.GetMouseButtonUp(1))
+        {
+            Debug.Log("Up");
+            currentWeapon.Aim(false);
+        }
+
+
         float scrollWheel = Input.GetAxis("Mouse ScrollWheel"); ;
         if(scrollWheel > 0 || scrollWheel < 0)
         {
@@ -121,7 +133,7 @@ public class PlayerController : MonoBehaviour
         isRegen = false;
         currentTimeTillRegen = Time.time + regenDelay;
 
-        weaponUI.SetNewHealth(currentHeatlh , maxHealth);
+        weaponUI.SetNewHealth(currentHeatlh, maxHealth);
     }
 
 

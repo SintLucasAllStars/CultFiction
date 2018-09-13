@@ -5,8 +5,7 @@ using System.Collections;
 public class WeaponUI : MonoBehaviour
 {
     [Header("Player Info")]
-    [SerializeField]
-    Text ammoText;
+    [SerializeField] Text ammoText;
     [SerializeField] Text gunText;
     [SerializeField] Text score;
 

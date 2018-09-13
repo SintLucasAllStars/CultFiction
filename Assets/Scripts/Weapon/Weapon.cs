@@ -4,7 +4,8 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
     [Header("Visual")]
-    [SerializeField] Muzzle muzzleFlash;
+    [SerializeField]
+    Muzzle muzzleFlash;
 
     [Header("Weapon Settings")]
     public int ammo;
@@ -15,7 +16,8 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] protected float fireDistance = 1000;
 
     [Header("Weapon Damage")]
-    [SerializeField] int defaultDamage;
+    [SerializeField]
+    int defaultDamage;
     [SerializeField] int headShotDamage;
     [SerializeField] int armLegDamage;
     [SerializeField] float shootDelay;
@@ -26,9 +28,28 @@ public abstract class Weapon : MonoBehaviour
     public float recoilSpeed;
     public float recoilTime;
 
+    [Header("Aim Settings")]
+    [SerializeField] Vector3 aimPosition;
+    [SerializeField] Vector3 aimRotation;
+    [SerializeField] float fieldOfView;
+
+    public bool isAimedDown;
+
+    Quaternion defaultRotation;
+    Vector3 defaultPosition;
+    float fieldOfViewDefault;
+
     Transform cameraTransform;
     float currentResetTime;
     protected bool canFire = true;
+
+    public void Awake()
+    {
+        Debug.Log("Set");
+        fieldOfViewDefault = Camera.main.fieldOfView;
+        defaultPosition = transform.localPosition;
+        defaultRotation = transform.localRotation;
+    }
 
     private void Update()
     {
@@ -126,6 +147,14 @@ public abstract class Weapon : MonoBehaviour
             Debug.Log("Out of Ammo");
             return;
         }
+    }
+
+    public virtual void Aim(bool aimDownSight)
+    {
+        isAimedDown = aimDownSight;
+        Camera.main.fieldOfView = (aimDownSight) ? fieldOfView: fieldOfViewDefault;
+        transform.localPosition = (aimDownSight) ? aimPosition : defaultPosition;
+        transform.localRotation = (aimDownSight) ? Quaternion.Euler(aimRotation) : defaultRotation;
     }
 
     protected void PlayAudioSource(AudioSource audioSource)

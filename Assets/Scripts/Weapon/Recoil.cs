@@ -12,6 +12,8 @@ public class Recoil : MonoBehaviour
 
     Quaternion zero = Quaternion.Euler(0, 0, 0);
 
+    Quaternion startpoint;
+
     // Use this for initialization
     public void Setup(Weapon currentWeapon)
     {
@@ -19,6 +21,18 @@ public class Recoil : MonoBehaviour
         speed = currentWeapon.recoilSpeed;
 
     }
+
+    public void StartRecoil()
+    {
+        startpoint = Quaternion.identity;
+    }
+
+    public void EndRecoil()
+    {
+        //kogels bijhouden
+        //
+    }
+
 
     public void AddRecoil(float time)
     {
@@ -53,7 +67,7 @@ public class Recoil : MonoBehaviour
         }
         else if(Quaternion.identity != zero)
         {
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.identity, Time.deltaTime * speed / 2);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation , Quaternion.identity, Time.deltaTime * speed / 2);
         }
     }
 }

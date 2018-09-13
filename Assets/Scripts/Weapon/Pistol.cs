@@ -13,11 +13,11 @@ public class Pistol : Weapon
     private void Start()
     {
         animator = GetComponent<Animator>();
+
     }
 
     public override void Fire()
     {
-
         if(!canFire)
             return;
 
@@ -27,7 +27,8 @@ public class Pistol : Weapon
             PlayAudioSource(fire);
             base.Fire();
         }
-        if(ammo <=0 ){
+        if(ammo <= 0)
+        {
             animator.SetBool("isEmpty", true);
             base.Fire();
         }
