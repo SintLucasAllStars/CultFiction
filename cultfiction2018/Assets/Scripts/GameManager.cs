@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using LogIn;
 using Tools;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -25,6 +26,7 @@ public class GameManager : Singleton<GameManager>
     public void GetNewSyringe()
     {
         Instantiate(SyringePrefab, PlayerController.transform);
+        AddSyringeCount();
     }
 
     public void BodyHit(Vector3 spawnPosition)
@@ -82,15 +84,48 @@ public class GameManager : Singleton<GameManager>
         return _uiActive;
     }
 
+    public void AddSyringeCount()
+    {
+        DBmanager.Score++;
+    }
+
     public void Restart()
     {
-        SceneManager.LoadScene("MainScene");
+        CallSaveData("MainScene");
+      
     }
     
 
     public void BackToMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        CallSaveData("MainMenu");
+       
+    }
+
+    public void CallSaveData(string sceneName)
+    {
+        StartCoroutine(IESavePlayerData(sceneName));
+    }
+
+    private IEnumerator IESavePlayerData(string sceneName)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("username", DBmanager.Username);
+        form.AddField("score", DBmanager.Score);
+        
+        WWW www = new WWW("http://localhost/sqlconnect/savedata.php", form);
+        yield return www;
+        if (www.text == "0")
+        {
+            Debug.Log("Game Saved.");
+        }
+        else
+        {
+            Debug.Log("Save failed. Error #" + www.text);
+        }
+        
+        DBmanager.LogOut();
+        SceneManager.LoadScene(sceneName);
     }
     
 

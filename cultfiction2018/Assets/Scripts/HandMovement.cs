@@ -124,7 +124,6 @@ public class HandMovement : MonoBehaviour
 
 
         float xSin = Mathf.Sin(_randomSinX * Drunkness) * Time.deltaTime;
-        Debug.Log(xSin);
         float zCos = Mathf.Sin(_randomsSinY * Drunkness) * Time.deltaTime;
         transform.position = transform.position + new Vector3(xSin, 0, zCos);
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace LogIn
@@ -10,6 +11,9 @@ namespace LogIn
         public InputField PasswordField;
 
         public Button SubmitButton;
+        
+
+
     
         public void CallLogin()
         {
@@ -27,6 +31,7 @@ namespace LogIn
             {
                 DBmanager.Username = UserNameField.text;
                 DBmanager.Score = int.Parse(www.text.Split('\t')[1]);
+                SceneManager.LoadScene("MainMenu");
             }
             else
             {
