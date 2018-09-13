@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour
     // Use this for initialization
     void Spawn(Transform player, int health)
     {
-        this.player = player; 
+        this.player = player;
         playerScript = GetComponent<PlayerController>();
         navMesh = GetComponent<NavMeshAgent>();
 
@@ -65,6 +65,7 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject, 10);
             navMesh.speed = 0;
             currentMovenent = Movement.dead;
+            Gamemanager.instance.EnemyDied();
         }
         else
         {
@@ -81,21 +82,18 @@ public class Enemy : MonoBehaviour
 
         if(!canAttack && currentMovenent == Movement.walking && currentWaitTime < Time.time)
         {
-            Debug.Log("Reset");
             canAttack = true;
             if(Vector3.Distance(transform.position, player.position) <= minDistance)
             {
-                Debug.Log("Close");
                 SetMovementSpeed(Movement.none);
             }
             else
             {
-                Debug.Log("Far Away");
                 SetMovementSpeed(Movement.running);
             }
         }
 
-        if(Vector3.Distance(transform.position, player.position) <= minDistance)
+        if(CheckDistance())
         {
             if(canAttack)
             {
@@ -121,13 +119,24 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Attack()
     {
-        Debug.Log("Attack");
         SetMovementSpeed(Movement.attack);
         animator.Play("Attack" + (int)Random.Range(0, 2));
+
+        const float attackLength = 0.08f;
+        float lengthAnimation = animator.GetCurrentAnimatorStateInfo(0).length - attackLength;
+       
         SetAnimationByMovement(Movement.none);
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+
+        transform.LookAt(player);
+        
+        yield return new WaitForSeconds(attackLength);
+
+        if(CheckDistance())
+            playerScript.Damage(30);
+
+        yield return new WaitForSeconds(lengthAnimation);
+
         SetMovementSpeed(Movement.walking);
-        playerScript.Damage(50);
 
         currentWaitTime = Time.time + attackDelay;
     }
@@ -142,13 +151,18 @@ public class Enemy : MonoBehaviour
 
     void SetAnimationByMovement()
     {
-        if(currentMovenent != Movement.attack)
+        if(currentMovenent != Movement.attack && currentMovenent != Movement.dead)
             animator.SetInteger("Movement", (int)currentMovenent);
     }
 
     void SetAnimationByMovement(Movement movement)
     {
-        if(movement != Movement.attack)
+        if(movement != Movement.attack && movement != Movement.dead)
             animator.SetInteger("Movement", (int)movement);
+    }
+
+    bool CheckDistance()
+    {
+        return Vector3.Distance(transform.position, player.position) <= minDistance;
     }
 }

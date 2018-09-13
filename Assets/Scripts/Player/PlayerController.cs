@@ -1,11 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
     //Movement
     [Header("Movement")]
-    [SerializeField] float walkSpeed;
+    [SerializeField]
+    float walkSpeed;
     [SerializeField] float runSpeed;
     [SerializeField] float jumpSpeed;
 
@@ -14,19 +17,26 @@ public class PlayerController : MonoBehaviour
 
     //Mouse
     [Header("Mouse")]
-    [SerializeField] Vector2 sensitivity;
+    [SerializeField]
+    Vector2 sensitivity;
     [SerializeField] Vector2 clamp;
     [SerializeField] float range = 5;
 
     //Weapon
     [Header("Weapon")]
-    [SerializeField] Weapon currentWeapon;
+    [SerializeField]
+    Weapon currentWeapon;
     [SerializeField] Weapon secondaryWeapon;
     [SerializeField] Recoil recoil;
+    [SerializeField] WeaponUI weaponUI;
 
     [Header("Player")]
-    const int maxHealth = 100;
-    int health = 100;
+    const float maxHealth = 100f;
+    float currentHeatlh = maxHealth;
+    [SerializeField] float regenDelay;
+    [SerializeField] float regenSpeed;
+    float currentTimeTillRegen;
+    bool isRegen = false;
 
     bool lockMouse = true;
     new Transform camera;
@@ -37,12 +47,18 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         camera = Camera.main.gameObject.transform;
         recoil.Setup(currentWeapon);
+        weaponUI.UpdateWeapon(currentWeapon);
     }
 
     void Update()
     {
         MouseRotation();
         CheckInteraction();
+
+        if(currentHeatlh < maxHealth && !isRegen)
+        {
+            CheckRegen();
+        }
     }
 
     // Update is called once per frame
@@ -50,9 +66,8 @@ public class PlayerController : MonoBehaviour
     {
         float speed = (!Input.GetKey(KeyCode.LeftShift)) ? walkSpeed : runSpeed;
 
-        float horizontal = Input.GetAxis("Horizontal") * speed;
-        float vertical = Input.GetAxis("Vertical") * speed;
-        transform.position += (transform.forward * vertical + transform.right * horizontal) * Time.deltaTime;
+        Vector2 axis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * speed;
+        transform.position += (transform.forward * axis.y + transform.right * axis.x) * Time.deltaTime;
 
         if(!grounded)
             IsGrounded();
@@ -65,7 +80,8 @@ public class PlayerController : MonoBehaviour
                 if(Input.GetMouseButton(0))
                 {
                     currentWeapon.Fire();
-                    recoil.AddRecoil(currentWeapon.recoilTime);
+                    weaponUI.UpdateAmmo(currentWeapon.ammo, currentWeapon.ammoStockPile);
+                    //recoil.AddRecoil(currentWeapon.recoilTime);
                 }
             }
             else
@@ -73,7 +89,8 @@ public class PlayerController : MonoBehaviour
                 if(Input.GetMouseButtonDown(0))
                 {
                     currentWeapon.Fire();
-                    recoil.AddRecoil(currentWeapon.recoilTime);
+                    weaponUI.UpdateAmmo(currentWeapon.ammo, currentWeapon.ammoStockPile);
+                    //recoil.AddRecoil(currentWeapon.recoilTime);
                 }
             }
 
@@ -82,19 +99,29 @@ public class PlayerController : MonoBehaviour
         {
             if(currentWeapon != null)
                 currentWeapon.Reload();
+
+            weaponUI.UpdateAmmo(currentWeapon.ammo, currentWeapon.ammoStockPile);
         }
+
         float scrollWheel = Input.GetAxis("Mouse ScrollWheel"); ;
-        if(scrollWheel > 0|| scrollWheel < 0)
+        if(scrollWheel > 0 || scrollWheel < 0)
         {
             SwapWeapon();
         }
     }
 
-    public void Damage(int amount)
+    public void Damage(float damage)
     {
-        health -= amount;
-        if(health <= 0)
-            Debug.Log("Dead");
+        currentHeatlh -= damage;
+        if(currentHeatlh < 0)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        Debug.Log(currentHeatlh);
+
+        isRegen = false;
+        currentTimeTillRegen = Time.time + regenDelay;
+
+        weaponUI.SetNewHealth(currentHeatlh , maxHealth);
     }
 
 
@@ -109,7 +136,6 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-        Debug.Log("Jump");
         grounded = false;
         rb.AddForce(transform.up * jumpSpeed, ForceMode.VelocityChange);
     }
@@ -120,11 +146,10 @@ public class PlayerController : MonoBehaviour
         if(!lockMouse)
             return;
 
-        float xRotation = Input.GetAxis("Mouse Y") * sensitivity.x;
-        float yRotation = Input.GetAxis("Mouse X") * sensitivity.y;
+        Vector2 rotation = new Vector2(Input.GetAxis("Mouse Y") * sensitivity.x, Input.GetAxis("Mouse X") * sensitivity.y);
 
-        transform.localRotation *= Quaternion.Euler(0, yRotation, 0);
-        camera.localRotation *= Quaternion.Euler(-xRotation, 0, 0);
+        transform.localRotation *= Quaternion.Euler(0, rotation.y, 0);
+        camera.localRotation *= Quaternion.Euler(-rotation.x, 0, 0);
         camera.localRotation = ClampRotationAroundXAxis(camera.localRotation);
     }
 
@@ -183,6 +208,28 @@ public class PlayerController : MonoBehaviour
         secondaryWeapon = weapon;
         weapon.Toggle(false);
         recoil.Setup(currentWeapon);
+        weaponUI.UpdateWeapon(currentWeapon);
+
+    }
+
+    void CheckRegen()
+    {
+        if(Time.time > currentTimeTillRegen)
+        {
+            StartCoroutine(RegenToFullHealth());
+            Debug.Log("Regen");
+        }
+    }
+
+    IEnumerator RegenToFullHealth()
+    {
+        isRegen = true;
+        while(currentHeatlh < maxHealth)
+        {
+            currentHeatlh = Mathf.Clamp(currentHeatlh + Time.deltaTime / regenSpeed, 0, maxHealth);
+            weaponUI.SetNewHealth(currentHeatlh, maxHealth);
+            yield return new WaitForEndOfFrame();
+        }
     }
 
 

@@ -53,7 +53,7 @@ public class Recoil : MonoBehaviour
         }
         else if(Quaternion.identity != zero)
         {
-            transform.localRotation = Quaternion.Slerp(zero, Quaternion.identity, Time.deltaTime * speed / 2);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.identity, Time.deltaTime * speed / 2);
         }
     }
 }

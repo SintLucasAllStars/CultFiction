@@ -56,8 +56,11 @@ public class Pistol : Weapon
     public override void Toggle(bool active)
     {
         base.Toggle(active);
-        if(animator == null)
-            animator = GetComponent<Animator>();
-        animator.Play("Wield");
+        if(active)
+        {
+            if(animator == null)
+                animator = GetComponent<Animator>();
+            animator.Play("Wield");
+        }
     }
 }

@@ -7,9 +7,9 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] Muzzle muzzleFlash;
 
     [Header("Weapon Settings")]
-    [SerializeField] protected int ammo;
+    public int ammo;
     [SerializeField] protected int maxAmmo;
-    [SerializeField] protected int ammoStockPile;
+    public int ammoStockPile;
     [SerializeField] protected float reloadTime;
 
     [SerializeField] protected float fireDistance = 1000;
@@ -38,7 +38,6 @@ public abstract class Weapon : MonoBehaviour
 
     public virtual void Fire()
     {
-        Debug.Log("Fire");
         if(!canFire)
             return;
 
@@ -69,14 +68,11 @@ public abstract class Weapon : MonoBehaviour
         switch(tag)
         {
             case "Head":
-                Debug.Log("Boom Headshot");
                 return headShotDamage;
             case "Body":
-                Debug.Log("Body Damage");
                 return defaultDamage;
             case "Arm":
             case "Leg":
-                Debug.Log("I once was an adventurer like you but then I took a bullet to the leg or arm");
                 return armLegDamage;
         }
 
@@ -111,10 +107,11 @@ public abstract class Weapon : MonoBehaviour
 
         if(ammo > 0)
         {
-            ammo = maxAmmo;
             ammoStockPile -= maxAmmo - ammo;
+            Debug.Log("reloaded" + " " + (maxAmmo - ammo).ToString());
+            ammo = maxAmmo;
         }
-        if(ammoStockPile >= maxAmmo)
+        else if(ammoStockPile >= maxAmmo)
         {
             ammo = maxAmmo;
             ammoStockPile -= maxAmmo;
