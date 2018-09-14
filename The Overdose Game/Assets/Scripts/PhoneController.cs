@@ -17,7 +17,8 @@ public class PhoneController : MonoBehaviour, Iinteractable
     public int maxAmountOfSecondsDialog;
     public float dialogWriteSpeed;
 
-    // cached version of unaltered dialog for use of external text scramblers to make sure text wont get overscrambled
+    // cached version of unaltered dialog for use of external text scramblers to make sure
+    // they don't scramble already scrambled text
     public string unalteredCurrentDialog;
     public string currentDialog;
     public bool scrambledText;
@@ -96,7 +97,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
                 manager.EndGame(false, "Sold to a narc you dummy!");
                 return;
             }
-            manager.Money += currentCaller.payment;
+            manager.Money += Mathf.CeilToInt(currentCaller.payment);
         }
         else
         {
@@ -145,7 +146,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
     private IEnumerator PhoneCoroutine()
     {
         currentCaller = callers[Random.Range(0, callers.Count)];
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(6f);
 
         ringing = true;
 

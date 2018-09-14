@@ -12,10 +12,14 @@ public class GameManager : MonoBehaviour
     public GameObject endScreen;
     public Text endText;
     public Text moneyIndicator;
+    public Text moneyMultiplierIndicator;
     public Text deniedCallersIndicator;
+    public Text highLevelText;
 
     private int _money;
+    private float _moneyMultiplier;
     private int _clientsDenied;
+    private int _highLevel;
     private bool _gameRunning;
 
     public bool GameRunning
@@ -34,10 +38,23 @@ public class GameManager : MonoBehaviour
         }
         set
         {
-            _money = value;
+            _money = Mathf.CeilToInt(value * _moneyMultiplier);
             moneyIndicator.text = "Your Money: " + _money;
             if (_money >= requiredAmountToWin)
                 EndGame(true, "You collected enough money, nice going!");
+        }
+    }
+
+    public float MoneyMultiplier
+    {
+        get
+        {
+            return _moneyMultiplier;
+        }
+        set
+        {
+            _moneyMultiplier = 1 + (0.5f * value);
+            moneyMultiplierIndicator.text = "Multiplier: X" + (_moneyMultiplier - 1);
         }
     }
 
@@ -56,10 +73,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public int HighLevel
+    {
+        get
+        {
+            return _highLevel;
+        }
+        set
+        {
+            _highLevel = value;
+            highLevelText.text = "Highness level: " + _highLevel;
+        }
+    }
+
     void Start()
     {
         moneyIndicator.text = "Your Money: " + 0;
+        moneyMultiplierIndicator.text = "Multiplier: X" + 0;
         deniedCallersIndicator.text = "Callers denied: " + 0;
+        highLevelText.text = "Highness level: " + 0;
         endScreen.SetActive(false);
         _gameRunning = true;
     }

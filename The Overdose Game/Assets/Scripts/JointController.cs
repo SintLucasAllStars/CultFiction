@@ -6,12 +6,11 @@ using UnityEngine.UI;
 
 public class JointController : MonoBehaviour, Iinteractable
 {
+    public GameManager manager;
     public PhoneController phone;
-    public Text highText;
     public int maxLevel;
 
-    public bool _active;
-    private int _level;
+    private bool _active;
     private Coroutine currentTimerCoroutine;
     private Coroutine currentHitCoroutine;
 
@@ -26,13 +25,12 @@ public class JointController : MonoBehaviour, Iinteractable
 	void Start ()
     {
         _active = false;
-        _level = 0;
-        highText.text = "highness level: " + _level;
+        manager.HighLevel = 0;
 	}
 
     public void OnClick()
     {
-        if (_level < maxLevel)
+        if (manager.HighLevel < maxLevel)
             Hit();
     }
 
@@ -43,8 +41,8 @@ public class JointController : MonoBehaviour, Iinteractable
             phone.currentDialog = ScrambleText(phone.unalteredCurrentDialog);
         }
 
-        _level += 1;
-        highText.text = "highness level: " + _level;
+        manager.HighLevel++;
+        manager.MoneyMultiplier = manager.HighLevel;
         if(currentTimerCoroutine != null)
             StopCoroutine(currentTimerCoroutine);
 
@@ -54,10 +52,7 @@ public class JointController : MonoBehaviour, Iinteractable
     public string ScrambleText(string input)
     {
         string[] words = input.Split(' ');
-        int numberToScramble = Mathf.CeilToInt((float)words.Length / (7 + (_level - 0) * (0 - 6) / (6 - 0)));
-
-        Debug.Log(numberToScramble + " words will be scrambled");
-
+        int numberToScramble = Mathf.CeilToInt((float)words.Length / (7 + (manager.HighLevel - 0) * (0 - 6) / (6 - 0)));
         List<int> indexesToScramble = new List<int>();
 
         for(int i = 0; i < numberToScramble; i++)
@@ -97,15 +92,15 @@ public class JointController : MonoBehaviour, Iinteractable
     {
         _active = true;
 
-        yield return new WaitForSeconds(3f);
-        if(_level > 0)
+        yield return new WaitForSeconds(6f);
+        if(manager.HighLevel > 0)
         {
-            _level--;
+            manager.HighLevel--;
+            manager.MoneyMultiplier = manager.HighLevel;
             currentTimerCoroutine = StartCoroutine(TimerCoroutine());
         }
-        highText.text = "highness level: " + _level;
 
-        if (_level <= 0)
+        if (manager.HighLevel <= 0)
             _active = false;
     }
 }
