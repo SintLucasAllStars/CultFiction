@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class JointController : MonoBehaviour, Iinteractable
 {
+    public PhoneController phone;
     public Text highText;
     public int maxLevel;
 
@@ -37,7 +38,11 @@ public class JointController : MonoBehaviour, Iinteractable
 
     private void Hit()
     {
-        Debug.Log("test");
+        if (phone.PickedUpPhone)
+        {
+            phone.currentDialog = ScrambleText(phone.unalteredCurrentDialog);
+        }
+
         _level += 1;
         highText.text = "highness level: " + _level;
         if(currentTimerCoroutine != null)
@@ -46,14 +51,13 @@ public class JointController : MonoBehaviour, Iinteractable
         currentTimerCoroutine = StartCoroutine(TimerCoroutine());
     }
 
-
-    //must work when scrolling through dialog
-    //must work when dialog is fully shown
-    //must work before/after showing dialog
     public string ScrambleText(string input)
     {
         string[] words = input.Split(' ');
-        int numberToScramble = words.Length / 2;
+        int numberToScramble = Mathf.CeilToInt((float)words.Length / (7 + (_level - 0) * (0 - 6) / (6 - 0)));
+
+        Debug.Log(numberToScramble + " words will be scrambled");
+
         List<int> indexesToScramble = new List<int>();
 
         for(int i = 0; i < numberToScramble; i++)

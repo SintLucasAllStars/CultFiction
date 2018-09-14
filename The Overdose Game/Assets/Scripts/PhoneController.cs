@@ -17,6 +17,11 @@ public class PhoneController : MonoBehaviour, Iinteractable
     public int maxAmountOfSecondsDialog;
     public float dialogWriteSpeed;
 
+    // cached version of unaltered dialog for use of external text scramblers to make sure text wont get overscrambled
+    public string unalteredCurrentDialog;
+    public string currentDialog;
+    public bool scrambledText;
+
     public JointController textManipulator;
     public GameManager manager;
     public GameObject dialogBox;
@@ -32,8 +37,17 @@ public class PhoneController : MonoBehaviour, Iinteractable
     private Coroutine currentDialogTimerCoroutine;
     private Coroutine currentDialogWriterCoroutine;
 
+    public bool PickedUpPhone
+    {
+        get
+        {
+            return pickedUpPhone;
+        }
+    }
+
 	void Start ()
     {
+        scrambledText = false;
         pickedUpPhone = false;
         ringing = false;
         dialogBox.SetActive(false);
@@ -58,9 +72,10 @@ public class PhoneController : MonoBehaviour, Iinteractable
         phoneAudio.PlayOneShot(phonePickup);
         dialogBox.SetActive(true);
 
-        string dialog = textManipulator.Active ? textManipulator.ScrambleText(currentCaller.dialog) : currentCaller.dialog;
+        unalteredCurrentDialog = currentCaller.dialog;
+        currentDialog = textManipulator.Active ? textManipulator.ScrambleText(unalteredCurrentDialog) : unalteredCurrentDialog;
 
-        currentDialogWriterCoroutine = StartCoroutine(DialogWriterCoroutine(dialog));
+        currentDialogWriterCoroutine = StartCoroutine(DialogWriterCoroutine());
         currentDialogTimerCoroutine = StartCoroutine(DialogTimerCoroutine());
     }
 
@@ -162,13 +177,13 @@ public class PhoneController : MonoBehaviour, Iinteractable
         CloseDialog(false);
     }
 
-    private IEnumerator DialogWriterCoroutine(string dialog)
+    private IEnumerator DialogWriterCoroutine()
     {
         dialogText.text = "";
-        for(int i = 0; i < dialog.Length; i++)
+        for(int i = 0; i < currentDialog.Length; i++)
         {
             phoneAudio.PlayOneShot(dialogBeep);
-            dialogText.text += dialog[i];
+            dialogText.text += currentDialog[i];
             yield return new WaitForSeconds(dialogWriteSpeed);
         }
     }
