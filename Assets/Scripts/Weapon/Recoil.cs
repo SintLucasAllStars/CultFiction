@@ -12,7 +12,6 @@ public class Recoil : MonoBehaviour
 
     Quaternion zero = Quaternion.Euler(0, 0, 0);
 
-    Quaternion startpoint;
 
     // Use this for initialization
     public void Setup(Weapon currentWeapon)
@@ -24,7 +23,6 @@ public class Recoil : MonoBehaviour
 
     public void StartRecoil()
     {
-        startpoint = Quaternion.identity;
     }
 
     public void EndRecoil()

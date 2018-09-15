@@ -11,6 +11,7 @@ public abstract class Weapon : MonoBehaviour
     public int ammo;
     [SerializeField] protected int maxAmmo;
     public int ammoStockPile;
+    int maxAmmoStockPile;
     [SerializeField] protected float reloadTime;
 
     [SerializeField] protected float fireDistance = 1000;
@@ -49,6 +50,8 @@ public abstract class Weapon : MonoBehaviour
         fieldOfViewDefault = Camera.main.fieldOfView;
         defaultPosition = transform.localPosition;
         defaultRotation = transform.localRotation;
+
+        maxAmmoStockPile = ammoStockPile;
     }
 
     private void Update()
@@ -123,6 +126,8 @@ public abstract class Weapon : MonoBehaviour
         if(ammo == maxAmmo || ammoStockPile == 0)
             return;
 
+        Aim(false);
+
         currentResetTime = Time.time + reloadTime;
         canFire = false;
 
@@ -169,5 +174,10 @@ public abstract class Weapon : MonoBehaviour
     {
         gameObject.SetActive(active);
 
+    }
+
+    public void FillAmmo()
+    {
+        ammoStockPile = maxAmmoStockPile;
     }
 }

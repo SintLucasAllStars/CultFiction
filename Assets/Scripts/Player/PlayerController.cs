@@ -24,9 +24,8 @@ public class PlayerController : MonoBehaviour
 
     //Weapon
     [Header("Weapon")]
-    [SerializeField]
-    Weapon currentWeapon;
-    [SerializeField] Weapon secondaryWeapon;
+    public Weapon currentWeapon;
+    public Weapon secondaryWeapon;
     [SerializeField] Recoil recoil;
     [SerializeField] WeaponUI weaponUI;
 
@@ -59,20 +58,7 @@ public class PlayerController : MonoBehaviour
         {
             CheckRegen();
         }
-    }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        float speed = (!Input.GetKey(KeyCode.LeftShift)) ? walkSpeed : runSpeed;
-
-        Vector2 axis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * speed;
-        transform.position += (transform.forward * axis.y + transform.right * axis.x) * Time.deltaTime;
-
-        if(!grounded)
-            IsGrounded();
-        else if(Input.GetKey(KeyCode.Space))
-            Jump();
         if(currentWeapon != null)
         {
             if(currentWeapon.isAutomatic)
@@ -105,6 +91,7 @@ public class PlayerController : MonoBehaviour
 
         if(Input.GetMouseButtonDown(1))
         {
+            Debug.Log("Down");
             currentWeapon.Aim(true);
         }
 
@@ -120,6 +107,20 @@ public class PlayerController : MonoBehaviour
         {
             SwapWeapon();
         }
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        float speed = (!Input.GetKey(KeyCode.LeftShift)) ? walkSpeed : runSpeed;
+
+        Vector2 axis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * speed;
+        transform.position += (transform.forward * axis.y + transform.right * axis.x) * Time.deltaTime;
+
+        if(!grounded)
+            IsGrounded();
+        else if(Input.GetKey(KeyCode.Space))
+            Jump();
     }
 
     public void Damage(float damage)
@@ -202,7 +203,7 @@ public class PlayerController : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0))
             {
-                hit.collider.GetComponent<IInteractable>().Interact();
+                hit.collider.GetComponent<IInteractable>().Interact(this);
             }
         }
     }
@@ -211,6 +212,8 @@ public class PlayerController : MonoBehaviour
     {
         if(currentWeapon == null || secondaryWeapon == null)
             return;
+
+        currentWeapon.Aim(false);
 
         Weapon weapon = currentWeapon;
 
@@ -221,6 +224,7 @@ public class PlayerController : MonoBehaviour
         weapon.Toggle(false);
         recoil.Setup(currentWeapon);
         weaponUI.UpdateWeapon(currentWeapon);
+        currentWeapon.Aim(false);
 
     }
 

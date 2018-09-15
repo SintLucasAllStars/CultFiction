@@ -9,14 +9,21 @@ public class Gamemanager : MonoBehaviour
 
     public static Gamemanager instance;
 
+    [Header("Enemys")]
     [SerializeField] int currentEnemySpawned;
     [SerializeField] float multiplier;
+
+    [Header("Enemy Health")]
+    public int health;
+    [SerializeField] float healtMultiplier;
+ 
     [SerializeField] float spawnDelay;
 
     int enemyLeftToSpawn;
     int currentEnemysAlive;
 
-    int score;
+    int score = 500;
+    int round = 1;
 
     private void Awake()
     {
@@ -54,6 +61,11 @@ public class Gamemanager : MonoBehaviour
         return score;
     }
 
+    public int GetRound()
+    {
+        return round;
+    }
+
     public void AddToScore(int points)
     {
         score += points;
@@ -68,9 +80,11 @@ public class Gamemanager : MonoBehaviour
 
     IEnumerator Spawn()
     {
+        health = Mathf.CeilToInt(health * healtMultiplier);
         yield return new WaitForSeconds(spawnDelay);
-        Debug.Log("Let the games begin");
+        Debug.Log("Let the game begin");
         if(ToggleSpawn != null)
             ToggleSpawn(true);
+        round++;
     }
 }
