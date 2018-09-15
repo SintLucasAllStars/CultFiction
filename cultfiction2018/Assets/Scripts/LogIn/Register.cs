@@ -13,6 +13,8 @@ public class Register : MonoBehaviour
 
     public Text ErrorText;
 
+    public Animator MessageAnimator;
+
     public void CallRegister()
     {
         StartCoroutine(IERegister());
@@ -34,6 +36,7 @@ public class Register : MonoBehaviour
         {
             Debug.Log("User creation failed Error#" + www.text);
             ErrorText.text = DBerrorhandeling.TranslateError(www.text);
+            MessageAnimator.SetBool("PlayAnimation", true);
         }
 
     }

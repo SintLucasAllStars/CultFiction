@@ -21,6 +21,8 @@ public class GameManager : Singleton<GameManager>
     private bool _uiActive;
 
     private bool _heartBeatUpgraded;
+
+    public DBSaver MyDBSaver;
     
 
     public void GetNewSyringe()
@@ -46,6 +48,7 @@ public class GameManager : Singleton<GameManager>
     {
         PanelText.text = "You win!";
         Panel.gameObject.SetActive(true);
+        DBmanager.Money += 250;
         Time.timeScale = 0;
         _uiActive = true;
 
@@ -91,42 +94,21 @@ public class GameManager : Singleton<GameManager>
 
     public void Restart()
     {
-        CallSaveData("MainScene");
+        MyDBSaver.CallSaveData("MainScene");
+  
       
     }
     
 
     public void BackToMenu()
     {
-        CallSaveData("MainMenu");
+        MyDBSaver.CallSaveData("CustomizeScene");
+   
        
     }
 
-    public void CallSaveData(string sceneName)
-    {
-        StartCoroutine(IESavePlayerData(sceneName));
-    }
+   
 
-    private IEnumerator IESavePlayerData(string sceneName)
-    {
-        WWWForm form = new WWWForm();
-        form.AddField("username", DBmanager.Username);
-        form.AddField("score", DBmanager.Score);
-        
-        WWW www = new WWW("http://localhost/sqlconnect/savedata.php", form);
-        yield return www;
-        if (www.text == "0")
-        {
-            Debug.Log("Game Saved.");
-        }
-        else
-        {
-            Debug.Log("Save failed. Error #" + www.text);
-        }
-        
-        DBmanager.LogOut();
-        SceneManager.LoadScene(sceneName);
-    }
     
 
     private void Update()

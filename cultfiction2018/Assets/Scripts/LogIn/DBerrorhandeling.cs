@@ -16,7 +16,7 @@
                 errorMessage = "Connection failed";
                 break;
             case '3':
-                errorMessage = "Username already exists";
+                errorMessage = "Username already taken";
                 break;
             case '4':
                 errorMessage = "Connection failed";

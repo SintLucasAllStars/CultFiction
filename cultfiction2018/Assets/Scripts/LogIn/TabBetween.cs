@@ -8,8 +8,20 @@ namespace LogIn
         public InputField UsernameField;
         public InputField PasswordField;
 
+        public Button LoginButton;
+
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                if (LoginButton.interactable)
+                {
+                    PasswordField.DeactivateInputField();
+                    LoginButton.Select();
+                }
+            }
+
+
             if (!Input.GetKeyDown(KeyCode.Tab)) return;
             if (UsernameField.isFocused)
             {
@@ -19,6 +31,8 @@ namespace LogIn
             {
                 UsernameField.ActivateInputField();
             }
+
+          
 
 
         }

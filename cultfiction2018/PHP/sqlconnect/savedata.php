@@ -9,6 +9,16 @@
 
     $username = $_POST["username"];
     $newscore = $_POST["score"];
+    $newmoney = $_POST["Money"];
+    $headbandunlocked = $_POST["UnlockedHeadband"];
+    $glassesunlocked = $_POST["UnlockedGlasses"];
+    $jewelryunlocked = $_POST["UnlockedJewelry"];
+    $shoeunlocked = $_POST["UnlockedShoes"];
+    $headbandvalue = $_POST["HeadbandValue"];
+    $glassesvalue = $_POST["GlassesValue"];
+    $jewelryvalue = $_POST["JewelryValue"];
+    $shoevalue = $_POST["ShoeValue"];
+
 
 
     //double check there is only one user with this name
@@ -20,7 +30,22 @@
         exit();
     }
 
-    $updatequery = "UPDATE players SET score = " . $newscore . " WHERE username = '" . $username . "';";
+    $updatequery =
+        "UPDATE players 
+        SET score = " . $newscore . ",
+        Money = " . $newmoney . ",
+        UnlockedHeadband = " . $headbandunlocked . ",
+        UnlockedGlasses = " . $glassesunlocked . ",
+        UnlockedShoes = " . $shoeunlocked . ",
+        UnlockedJewelry = " . $jewelryunlocked . ",
+        HeadbandValue = " . $headbandvalue . ",
+        GlassesValue = " . $glassesvalue . ",
+        JewelryValue = " . $jewelryvalue . ",
+        ShoeValue = " . $shoevalue . "
+        
+         
+         
+         WHERE username = '" . $username . "';";
     mysqli_query($con, $updatequery) or die ("7: Save query failed");// error code #7 - update query failed
 
     echo"0";

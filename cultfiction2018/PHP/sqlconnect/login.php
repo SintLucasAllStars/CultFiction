@@ -12,7 +12,11 @@
     $password = $_POST["password"];
 
     //check if name exists
-    $namecheckquery = "SELECT username,salt,hash,score FROM players WHERE username= '".$usernameclean . "';";
+    $namecheckquery = "SELECT 
+    username,salt,hash,score,Money, HeadBandValue, GlassesValue,JewelryValue,ShoeValue
+    , UnlockedHeadband, UnlockedGlasses, UnlockedJewelry, UnlockedShoes, Money
+    
+    FROM players WHERE username= '".$usernameclean . "';";
 
     $namecheck = mysqli_query($con, $namecheckquery) or die("2 Name check query failed"); // error code #2 - name check query failed
 
@@ -32,6 +36,8 @@
         exit();
     }
 
-    echo "0\t" . $existinginfo["score"];
+    echo "0\t" . $existinginfo["score"] . "\t" . $existinginfo["HeadBandValue"] . "\t" . $existinginfo["GlassesValue"] . "\t" .
+        $existinginfo["JewelryValue"] . "\t" . $existinginfo["ShoeValue"] . "\t" . $existinginfo["UnlockedHeadband"] . "\t" .
+        $existinginfo["UnlockedGlasses"] . "\t" . $existinginfo["UnlockedJewelry"] . "\t" . $existinginfo["UnlockedShoes"] . "\t" . $existinginfo["Money"];
 
 ?>
