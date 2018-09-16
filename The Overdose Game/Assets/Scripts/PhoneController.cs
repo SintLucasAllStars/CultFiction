@@ -12,16 +12,9 @@ public class PhoneController : MonoBehaviour, Iinteractable
     public AudioClip denySound;
     public AudioClip notPickUpSound;
     public AudioSource phoneAudio;
-
     public int amountOfRings;
     public int maxAmountOfSecondsDialog;
     public float dialogWriteSpeed;
-
-    // cached version of unaltered dialog for use of external text scramblers to make sure
-    // they don't scramble already scrambled text
-    public string unalteredCurrentDialog;
-    public string currentDialog;
-
     public Transform animationTarget;
     public Transform phoneHorn;
     public JointController textManipulator;
@@ -30,7 +23,9 @@ public class PhoneController : MonoBehaviour, Iinteractable
     public Text dialogText;
     public Text dialogTimer;
 
-    private bool pickedUpPhone;
+    public string unalteredCurrentDialog { get; private set; }
+    public string currentDialog { get; set; }
+    public bool pickedUpPhone { get; private set; }
     private bool ringing;
     private List<Caller> callers;
     private Caller currentCaller;
@@ -38,15 +33,6 @@ public class PhoneController : MonoBehaviour, Iinteractable
     private Coroutine currentPhoneCoroutine;
     private Coroutine currentDialogTimerCoroutine;
     private Coroutine currentDialogWriterCoroutine;
-    private Coroutine currentActionCoroutine;
-
-    public bool PickedUpPhone
-    {
-        get
-        {
-            return pickedUpPhone;
-        }
-    }
 
 	void Start ()
     {
@@ -57,14 +43,16 @@ public class PhoneController : MonoBehaviour, Iinteractable
         currentPhoneCoroutine = StartCoroutine(PhoneCoroutine());
 	}
 
+    // Interface implemented method for handling clicks
     public void OnClick()
     {
         if (ringing && !pickedUpPhone)
         {
-            currentActionCoroutine = StartCoroutine(ActionCoroutine(animationTarget));
+            StartCoroutine(ActionCoroutine(animationTarget));
         }
     }
 
+    // Method for opening dialog which also scrambles dialog if JointController.active is true
     public void OpenDialog()
     {
         StopCoroutine(currentPhoneCoroutine);
@@ -75,12 +63,13 @@ public class PhoneController : MonoBehaviour, Iinteractable
         dialogBox.SetActive(true);
 
         unalteredCurrentDialog = currentCaller.dialog;
-        currentDialog = textManipulator.Active ? textManipulator.ScrambleText(unalteredCurrentDialog) : unalteredCurrentDialog;
+        currentDialog = textManipulator.active ? textManipulator.ScrambleText(unalteredCurrentDialog) : unalteredCurrentDialog;
 
         currentDialogWriterCoroutine = StartCoroutine(DialogWriterCoroutine());
         currentDialogTimerCoroutine = StartCoroutine(DialogTimerCoroutine());
     }
 
+    // Method for closing dialog which handles denied clients/money gained and win/lose states
     public void CloseDialog(bool accepted)
     {
         StopCoroutine(currentDialogWriterCoroutine);
@@ -113,13 +102,13 @@ public class PhoneController : MonoBehaviour, Iinteractable
 
         if (callers.Count <= 0)
         {
-            manager.EndGame(true, "No more callers left!");
+            manager.EndGame(false, "No more clients left!");
             return;
         }
 
         phoneAudio.PlayOneShot(notPickUpSound);
 
-        if(manager.GameRunning)
+        if(manager.gameRunning)
             currentPhoneCoroutine = StartCoroutine(PhoneCoroutine());
     }
 
@@ -144,6 +133,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
         }
     }
 
+    // Coroutine which will ring the phone and add a denied client if not picked up
     private IEnumerator PhoneCoroutine()
     {
         currentCaller = callers[Random.Range(0, callers.Count)];
@@ -161,10 +151,12 @@ public class PhoneController : MonoBehaviour, Iinteractable
         phoneAudio.PlayOneShot(notPickUpSound);
         manager.ClientsDenied++;
 
-        if (manager.GameRunning)
+        if (manager.gameRunning)
             currentPhoneCoroutine = StartCoroutine(PhoneCoroutine());
     }
 
+    // Coroutine which keeps track of time spend in dialog and will close dialog
+    // after time in seconds specified by maxAmountOfSecondsDialog
     private IEnumerator DialogTimerCoroutine()
     {
         UpdateDialogTimer(0);
@@ -179,6 +171,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
         CloseDialog(false);
     }
 
+    // Coroutine which will write out text in a speed specified by dialogWriteSpeed
     private IEnumerator DialogWriterCoroutine()
     {
         dialogText.text = "";
@@ -190,6 +183,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
         }
     }
 
+    // Interface implemented coroutine for animations and actions for interaction
     public IEnumerator ActionCoroutine(Transform target)
     {
         OpenDialog();
@@ -215,8 +209,6 @@ public class PhoneController : MonoBehaviour, Iinteractable
             phoneHorn.rotation = Quaternion.Lerp(phoneHorn.rotation, previousRotation, 15 * Time.deltaTime);
             yield return null;
         }
-
-        currentActionCoroutine = null;
     }
 }
 

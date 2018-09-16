@@ -7,7 +7,6 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
-    public Transform camTransform;
     public int requiredAmountToWin;
     public int amountOfClientsToDeny;
     public GameObject endScreen;
@@ -17,20 +16,11 @@ public class GameManager : MonoBehaviour
     public Text deniedCallersIndicator;
     public Text highLevelText;
 
-    private Vector3 originalCamPos;
+    public bool gameRunning { get; private set; }
     private int money;
     private float moneyMultiplier;
     private int clientsDenied;
     private int highLevel;
-    private bool gameRunning;
-
-    public bool GameRunning
-    {
-        get
-        {
-            return gameRunning;
-        }
-    }
 
     public int Money
     {
@@ -43,7 +33,7 @@ public class GameManager : MonoBehaviour
             money = Mathf.CeilToInt(value * moneyMultiplier);
             moneyIndicator.text = "Your Money: " + money;
             if (money >= requiredAmountToWin)
-                EndGame(true, "You collected enough money, nice going!");
+                EndGame(true, "You collected enough money to pay rent, nice going!");
         }
     }
 
@@ -94,11 +84,9 @@ public class GameManager : MonoBehaviour
         moneyMultiplierIndicator.text = "Multiplier: X" + 0;
         deniedCallersIndicator.text = "Callers denied: " + 0;
         highLevelText.text = "Highness level: " + 0;
+        moneyMultiplier = 1;
         endScreen.SetActive(false);
         gameRunning = true;
-
-        originalCamPos = camTransform.position;
-        StartCoroutine(CamAnimationCoroutine());
     }
 
     public void EndGame(bool endstate, string screenMessage)
@@ -113,14 +101,5 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    private IEnumerator CamAnimationCoroutine()
-    {
-        while (gameRunning)
-        {
-            camTransform.position = originalCamPos + new Vector3(0, (float)System.Math.Sin(Time.fixedTime) * 0.05f, 0);
-            yield return null;
-        }
     }
 }

@@ -13,7 +13,7 @@ public class RayCaster : MonoBehaviour
         RaycastHit hit;
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         Debug.DrawRay(ray.origin, ray.direction * 100, Color.red);
-        if (Physics.Raycast(ray, out hit) && manager.GameRunning)
+        if (Physics.Raycast(ray, out hit) && manager.gameRunning)
         {
             if (hit.collider.gameObject.tag == "Interactable")
             {

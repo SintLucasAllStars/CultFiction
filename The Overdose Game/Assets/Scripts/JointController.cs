@@ -13,17 +13,9 @@ public class JointController : MonoBehaviour, Iinteractable
     public PhoneController phone;
     public int maxLevel;
 
-    private bool active;
+    public bool active { get; private set; }
     private Coroutine currentTimerCoroutine;
     private Coroutine currentActionCoroutine;
-
-    public bool Active
-    {
-        get
-        {
-            return active;
-        }
-    }
 
 	void Start ()
     {
@@ -31,6 +23,7 @@ public class JointController : MonoBehaviour, Iinteractable
         manager.HighLevel = 0;
 	}
 
+    // Interface implemented method for handling clicks
     public void OnClick()
     {
         if (manager.HighLevel < maxLevel && currentActionCoroutine == null)
@@ -39,9 +32,10 @@ public class JointController : MonoBehaviour, Iinteractable
         }
     }
 
+    // Method for interacting with object, will also scramble text if user is currently on phone
     private void Hit()
     {
-        if (phone.PickedUpPhone)
+        if (phone.pickedUpPhone)
         {
             phone.currentDialog = ScrambleText(phone.unalteredCurrentDialog);
         }
@@ -78,6 +72,7 @@ public class JointController : MonoBehaviour, Iinteractable
         return words.Aggregate((x, y) => x + " " + y);
     }
 
+    // Coroutine which slowly decreases highness level back to 0
     private IEnumerator TimerCoroutine()
     {
         active = true;
@@ -94,6 +89,7 @@ public class JointController : MonoBehaviour, Iinteractable
             active = false;
     }
 
+    // Interface implemented coroutine for animations and actions for interaction
     public IEnumerator ActionCoroutine(Transform target)
     {
         jointAudio.PlayOneShot(smoke);
