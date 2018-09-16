@@ -16,7 +16,6 @@ namespace LogIn
             {
                 if (LoginButton.interactable)
                 {
-                    PasswordField.DeactivateInputField();
                     LoginButton.Select();
                 }
             }

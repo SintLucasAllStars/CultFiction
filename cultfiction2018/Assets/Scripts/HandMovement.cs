@@ -132,8 +132,8 @@ public class HandMovement : MonoBehaviour
     {
         while(true)
         {
-            _randomSinX = Random.Range(-1f, 1f);
-            _randomsSinY = Random.Range(-1f, 1f);
+            _randomSinX = Random.Range(-0.1f, 0.1f);
+            _randomsSinY = Random.Range(-0.1f, 0.1f);
             yield return new  WaitForSeconds(Random.Range(.25f,.75f));
         }
     }

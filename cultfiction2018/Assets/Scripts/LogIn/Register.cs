@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using LogIn;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -30,7 +32,26 @@ public class Register : MonoBehaviour
         if (www.text == "0")
         {
             Debug.Log("User created successfully");
-            SceneManager.LoadScene(0);
+            WWWForm formLogin = new WWWForm();
+            formLogin.AddField("username", UserNameField.text);
+            formLogin.AddField("password", PasswordField.text);
+            WWW wwwLogin = new WWW("http://localhost/sqlconnect/login.php", formLogin);
+            yield return wwwLogin;
+            if (wwwLogin.text[0] == '0')
+            {
+                DBmanager.Username = UserNameField.text;
+                DBmanager.Score = int.Parse(wwwLogin.text.Split('\t')[1]);
+                DBmanager.HeadbandValue = int.Parse(wwwLogin.text.Split('\t')[2]);
+                DBmanager.GlassesValue = int.Parse(wwwLogin.text.Split('\t')[3]);
+                DBmanager.JewelryValue = int.Parse(wwwLogin.text.Split('\t')[4]);
+                DBmanager.ShoeValue = int.Parse(wwwLogin.text.Split('\t')[5]);
+                DBmanager.UnlockedHeadband = Convert.ToBoolean(int.Parse(wwwLogin.text.Split('\t')[6]));
+                DBmanager.UnlockedGlasses = Convert.ToBoolean(int.Parse(wwwLogin.text.Split('\t')[7]));
+                DBmanager.UnlockedJewelry = Convert.ToBoolean(int.Parse(wwwLogin.text.Split('\t')[8]));
+                DBmanager.UnlockedShoes = Convert.ToBoolean(int.Parse(wwwLogin.text.Split('\t')[9]));
+                DBmanager.Money = int.Parse(wwwLogin.text.Split('\t')[10]);
+                SceneManager.LoadScene("CustomizeScene");
+            }
         }
         else
         {

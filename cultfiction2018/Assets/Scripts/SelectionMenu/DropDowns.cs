@@ -122,6 +122,29 @@ public class DropDowns : MonoBehaviour
         }
     }
 
+    public void DenyClothing(DropDownOptions option)
+    {
+      
+        switch (option)
+        {
+            case DropDownOptions.Headband:
+                HeadbandCustom.selectedText.text = HeadbandItemOne.itemText;
+                break;
+            case DropDownOptions.Glasses:
+
+               GlassesCustom.selectedText.text = GlassesItemOne.itemText;
+                break;
+            case DropDownOptions.Jewerly:
+                JewelryCustom.selectedText.text = JewelryItemOne.itemText;
+                break;
+            case DropDownOptions.Shoes:
+                ShoeCustom.selectedText.text = ShoeItemOne.itemText;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException("option", option, null);
+        }
+    }
+
 
     //todo room for improvement
     public void ActivateClothing(DropDownOptions option)

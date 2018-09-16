@@ -1,14 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using MathExt;
 using UnityEngine;
 
-public class Sphere : MonoBehaviour 
+public class Sphere : MonoBehaviour
 {
-    private void OnCollisionEnter(Collision other)
+    public Vector3[] Locations;
+    public float ScaleFactor;
+
+
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("TheNeedle"))
         {
-            GameManager.Instance.WinGame();
+            transform.localPosition = Locations.GetRandom_Array();
+            transform.localScale = transform.localScale -= new Vector3(ScaleFactor, ScaleFactor, ScaleFactor);
+                ;
         }
     }
 }

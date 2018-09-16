@@ -1900,7 +1900,7 @@ GameObject:
   - component: {fileID: 1645518948}
   m_Layer: 0
   m_Name: Sphere
-  m_TagString: Untagged
+  m_TagString: TheBody
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1912,7 +1912,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1645518946}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.104, y: 0.055, z: -0.188}
+  m_LocalPosition: {x: -0.061, y: 0.082, z: -0.131}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 128060564}
@@ -1929,6 +1929,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28038deae44b6f44e9a05cfedeed23a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Locations:
+  - {x: -0.104, y: 0.055, z: -0.188}
+  - {x: -0.104, y: 0.12, z: 0.099}
+  - {x: -0.461, y: -0.123, z: -0.059}
+  - {x: -0.02, y: 0.212, z: 0.331}
+  - {x: -0.185, y: 0.141, z: 0.4}
+  - {x: -0.158, y: -0.109, z: 0.818}
+  - {x: 0.049, y: 0.141, z: 0.4}
+  - {x: -0.185, y: -0.014, z: 0.793}
+  - {x: -0.007, y: 0.192, z: 0.256}
+  - {x: 0.136, y: 0.142, z: 0.311}
+  - {x: -0.179, y: 0.141, z: 0.4}
+  - {x: -0.149, y: 0.082, z: 0.029}
+  - {x: -0.256, y: -0.066, z: -0.262}
+  - {x: -0.098, y: 0.11, z: 0.019}
+  - {x: -0.126, y: -0.002, z: -0.395}
+  - {x: -0.126, y: -0.002, z: -0.298}
+  - {x: -0.002, y: 0.113, z: 0.008}
+  - {x: -0.137, y: 0.104, z: 0.159}
+  - {x: -0.061, y: 0.13, z: 0.027}
+  - {x: -0.061, y: 0.082, z: -0.131}
+  ScaleFactor: 0.001
 --- !u!135 &1645518949
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1936,7 +1958,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1645518946}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -2004,9 +2026,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8110b2fd349a4e34fbce170e51f61374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 10
-  RotationSpeed: 500
-  Drunkness: 100
+  Speed: 5
+  RotationSpeed: 100
+  Drunkness: 0.5
   Xclamp: {x: -1.5, y: 1.5}
   Yclamp: {x: 1, y: 8}
 --- !u!1 &1692720438
