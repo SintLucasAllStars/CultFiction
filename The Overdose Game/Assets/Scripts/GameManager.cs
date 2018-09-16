@@ -7,6 +7,7 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
+    public Transform camTransform;
     public int requiredAmountToWin;
     public int amountOfClientsToDeny;
     public GameObject endScreen;
@@ -16,17 +17,18 @@ public class GameManager : MonoBehaviour
     public Text deniedCallersIndicator;
     public Text highLevelText;
 
-    private int _money;
-    private float _moneyMultiplier;
-    private int _clientsDenied;
-    private int _highLevel;
-    private bool _gameRunning;
+    private Vector3 originalCamPos;
+    private int money;
+    private float moneyMultiplier;
+    private int clientsDenied;
+    private int highLevel;
+    private bool gameRunning;
 
     public bool GameRunning
     {
         get
         {
-            return _gameRunning;
+            return gameRunning;
         }
     }
 
@@ -34,13 +36,13 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            return _money;
+            return money;
         }
         set
         {
-            _money = Mathf.CeilToInt(value * _moneyMultiplier);
-            moneyIndicator.text = "Your Money: " + _money;
-            if (_money >= requiredAmountToWin)
+            money = Mathf.CeilToInt(value * moneyMultiplier);
+            moneyIndicator.text = "Your Money: " + money;
+            if (money >= requiredAmountToWin)
                 EndGame(true, "You collected enough money, nice going!");
         }
     }
@@ -49,12 +51,12 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            return _moneyMultiplier;
+            return moneyMultiplier;
         }
         set
         {
-            _moneyMultiplier = 1 + (0.5f * value);
-            moneyMultiplierIndicator.text = "Multiplier: X" + (_moneyMultiplier - 1);
+            moneyMultiplier = 1 + (0.5f * value);
+            moneyMultiplierIndicator.text = "Multiplier: X" + (moneyMultiplier - 1);
         }
     }
 
@@ -62,13 +64,13 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            return _clientsDenied;
+            return clientsDenied;
         }
         set
         {
-            _clientsDenied = value;
-            deniedCallersIndicator.text = "Callers denied: " + _clientsDenied;
-            if (_clientsDenied >= amountOfClientsToDeny)
+            clientsDenied = value;
+            deniedCallersIndicator.text = "Callers denied: " + clientsDenied;
+            if (clientsDenied >= amountOfClientsToDeny)
                 EndGame(false, "You denied too many legit buyers their dope, ain't nobody buying from you anymore...");
         }
     }
@@ -77,12 +79,12 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            return _highLevel;
+            return highLevel;
         }
         set
         {
-            _highLevel = value;
-            highLevelText.text = "Highness level: " + _highLevel;
+            highLevel = value;
+            highLevelText.text = "Highness level: " + highLevel;
         }
     }
 
@@ -93,14 +95,17 @@ public class GameManager : MonoBehaviour
         deniedCallersIndicator.text = "Callers denied: " + 0;
         highLevelText.text = "Highness level: " + 0;
         endScreen.SetActive(false);
-        _gameRunning = true;
+        gameRunning = true;
+
+        originalCamPos = camTransform.position;
+        StartCoroutine(CamAnimationCoroutine());
     }
 
     public void EndGame(bool endstate, string screenMessage)
     {
         Time.timeScale = 0;
         endScreen.SetActive(true);
-        _gameRunning = false;
+        gameRunning = false;
         endText.text = (endstate ? "You've won!\n" : "You've lost\n") + screenMessage;
     }
 
@@ -108,5 +113,14 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private IEnumerator CamAnimationCoroutine()
+    {
+        while (gameRunning)
+        {
+            camTransform.position = originalCamPos + new Vector3(0, (float)System.Math.Sin(Time.fixedTime) * 0.05f, 0);
+            yield return null;
+        }
     }
 }

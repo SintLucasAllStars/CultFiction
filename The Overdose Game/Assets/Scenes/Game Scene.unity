@@ -5475,10 +5475,42 @@ Transform:
   m_LocalRotation: {x: 0.1029804, y: -0, z: -0, w: 0.9946834}
   m_LocalPosition: {x: 0, y: 1.547, z: -4.075}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 750658056}
+  - {fileID: 1906277283}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 11.8220005, y: 0, z: 0}
+--- !u!1 &750658055
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 100000, guid: e2f2b633532e5f745835c9b5a06d1515,
+    type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 750658056}
+  m_Layer: 0
+  m_Name: JointCamPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &750658056
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 400000, guid: e2f2b633532e5f745835c9b5a06d1515,
+    type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 750658055}
+  m_LocalRotation: {x: -0.000000015345305, y: -0.9946834, z: 0.10298035, w: 0.00000014821937}
+  m_LocalPosition: {x: -0, y: -0.234, z: 0.603}
+  m_LocalScale: {x: 50, y: 50, z: 50}
+  m_Children: []
+  m_Father: {fileID: 534669905}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 11.8220005, y: -180.00002, z: 0}
 --- !u!1 &753054652
 GameObject:
   m_ObjectHideFlags: 0
@@ -6545,7 +6577,8 @@ MonoBehaviour:
   dialogWriteSpeed: 0.025
   unalteredCurrentDialog: 
   currentDialog: 
-  scrambledText: 0
+  animationTarget: {fileID: 1906277283}
+  phoneHorn: {fileID: 1776127497}
   textManipulator: {fileID: 1893210850}
   manager: {fileID: 1368332652}
   dialogBox: {fileID: 1995536052}
@@ -7018,12 +7051,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acade139555b5c64186c3defc1d2f38a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camTransform: {fileID: 534669905}
   requiredAmountToWin: 600
   amountOfClientsToDeny: 3
   endScreen: {fileID: 832790518}
   endText: {fileID: 2104844484}
   moneyIndicator: {fileID: 1593293030}
+  moneyMultiplierIndicator: {fileID: 2011144215}
   deniedCallersIndicator: {fileID: 1021709101}
+  highLevelText: {fileID: 1330614104}
 --- !u!82 &1368332653
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8354,6 +8390,7 @@ GameObject:
   - component: {fileID: 1893210847}
   - component: {fileID: 1893210850}
   - component: {fileID: 1893210851}
+  - component: {fileID: 1893210852}
   m_Layer: 0
   m_Name: Joint
   m_TagString: Interactable
@@ -8434,10 +8471,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99035a97534a5e141ba91ab0458b6b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  smoke: {fileID: 8300000, guid: 23bed7dffe0a9f84da202a034caec6cb, type: 3}
+  jointAudio: {fileID: 1893210852}
+  manager: {fileID: 1368332652}
+  animationTarget: {fileID: 750658056}
   phone: {fileID: 1239083173}
-  highText: {fileID: 1330614104}
   maxLevel: 6
-  _active: 0
 --- !u!65 &1893210851
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8450,6 +8489,131 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.0031648176, y: 0.0030099195, z: 0.010535278}
   m_Center: {x: -1.1540149e-10, y: 0.00015888327, z: 0.00004542177}
+--- !u!82 &1893210852
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1893210846}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!1 &1906277282
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 100000, guid: b23ed6184e88d624c837389f58c52c30,
+    type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1906277283}
+  m_Layer: 0
+  m_Name: PhoneCamPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1906277283
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 400000, guid: b23ed6184e88d624c837389f58c52c30,
+    type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1906277282}
+  m_LocalRotation: {x: -0.3463063, y: -0.2652224, z: 0.77399063, w: 0.45898542}
+  m_LocalPosition: {x: -0.502, y: -0.13, z: 0.596}
+  m_LocalScale: {x: 100, y: 99.999985, z: 99.999985}
+  m_Children: []
+  m_Father: {fileID: 534669905}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: -185.317, y: 128.472, z: -63.90399}
 --- !u!1 &1939973257
 GameObject:
   m_ObjectHideFlags: 0

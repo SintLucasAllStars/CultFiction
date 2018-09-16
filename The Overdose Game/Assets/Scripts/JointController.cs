@@ -6,32 +6,37 @@ using UnityEngine.UI;
 
 public class JointController : MonoBehaviour, Iinteractable
 {
+    public AudioClip smoke;
+    public AudioSource jointAudio;
     public GameManager manager;
+    public Transform animationTarget;
     public PhoneController phone;
     public int maxLevel;
 
-    private bool _active;
+    private bool active;
     private Coroutine currentTimerCoroutine;
-    private Coroutine currentHitCoroutine;
+    private Coroutine currentActionCoroutine;
 
     public bool Active
     {
         get
         {
-            return _active;
+            return active;
         }
     }
 
 	void Start ()
     {
-        _active = false;
+        active = false;
         manager.HighLevel = 0;
 	}
 
     public void OnClick()
     {
-        if (manager.HighLevel < maxLevel)
-            Hit();
+        if (manager.HighLevel < maxLevel && currentActionCoroutine == null)
+        {
+            currentActionCoroutine = StartCoroutine(ActionCoroutine(animationTarget));
+        }
     }
 
     private void Hit()
@@ -90,7 +95,7 @@ public class JointController : MonoBehaviour, Iinteractable
 
     private IEnumerator TimerCoroutine()
     {
-        _active = true;
+        active = true;
 
         yield return new WaitForSeconds(6f);
         if(manager.HighLevel > 0)
@@ -101,6 +106,32 @@ public class JointController : MonoBehaviour, Iinteractable
         }
 
         if (manager.HighLevel <= 0)
-            _active = false;
+            active = false;
+    }
+
+    public IEnumerator ActionCoroutine(Transform target)
+    {
+        jointAudio.PlayOneShot(smoke);
+        Vector3 previousPosition = transform.position;
+        Quaternion previousRotation = transform.rotation;
+
+        while(Vector3.Distance(transform.position, target.position) > 0.001f)
+        {
+            transform.position = Vector3.Lerp(transform.position, target.position, 15 * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, target.rotation, 15 * Time.deltaTime);
+            yield return null;
+        }
+
+        Hit();
+        yield return new WaitForSeconds(0.5f);
+
+        while (Vector3.Distance(transform.position, previousPosition) > 0.001f)
+        {
+            transform.position = Vector3.Lerp(transform.position, previousPosition, 15 * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, previousRotation, 15 * Time.deltaTime);
+            yield return null;
+        }
+
+        currentActionCoroutine = null;
     }
 }

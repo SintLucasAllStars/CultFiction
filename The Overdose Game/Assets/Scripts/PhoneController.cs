@@ -21,8 +21,9 @@ public class PhoneController : MonoBehaviour, Iinteractable
     // they don't scramble already scrambled text
     public string unalteredCurrentDialog;
     public string currentDialog;
-    public bool scrambledText;
 
+    public Transform animationTarget;
+    public Transform phoneHorn;
     public JointController textManipulator;
     public GameManager manager;
     public GameObject dialogBox;
@@ -37,6 +38,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
     private Coroutine currentPhoneCoroutine;
     private Coroutine currentDialogTimerCoroutine;
     private Coroutine currentDialogWriterCoroutine;
+    private Coroutine currentActionCoroutine;
 
     public bool PickedUpPhone
     {
@@ -48,7 +50,6 @@ public class PhoneController : MonoBehaviour, Iinteractable
 
 	void Start ()
     {
-        scrambledText = false;
         pickedUpPhone = false;
         ringing = false;
         dialogBox.SetActive(false);
@@ -60,7 +61,7 @@ public class PhoneController : MonoBehaviour, Iinteractable
     {
         if (ringing && !pickedUpPhone)
         {
-            OpenDialog();
+            currentActionCoroutine = StartCoroutine(ActionCoroutine(animationTarget));
         }
     }
 
@@ -187,6 +188,35 @@ public class PhoneController : MonoBehaviour, Iinteractable
             dialogText.text += currentDialog[i];
             yield return new WaitForSeconds(dialogWriteSpeed);
         }
+    }
+
+    public IEnumerator ActionCoroutine(Transform target)
+    {
+        OpenDialog();
+
+        Vector3 previousPosition = phoneHorn.position;
+        Quaternion previousRotation = phoneHorn.rotation;
+
+        while (Vector3.Distance(phoneHorn.position, target.position) > 0.001f)
+        {
+            phoneHorn.position = Vector3.Lerp(phoneHorn.position, target.position, 15 * Time.deltaTime);
+            phoneHorn.rotation = Quaternion.Lerp(phoneHorn.rotation, target.rotation, 15 * Time.deltaTime);
+            yield return null;
+        }
+
+        while (pickedUpPhone)
+        {
+            yield return null;
+        }
+
+        while (Vector3.Distance(phoneHorn.position, previousPosition) > 0.001f)
+        {
+            phoneHorn.position = Vector3.Lerp(phoneHorn.position, previousPosition, 15 * Time.deltaTime);
+            phoneHorn.rotation = Quaternion.Lerp(phoneHorn.rotation, previousRotation, 15 * Time.deltaTime);
+            yield return null;
+        }
+
+        currentActionCoroutine = null;
     }
 }
 

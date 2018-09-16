@@ -5,4 +5,5 @@ using UnityEngine;
 public interface Iinteractable
 {
     void OnClick();
+    IEnumerator ActionCoroutine(Transform target);
 }
