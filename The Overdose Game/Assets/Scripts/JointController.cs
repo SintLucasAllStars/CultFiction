@@ -60,37 +60,22 @@ public class JointController : MonoBehaviour, Iinteractable
         int numberToScramble = Mathf.CeilToInt((float)words.Length / (7 + (manager.HighLevel - 0) * (0 - 6) / (6 - 0)));
         List<int> indexesToScramble = new List<int>();
 
+        for(int i = 0; i < words.Length; i++)
+        {
+            indexesToScramble.Add(i);
+        }
+
+        indexesToScramble.Shuffle();
+
         for(int i = 0; i < numberToScramble; i++)
         {
-            int randomIndex = Random.Range(0, words.Length);
-
-            while (indexesToScramble.Contains(randomIndex))
-            {
-                randomIndex = Random.Range(0, words.Length);
-            }
-
-            indexesToScramble.Add(randomIndex);
-
-            words[randomIndex] = Shuffle(words[randomIndex]);
+            int index = indexesToScramble[i];
+            List<char> scrambledWord = words[index].ToList();
+            scrambledWord.Shuffle();
+            words[index] = new string(scrambledWord.ToArray());
         }
 
         return words.Aggregate((x, y) => x + " " + y);
-    }
-
-    public string Shuffle(string str)
-    {
-        char[] array = str.ToCharArray();
-        System.Random rng = new System.Random();
-        int n = array.Length;
-        while (n > 1)
-        {
-            n--;
-            int k = rng.Next(n + 1);
-            var value = array[k];
-            array[k] = array[n];
-            array[n] = value;
-        }
-        return new string(array);
     }
 
     private IEnumerator TimerCoroutine()
@@ -115,7 +100,7 @@ public class JointController : MonoBehaviour, Iinteractable
         Vector3 previousPosition = transform.position;
         Quaternion previousRotation = transform.rotation;
 
-        while(Vector3.Distance(transform.position, target.position) > 0.001f)
+        while(Vector3.Distance(transform.position, target.position) > 0.01f)
         {
             transform.position = Vector3.Lerp(transform.position, target.position, 15 * Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.rotation, target.rotation, 15 * Time.deltaTime);
@@ -133,5 +118,22 @@ public class JointController : MonoBehaviour, Iinteractable
         }
 
         currentActionCoroutine = null;
+    }
+}
+
+public static class Extentions
+{
+    public static void Shuffle<T>(this IList<T> list)
+    {
+        int n = list.Count;
+        System.Random rnd = new System.Random();
+        while (n > 1)
+        {
+            int k = (rnd.Next(0, n) % n);
+            n--;
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
     }
 }
