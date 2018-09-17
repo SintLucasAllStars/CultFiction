@@ -5,30 +5,24 @@ using UnityEngine;
 public class Node
 {
 
-    public bool walkable;
-    public Vector3 worldPosition;
+    public bool Walkable;
+    public Vector3 WorldPosition;
 
-    public int gCost;
-    public int hCost;
+    public int GCost;
+    public int HCost;
 
-    public int gridX;
-    public int gridY;
+    public Vector2Int Grid;
 
     public Node parent;
 
-    public Node(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY)
+    public Node(bool _walkable, Vector3 _worldPos, Vector2Int _grid)
     {
-        
-        walkable = _walkable;
-        worldPosition = _worldPos;
-        gridX = _gridX;
-        gridY = _gridY;
+        Walkable = _walkable;
+        WorldPosition = _worldPos;
+        Grid = _grid;
     }
-    public int fCost{
-        get
-        {
-            return gCost + hCost;
-        }
-     
+    public int GetFCost()
+    {
+        return GCost + HCost;
     }
 }

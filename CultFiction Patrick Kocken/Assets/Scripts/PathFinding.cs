@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PathFinding : MonoBehaviour {
 
-    public List<Vector3> pathPositions;
-    private Grid _grid;
-    public Vector3 firstPathPos;
-    public List<Node> path;
+    public List<Vector3> PathPositions;
+    [SerializeField] private Grid _grid;
+    public Vector3 FirstPathPos;
+    public List<Node> Path;
 
     public void FindPath(Vector3 startPos, Vector3 targetPos)
     {
-        pathPositions.Clear();
+        PathPositions.Clear();
 
         Node startNode = _grid.NodeFromWorldPoint(startPos);
         Node targetNode = _grid.NodeFromWorldPoint(targetPos);
@@ -25,9 +25,9 @@ public class PathFinding : MonoBehaviour {
             Node node = openSet[0];
             for (int i = 1; i < openSet.Count; i++)
             {
-                if (openSet[i].fCost < node.fCost || openSet[i].fCost == node.fCost)
+                if (openSet[i].GetFCost() < node.GetFCost() || openSet[i].GetFCost() == node.GetFCost())
                 {
-                    if (openSet[i].hCost < node.hCost)
+                    if (openSet[i].GetFCost() < node.GetFCost())
                         node = openSet[i];
                 }
             }
@@ -43,16 +43,16 @@ public class PathFinding : MonoBehaviour {
 
             foreach (Node neighbour in _grid.GetNeighbours(node))
             {
-                if (!neighbour.walkable || closedSet.Contains(neighbour))
+                if (!neighbour.Walkable || closedSet.Contains(neighbour))
                 {
                     continue;
                 }
 
-                int newCostToNeighbour = node.gCost + GetDistance(node, neighbour);
-                if (newCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
+                int newCostToNeighbour = node.GCost + GetDistance(node, neighbour);
+                if (newCostToNeighbour < neighbour.GCost || !openSet.Contains(neighbour))
                 {
-                    neighbour.gCost = newCostToNeighbour;
-                    neighbour.hCost = GetDistance(neighbour, targetNode);
+                    neighbour.GCost = newCostToNeighbour;
+                    neighbour.HCost = GetDistance(neighbour, targetNode);
                     neighbour.parent = node;
 
                     if (!openSet.Contains(neighbour))
@@ -74,19 +74,19 @@ public class PathFinding : MonoBehaviour {
         }
         path.Reverse();
 
-        _grid.path = path;
+        _grid.Path = path;
 
         for (int i = 0; i < path.Count; i++)
         {
-            pathPositions.Add(path[i].worldPosition);
+            PathPositions.Add(path[i].WorldPosition);
         }
     }
 
 
     int GetDistance(Node nodeA, Node nodeB)
     {
-        int distanceX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
-        int distanceY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
+        int distanceX = Mathf.Abs(nodeA.Grid.x - nodeB.Grid.x);
+        int distanceY = Mathf.Abs(nodeA.Grid.y - nodeB.Grid.y);
 
         if (distanceX > distanceY)
             return 14 * distanceY + 10 * (distanceX - distanceY);
