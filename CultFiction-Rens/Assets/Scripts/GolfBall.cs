@@ -11,8 +11,8 @@ public class GolfBall : MonoBehaviour
 	private TrailRenderer _trail;
 
 	public bool OutOfBounds = false;
-	
-	void Start ()
+
+	private void Awake()
 	{
 		_rigidbody = GetComponent<Rigidbody>();
 		_trail = GetComponent<TrailRenderer>();
@@ -34,7 +34,7 @@ public class GolfBall : MonoBehaviour
 	{
 		_lastPostion = transform.position;
 		OutOfBounds = false;
-		_trail.enabled = true;
+		_trail.Clear();
 	}
 
 	private void OnHitBall()
@@ -66,7 +66,6 @@ public class GolfBall : MonoBehaviour
 		{
 			_isMoving = false;
 			OutOfBounds = true;
-			_trail.enabled = false;
 			_rigidbody.velocity = Vector3.zero;
 			transform.position = _lastPostion;
 			CourseManager.Instance.StopRound();
