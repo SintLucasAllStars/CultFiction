@@ -64,7 +64,7 @@ public class Register : MonoBehaviour
 
     public void VerifyInput()
     {
-        SubmitButton.interactable = (UserNameField.text.Length >= 8 && PasswordField.text.Length >= 8);
+        SubmitButton.interactable = (UserNameField.text.Length >= 4 && PasswordField.text.Length >= 4);
 
     }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using LogIn;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,6 +16,8 @@ public class DBSaver : MonoBehaviour {
     public void CallSaveData(string sceneName)
     {
         StartCoroutine(IESavePlayerData(sceneName));
+   
+            
     }
 
     private IEnumerator IESavePlayerData()
@@ -69,13 +70,18 @@ public class DBSaver : MonoBehaviour {
         if (www.text == "0")
         {
             Debug.Log("Game Saved.");
+   
+            SceneManager.LoadScene(sceneName);
+
+
+
         }
         else
         {
             Debug.Log("Save failed. Error #" + www.text);
         }
         
-        SceneManager.LoadScene(sceneName);
+
 
     }
 }

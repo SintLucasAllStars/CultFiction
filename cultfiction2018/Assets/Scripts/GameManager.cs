@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using LogIn;
+﻿using LogIn;
 using Tools;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
@@ -23,7 +20,14 @@ public class GameManager : Singleton<GameManager>
     private bool _heartBeatUpgraded;
 
     public DBSaver MyDBSaver;
-    
+
+    private void Start()
+    {
+        Time.timeScale = 1;
+        _uiActive = false;
+   
+    }
+
 
     public void GetNewSyringe()
     {
@@ -46,9 +50,9 @@ public class GameManager : Singleton<GameManager>
 
     public void WinGame()
     {
+        
         PanelText.text = "You win!";
         Panel.gameObject.SetActive(true);
-        DBmanager.Money += 250;
         Time.timeScale = 0;
         _uiActive = true;
 

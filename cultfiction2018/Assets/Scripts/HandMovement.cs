@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class HandMovement : MonoBehaviour
 {
@@ -22,6 +24,9 @@ public class HandMovement : MonoBehaviour
     private float _cameraOffsetY;
     private float _cameraOffsetZ;
 
+    private float  _yAxis;
+    private float _xAxis;
+
 
     // Use this for initialization
     void Start()
@@ -30,6 +35,7 @@ public class HandMovement : MonoBehaviour
         _height = Screen.height;
         SetCameraOffsets();
         StartCoroutine(DrunkNumber());
+        
     }
 
     private void SetCameraOffsets()
@@ -52,7 +58,11 @@ public class HandMovement : MonoBehaviour
 
     private void KeyBoardMode()
     {
-        transform.position = transform.position + new Vector3(Input.GetAxis("Vertical"), 0, -Input.GetAxis("Horizontal") * Speed * Time.deltaTime);
+
+        
+        transform.position = transform.position + new Vector3(Input.GetAxis("Vertical") * Speed * Time.deltaTime, 0, -Input.GetAxis("Horizontal") * Speed * Time.deltaTime);
+
+
         SinCalculations();
         transform.position = ClampVector();
         transform.eulerAngles = RotationEuler();
@@ -111,7 +121,7 @@ public class HandMovement : MonoBehaviour
 
     private Vector3 Yvector()
     {
-        return new Vector3(Input.GetAxis("Mouse Y") * Time.deltaTime * Speed, 0, 0);
+        return new Vector3(Input.GetAxis("Mouse Y") * Time.deltaTime * Speed , 0, 0);
     }
 
     private Vector3 Xvector()

@@ -1,15 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using LogIn;
+﻿using LogIn;
 using UnityEngine;
 
-public class LogOutScript : MonoBehaviour {
-
-
-    void Awake()
-    {
-        DontDestroyOnLoad(this);
-    }
+public class LogOutScript  : MonoBehaviour
+{
 
     private void OnApplicationQuit()
     {

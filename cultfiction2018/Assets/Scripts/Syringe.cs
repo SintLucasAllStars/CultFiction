@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using LogIn;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 
@@ -28,6 +29,7 @@ public class Syringe : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         _triggerd = true;
+        DBmanager.Money += 20;
     }
 
     private void OnCollisionEnter(Collision other)

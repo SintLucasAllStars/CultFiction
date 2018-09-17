@@ -1,6 +1,3 @@
-using UnityEditor;
-using UnityEngine;
-
 namespace LogIn
 {
     public static class DBmanager
