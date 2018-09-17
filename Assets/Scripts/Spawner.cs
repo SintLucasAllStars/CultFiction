@@ -8,6 +8,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] float spawnDelay;
     [SerializeField] GameObject prefab;
     [SerializeField] bool spawn = false;
+    [SerializeField] float distanceToPlayerForSpawn;
 
     Transform player;
 
@@ -31,8 +32,11 @@ public class Spawner : MonoBehaviour
         while(spawn)
         {
             yield return new WaitForSeconds(spawnDelay);
-            Instantiate(prefab, transform.position + new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5)), Quaternion.identity).GetComponent<Enemy>().Spawn(player, Gamemanager.instance.health);
-            Gamemanager.instance.EnemySpawned();
+            if(Vector3.Distance(transform.position, player.position) < distanceToPlayerForSpawn)
+            {
+                Instantiate(prefab, transform.position + new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5)), Quaternion.identity).GetComponent<Enemy>().Spawn(player, Gamemanager.instance.health);
+                Gamemanager.instance.EnemySpawned();
+            }
         }
     }
 }
