@@ -10,9 +10,13 @@ public class CourseManager : MonoBehaviour
 	public delegate void StartRound();
 	public static event StartRound OnStartRound;
 
+	public delegate void EndRound();
+	public static event EndRound OnEndRound;
+
 	private bool _isPlaying;
 
 	public static CourseManager Instance;
+	
 
 	private void Awake()
 	{
@@ -38,6 +42,7 @@ public class CourseManager : MonoBehaviour
 	private void OnHitBall()
 	{
 		_isPlaying = true;
+		
 	}
 
 	private void Update()
@@ -53,6 +58,11 @@ public class CourseManager : MonoBehaviour
 		_isPlaying = false;
 		_rounds++;
 		OnStartRound();
+	}
+
+	public void StopRound()
+	{
+		OnEndRound();
 	}
 
 	public void RestartRound()

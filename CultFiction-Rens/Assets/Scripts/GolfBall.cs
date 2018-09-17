@@ -42,7 +42,7 @@ public class GolfBall : MonoBehaviour
 		{
 			if (_rigidbody.IsSleeping())
 			{
-				CourseManager.Instance.StartNewRound();
+				CourseManager.Instance.StopRound();
 				_isMoving = false;
 			}
 		}
@@ -54,12 +54,14 @@ public class GolfBall : MonoBehaviour
 		if (hitObject.CompareTag("EndPoint"))
 		{
 			CourseManager.Instance.EndGame();
+			_isMoving = false;
 		}
 		else if (hitObject.CompareTag("Outside"))
 		{
+			_isMoving = false;
 			_rigidbody.velocity = Vector3.zero;
 			transform.position = _lastPostion;
-			CourseManager.Instance.StartNewRound();
+			CourseManager.Instance.StopRound();
 		}
 	}
 }
