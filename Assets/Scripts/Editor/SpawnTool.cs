@@ -139,7 +139,7 @@ public class SpawnTool : EditorWindow
 				{
 					if (Vector3.Angle(hit.normal, Vector3.down) - 90 > maxSurfaceAngle)
 					{                  
-						spawnTreeP.transform.position = hit.point;
+						spawnTreeP.transform.position = hit.point+offset;
 
 						if (rotationEnabled)
 						{

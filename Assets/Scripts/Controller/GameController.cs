@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameController : Singleton<GameController> {
 	public CharacterController player;
+	public int score;
 	// Use this for initialization
 	void Start () {
 		

@@ -87,8 +87,14 @@ public class CharacterController : MonoBehaviour
 				oldPos = transform.position;
 			}
 		}else{
+			currentPlayerState = PlayerStates.die;
 			characterDied();
-			this.gameObject.active = false;
+			if (!this.transform.CompareTag ("Player"))
+			{
+				this.gameObject.active = false;
+				Destroy(this.gameObject);
+				GameController.Instance.score++;
+			}
 		}
 	}
 	void CastRayCastToSides()
