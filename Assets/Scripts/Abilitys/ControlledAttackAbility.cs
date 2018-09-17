@@ -66,6 +66,8 @@ public class ControlledAttackAbility : Ability, IPlayerAbilitys
 		if (objectToHit.health <= 0)
 		{
 			objectToHit.dead = true;
+
+                GameController.Instance.score++;
             Instantiate(killParticle, hit.transform.position, Quaternion.identity);
 		}
 		else

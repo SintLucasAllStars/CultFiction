@@ -105,7 +105,7 @@ public class SpawnTool : EditorWindow
             EditorUtility.ClearProgressBar();
             EditorApplication.update -= EditorUpdate;
         }
-        if (objectCount > treeCounter)
+        if (objectCount >= treeCounter)
         {
             MeshRenderer mesh = ter.GetComponent<MeshRenderer>();
             float xPos = ter.transform.position.x;

@@ -6,8 +6,8 @@ public class WildLifeController : Singleton<WildLifeController>
 {
 	public GameObject[] smallAnimals;
 	public GameObject[] bigAnimals;
-
-	List<CharacterController> smallSpawnedAnimals = new List<CharacterController>();
+	public List<CharacterController> smallSpawnedAnimals = new List<CharacterController>();
+	[SerializeField]
 	List<CharacterController> bigSpawnedAnimals = new List<CharacterController>();
 
 	public List<Transform> wayPoints;
@@ -16,8 +16,6 @@ public class WildLifeController : Singleton<WildLifeController>
 	int maxSmallAnimals;
 	[SerializeField]
 	int maxBigAnimals;
-	int currentSmallAnimalCount;
-    int currentBigAnimalCount;
 	// Use this for initialization
 	void Start()
 	{
@@ -33,7 +31,9 @@ public class WildLifeController : Singleton<WildLifeController>
 	// Update is called once per frame
 	void Update()
 	{
-
+		if(smallSpawnedAnimals.Count < maxSmallAnimals){
+			SpawnAnimal(true, 0);
+		}
 	}
 	void SpawnAnimal(bool small, int indexOffAnimal = 1000)
 	{
@@ -42,30 +42,28 @@ public class WildLifeController : Singleton<WildLifeController>
 
 		if (small)
 		{
-			if (currentSmallAnimalCount < maxSmallAnimals)
+			if (smallSpawnedAnimals.Count < maxSmallAnimals)
 			{
 				if (index == 10000)
 				{
 					index = Random.Range(0, smallAnimals.Length);
 				}
-				GameObject g = Instantiate(smallAnimals[index], spawnPos, Quaternion.identity);
+				GameObject g = Instantiate(smallAnimals[index], spawnPos, Quaternion.identity,transform);
 				smallSpawnedAnimals.Add(g.GetComponent<CharacterController>());
 				g.GetComponent<WayPointWalkAbility>().wayPoints = wayPoints;
-				currentSmallAnimalCount++;
 			}
 		}
 		else
 		{
-			if (currentBigAnimalCount < maxBigAnimals)
+			if (bigSpawnedAnimals.Count < maxBigAnimals)
 			{
 				if (index == 10000)
 				{
 					index = Random.Range(0, bigAnimals.Length);
 				}
-				GameObject g = Instantiate(bigAnimals[index], spawnPos, Quaternion.identity);
+				GameObject g = Instantiate(bigAnimals[index], spawnPos, Quaternion.identity,transform);
 				bigSpawnedAnimals.Add(g.GetComponent<CharacterController>());
                 g.GetComponent<WayPointWalkAbility>().wayPoints = wayPoints;
-				currentBigAnimalCount++;
 			}
 		}
 	}

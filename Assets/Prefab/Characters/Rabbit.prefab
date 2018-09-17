@@ -1478,7 +1478,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: e91f7394c6c13d540ae725eb5966d5ca, type: 3}
   m_Controller: {fileID: 9100000, guid: e861eacbd65d34d8b975cfb6e0bd6b07, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 2
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -1502,6 +1502,7 @@ MonoBehaviour:
   thingsToSee:
     serializedVersion: 2
     m_Bits: 6144
+  sawPlayer: 0
 --- !u!114 &114460714950132556
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1561,14 +1562,12 @@ MonoBehaviour:
   AbilityPermitted: 1
   speed: 1
   runSpeed: 5
+  finalSpeed: 0
   wayPoints:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  randomStopMoment: 0
-  finalSpeed: 0
-  currentWaypoint: {fileID: 0}
-  blockedPos: []
+  randomStopMoment: 1
   debugPath: 0
 --- !u!136 &136535345831715008
 CapsuleCollider:

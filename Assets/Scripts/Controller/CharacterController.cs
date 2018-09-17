@@ -92,9 +92,10 @@ public class CharacterController : MonoBehaviour
 			if (!this.transform.CompareTag ("Player"))
 			{
 				this.gameObject.active = false;
+				WildLifeController.Instance.smallSpawnedAnimals.Remove(this);
 				Destroy(this.gameObject);
-				GameController.Instance.score++;
 			}
+            this.gameObject.SetActive(false);
 		}
 	}
 	void CastRayCastToSides()

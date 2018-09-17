@@ -6,27 +6,31 @@ using UnityEngine.AI;
 public class WayPointWalkAbility : Ability, IPlayerAbilitys
 {
 	private CharacterController _characterController;
+	DetectAndRunAbility _detectAndRunAbility;
 	public float speed = 1;
 	public float runSpeed = 5;
+	[HideInInspector]
+    public float finalSpeed;
+
 	[SerializeField]
 	public List<Transform> wayPoints;
 	[SerializeField]
-	bool randomStopMoment;
-	public float finalSpeed;
-	public Transform currentWaypoint;
+	bool randomStopMoment;   
+	Transform currentWaypoint;
 	NavMeshAgent navMeshAgent;
 	float randomTime;
 	private NavMeshHit hit;
-	public Vector3[] blockedPos;
-	public NavMeshPath path;
+	Vector3[] blockedPos = new Vector3[1];
+	NavMeshPath path;
 	bool reached = false;
 	int wayPointIndex;
 	[SerializeField]
 	bool debugPath;
+
 	public override void OnStart()
 	{
 		_characterController = GetComponent<CharacterController>();
-
+		_detectAndRunAbility = GetComponent<DetectAndRunAbility>();
 		_characterController.callEveryFrame += EveryFrame;
 		_characterController.characterDied += Died;
 		navMeshAgent = GetComponent<NavMeshAgent>();
@@ -125,7 +129,7 @@ public class WayPointWalkAbility : Ability, IPlayerAbilitys
 	IEnumerator Timer(float time)
 	{
 		yield return new WaitForSeconds(time);
-		if (Random.Range(0, 2) == 1 && randomStopMoment && finalSpeed != runSpeed)
+		if (Random.Range(0, 2) == 1 && randomStopMoment && finalSpeed != runSpeed&&(_detectAndRunAbility != null&&!_detectAndRunAbility.sawPlayer))
 		{
 			navMeshAgent.speed = 0;
 			_characterController.currentPlayerState = CharacterController.PlayerStates.idle;
@@ -138,7 +142,10 @@ public class WayPointWalkAbility : Ability, IPlayerAbilitys
 	}
 	IEnumerator IdleTime(float time)
 	{
-		yield return new WaitForSeconds(time);
+		if (!_detectAndRunAbility.sawPlayer)
+		{
+			yield return new WaitForSeconds(time);
+		}
 		navMeshAgent.speed = speed;
 		AfterAbility();
 	}

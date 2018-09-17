@@ -25,6 +25,7 @@ public class DetectAndAttackAbility : Ability, IPlayerAbilitys
 	WayPointWalkAbility wayPointWalkAbility;
 	NavMeshAgent navAgent;
 	bool attacking;
+	bool startedTimer = false;
 	public override void OnStart()
 	{
 		_characterController = GetComponent<CharacterController>();
@@ -75,8 +76,16 @@ public class DetectAndAttackAbility : Ability, IPlayerAbilitys
                 navAgent.speed = wayPointWalkAbility.runSpeed;
                 if (Vector3.Distance(thingToAttack.transform.position, transform.position) <= 1f)
                 {
+					StopCoroutine(Timer());
+					startedTimer = false;
                     PerformAttack();
-                }
+				}else{
+					if(!startedTimer){
+						startedTimer = true;
+						StartCoroutine(Timer());
+					}
+
+				}
 			}
 		
 		}
@@ -101,6 +110,8 @@ public class DetectAndAttackAbility : Ability, IPlayerAbilitys
 		{
 			Instantiate(hitParticle, thingToAttack.transform.position, Quaternion.identity);
 		}
+		StopCoroutine(Timer());
+        startedTimer = false;
 	}
 	public override void AfterAbility()
 	{
@@ -108,37 +119,37 @@ public class DetectAndAttackAbility : Ability, IPlayerAbilitys
 		_characterController.stateLocked = false;
 		navAgent.speed = wayPointWalkAbility.speed;
 	}
+	IEnumerator Timer(){
+		yield return new WaitForSeconds(2);
+		if (thingToAttack != null)
+		{
+			if (thingToAttack.CompareTag("Player"))
+			{
+				seesPLayer = false;
+			}
+		}
+        thingToAttack = null;
+        attacking = false;
+        AfterAbility();
+		startedTimer = false;
+	}
 	void OnTriggerEnter(Collider col)
 	{
 		if (AbilityPermitted)
 		{
 			if (col.CompareTag("Player") || col.CompareTag("Bunny") && !seesPLayer)
 			{
-				thingToAttack = col.GetComponent<CharacterController>();
+				
 				if (col.CompareTag("Player"))
 				{
+					thingToAttack = col.GetComponent<CharacterController>();
 					seesPLayer = true;
 				}
-			}
-		}
-	}
-	void OnTriggerExit(Collider col)
-	{
-		if (AbilityPermitted)
-		{
-			if (col.CompareTag("Player") || col.CompareTag("Bunny"))
-			{
-				if (thingToAttack == col.GetComponent<CharacterController>())
-				{
-					thingToAttack = null;
-					attacking = false;
-					AfterAbility();
-				}
-				if (col.CompareTag("Player"))
-				{
-					seesPLayer = false;
+				if(!seesPLayer){
+					thingToAttack = col.GetComponent<CharacterController>();
 				}
 			}
 		}
 	}
+
 }

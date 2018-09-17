@@ -13,7 +13,8 @@ public class DetectAndRunAbility : Ability, IPlayerAbilitys
 	[SerializeField]
 	LayerMask thingsToSee;
 	RaycastHit hit;
-	bool sawPlayer = false;
+	[HideInInspector]
+	public bool sawPlayer = false;
     // Use this for initialization
 	public override void  OnStart()
 	{
