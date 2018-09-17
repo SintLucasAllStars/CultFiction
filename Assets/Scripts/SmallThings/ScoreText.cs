@@ -12,4 +12,8 @@ public class ScoreText : MonoBehaviour {
 	void Update () {
 		scoreText.text = "Rabbits killed: " + GameController.Instance.score;
 	}
+
+	public void Restart(){
+		Application.LoadLevel(Application.loadedLevel);
+	}
 }
