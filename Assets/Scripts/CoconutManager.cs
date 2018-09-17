@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CoconutManager : MonoBehaviour
 {
@@ -68,5 +69,10 @@ public class CoconutManager : MonoBehaviour
     {
         yield return new WaitForSeconds(down);
         canFire = true;
+    }
+
+    public void GoBack()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }
