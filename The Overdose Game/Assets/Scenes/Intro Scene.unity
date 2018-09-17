@@ -327,6 +327,115 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 767256327}
   m_CullTransparentMesh: 0
+--- !u!1001 &852523510
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1249848431}
+    m_Modifications:
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114391341803744000, guid: cb873893b290ef24595970fc97599857,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1378633423095324, guid: cb873893b290ef24595970fc97599857, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cb873893b290ef24595970fc97599857, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &1156021684
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,7 +503,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'It''s 11 am, rent is due tomorrow and you don''t have enough to cover it...
+  m_Text: 'It''s 11 am, rent is due tomorrow and you ''re 1000 short...
 
     Fortunately though you can still make some quick cash by selling some weed you
     had stashed away a couple weeks ago. buyers are hitting you up left and right
@@ -415,6 +524,17 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1156021684}
   m_CullTransparentMesh: 0
+--- !u!224 &1222788165 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 224769512707247942, guid: cb873893b290ef24595970fc97599857,
+    type: 2}
+  m_PrefabInternal: {fileID: 852523510}
+--- !u!114 &1222788166 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114391341803744000, guid: cb873893b290ef24595970fc97599857,
+    type: 2}
+  m_PrefabInternal: {fileID: 852523510}
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1249848427
 GameObject:
   m_ObjectHideFlags: 0
@@ -501,6 +621,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 2009599288}
+  - {fileID: 1222788165}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -558,6 +679,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a3cc54068b3bfa488b0fcc2e54af5bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeOnStartUp: 0
+  fadeOnSceneSwitch: 1
+  blackFade: {fileID: 1222788166}
 --- !u!114 &1755062263
 MonoBehaviour:
   m_ObjectHideFlags: 0

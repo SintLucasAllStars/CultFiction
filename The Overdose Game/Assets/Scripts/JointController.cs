@@ -19,9 +19,9 @@ public class JointController : Interactable
 
 	void Start ()
     {
-        active = false;
-        manager.HighLevel = 0;
-        originalScale = transform.localScale;
+        active              = false;
+        manager.HighLevel   = 0;
+        originalScale       = transform.localScale;
 	}
 
     public override void OnClick()
@@ -49,8 +49,8 @@ public class JointController : Interactable
 
     public string ScrambleText(string input)
     {
-        string[] words = input.Split(' ');
-        int numberToScramble = Mathf.CeilToInt((float)words.Length / (7 + (manager.HighLevel - 0) * (0 - 6) / (6 - 0)));
+        string[] words              = input.Split(' ');
+        int numberToScramble        = Mathf.CeilToInt((float)words.Length / (7 + (manager.HighLevel - 0) * (0 - 6) / (6 - 0)));
         List<int> indexesToScramble = new List<int>();
 
         for(int i = 0; i < words.Length; i++)

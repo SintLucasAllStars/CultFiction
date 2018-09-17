@@ -80,26 +80,20 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        moneyIndicator.text = "Your Money: " + 0;
-        moneyMultiplierIndicator.text = "Multiplier: X" + 0;
-        deniedCallersIndicator.text = "Callers denied: " + 0;
-        highLevelText.text = "Highness level: " + 0;
-        moneyMultiplier = 1;
+        moneyIndicator.text             = "Your Money: " + 0;
+        moneyMultiplierIndicator.text   = "Multiplier: X" + 0;
+        deniedCallersIndicator.text     = "Callers denied: " + 0;
+        highLevelText.text              = "Highness level: " + 0;
+        moneyMultiplier                 = 1;
+        gameRunning                     = true;
         endScreen.SetActive(false);
-        gameRunning = true;
     }
 
     public void EndGame(bool endstate, string screenMessage)
     {
-        Time.timeScale = 0;
         endScreen.SetActive(true);
-        gameRunning = false;
-        endText.text = (endstate ? "You've won!\n" : "You've lost\n") + screenMessage;
-    }
-
-    public void Restart()
-    {
-        Time.timeScale = 1;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale  = 0;
+        gameRunning     = false;
+        endText.text    = (endstate ? "You've won!\n" : "You've lost\n") + screenMessage;
     }
 }

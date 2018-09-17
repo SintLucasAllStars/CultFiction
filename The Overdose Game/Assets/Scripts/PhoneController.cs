@@ -30,6 +30,8 @@ public class PhoneController : Interactable
     private bool ringing;
     private List<Caller> callers;
     private Caller currentCaller;
+    private Vector3 originalHornPosition;
+    private Quaternion originalHornRotation;
 
     private Coroutine currentPhoneCoroutine;
     private Coroutine currentDialogTimerCoroutine;
@@ -37,11 +39,13 @@ public class PhoneController : Interactable
 
 	void Start ()
     {
-        pickedUpPhone = false;
-        ringing = false;
         dialogBox.SetActive(false);
-        originalScale = transform.localScale;
         GetCallers();
+        pickedUpPhone           = false;
+        ringing                 = false;
+        originalScale           = transform.localScale;
+        originalHornPosition    = phoneHorn.position;
+        originalHornRotation    = phoneHorn.rotation;
         currentPhoneCoroutine = StartCoroutine(PhoneCoroutine());
 	}
 
@@ -57,16 +61,14 @@ public class PhoneController : Interactable
     {
         StopCoroutine(currentPhoneCoroutine);
         phoneAudio.Stop();
-        ringing = false;
-        pickedUpPhone = true;
         phoneAudio.PlayOneShot(phonePickup);
         dialogBox.SetActive(true);
-
-        unalteredCurrentDialog = currentCaller.dialog;
-        currentDialog = textManipulator.active ? textManipulator.ScrambleText(unalteredCurrentDialog) : unalteredCurrentDialog;
-
-        currentDialogWriterCoroutine = StartCoroutine(DialogWriterCoroutine());
-        currentDialogTimerCoroutine = StartCoroutine(DialogTimerCoroutine());
+        ringing                         = false;
+        pickedUpPhone                   = true;
+        unalteredCurrentDialog          = currentCaller.dialog;
+        currentDialog                   = textManipulator.active ? textManipulator.ScrambleText(unalteredCurrentDialog) : unalteredCurrentDialog;
+        currentDialogWriterCoroutine    = StartCoroutine(DialogWriterCoroutine());
+        currentDialogTimerCoroutine     = StartCoroutine(DialogTimerCoroutine());
     }
 
     public void CloseDialog(bool accepted)
@@ -183,9 +185,6 @@ public class PhoneController : Interactable
     {
         OpenDialog();
 
-        Vector3 previousPosition = phoneHorn.position;
-        Quaternion previousRotation = phoneHorn.rotation;
-
         while (Vector3.Distance(phoneHorn.position, target.position) > 0.001f)
         {
             phoneHorn.position = Vector3.Lerp(phoneHorn.position, target.position, 15 * Time.deltaTime);
@@ -198,12 +197,15 @@ public class PhoneController : Interactable
             yield return null;
         }
 
-        while (Vector3.Distance(phoneHorn.position, previousPosition) > 0.001f)
+        while (Vector3.Distance(phoneHorn.position, originalHornPosition) > 0.001f)
         {
-            phoneHorn.position = Vector3.Lerp(phoneHorn.position, previousPosition, 15 * Time.deltaTime);
-            phoneHorn.rotation = Quaternion.Lerp(phoneHorn.rotation, previousRotation, 15 * Time.deltaTime);
+            phoneHorn.position = Vector3.Lerp(phoneHorn.position, originalHornPosition, 15 * Time.deltaTime);
+            phoneHorn.rotation = Quaternion.Lerp(phoneHorn.rotation, originalHornRotation, 15 * Time.deltaTime);
             yield return null;
         }
+
+        phoneHorn.position = originalHornPosition;
+        phoneHorn.rotation = originalHornRotation;
     }
 }
 
