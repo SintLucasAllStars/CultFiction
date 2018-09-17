@@ -5,7 +5,7 @@ using UnityEngine;
 public class CourseManager : MonoBehaviour
 {
 
-	private int _rounds;
+	public int Rounds { get; private set; }
 	
 	public delegate void StartRound();
 	public static event StartRound OnStartRound;
@@ -13,7 +13,11 @@ public class CourseManager : MonoBehaviour
 	public delegate void EndRound();
 	public static event EndRound OnEndRound;
 
+	public delegate void EndGame();
+	public static event EndGame OnEndGame;
+
 	private bool _isPlaying;
+	private bool _isEnded;
 
 	public static CourseManager Instance;
 	
@@ -27,6 +31,8 @@ public class CourseManager : MonoBehaviour
 	{
 		if(OnStartRound != null)
 		OnStartRound();
+
+		_isEnded = false;
 	}
 
 	private void OnEnable()
@@ -56,24 +62,26 @@ public class CourseManager : MonoBehaviour
 	public void StartNewRound()
 	{
 		_isPlaying = false;
-		_rounds++;
+		Rounds++;
 		OnStartRound();
 	}
 
 	public void StopRound()
 	{
+		if(_isEnded) return;
+		
 		OnEndRound();
 	}
 
 	public void RestartRound()
 	{
-		_rounds++;
+		Rounds++;
 		
 	}
 
-	public void EndGame()
+	public void StopGame()
 	{
-		GameManager.Instance.EndCourse(this, _rounds);
-		//Unload all course objects
+		_isEnded = true;
+		OnEndGame();
 	}
 }

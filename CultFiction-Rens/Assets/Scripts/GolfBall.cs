@@ -8,10 +8,14 @@ public class GolfBall : MonoBehaviour
 	private bool _isMoving;
 	private Rigidbody _rigidbody;
 	private Vector3 _lastPostion;
+	private TrailRenderer _trail;
+
+	public bool OutOfBounds = false;
 	
 	void Start ()
 	{
 		_rigidbody = GetComponent<Rigidbody>();
+		_trail = GetComponent<TrailRenderer>();
 	}
 
 	private void OnEnable()
@@ -29,6 +33,8 @@ public class GolfBall : MonoBehaviour
 	private void OnStartRound()
 	{
 		_lastPostion = transform.position;
+		OutOfBounds = false;
+		_trail.enabled = true;
 	}
 
 	private void OnHitBall()
@@ -53,12 +59,14 @@ public class GolfBall : MonoBehaviour
 		GameObject hitObject = other.gameObject;
 		if (hitObject.CompareTag("EndPoint"))
 		{
-			CourseManager.Instance.EndGame();
+			CourseManager.Instance.StopGame();
 			_isMoving = false;
 		}
 		else if (hitObject.CompareTag("Outside"))
 		{
 			_isMoving = false;
+			OutOfBounds = true;
+			_trail.enabled = false;
 			_rigidbody.velocity = Vector3.zero;
 			transform.position = _lastPostion;
 			CourseManager.Instance.StopRound();

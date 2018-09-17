@@ -20,17 +20,18 @@ public class BallFollowCamera : MonoBehaviour
 	private void OnEnable()
 	{
 		PlayerController.onHitBall += OnHitBall;
-		CourseManager.OnEndRound += OnEndRound;
+		CourseManager.OnStartRound += OnStartNewRound;
 	}
 	
 	private void OnDisable()
 	{
 		PlayerController.onHitBall -= OnHitBall;
-		CourseManager.OnEndRound -= OnEndRound;
+		CourseManager.OnStartRound -= OnStartNewRound;
 	}
 
-	private void OnEndRound()
+	private void OnStartNewRound()
 	{
+		if(_camera !=  null)
 		_camera.SetActive(false);
 	}
 

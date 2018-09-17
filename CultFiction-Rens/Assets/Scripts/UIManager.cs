@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,16 +13,21 @@ public class UIManager : MonoBehaviour
 		CourseManager.OnStartRound += OnStartRound;
 		CourseManager.OnEndRound += OnEndRound;
 		PlayerController.onHitBall += OnHitBall;
+		CourseManager.OnEndGame += OnEndGame;
 	}
-
 
 	private void OnDisable()
 	{
+		CourseManager.OnEndGame -= OnEndGame;
 		CourseManager.OnStartRound -= OnStartRound;
 		CourseManager.OnEndRound -= OnEndRound;
 		PlayerController.onHitBall -= OnHitBall;
 	}
 
+	private void OnEndGame()
+	{
+		OpenMenu(2);
+	}
 	private void OnEndRound()
 	{
 		OpenMenu(1);
@@ -51,6 +57,11 @@ public class UIManager : MonoBehaviour
 	private void CloseMenus()
 	{
 		_currentMenu.SetActive(false);
+	}
+
+	public void CloseCourse()
+	{
+		SceneManager.LoadScene("MainMenu");
 	}
 	
 }
