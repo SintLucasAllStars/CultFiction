@@ -1,24 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class BoxScript : MonoBehaviour
 {
 
     public Item item;
     public int hp;
-    ItemList il;
+    BoxManager bm;
+    AudioSource asc;
 
     // Use this for initialization
     void Start()
     {
-        il = FindObjectOfType<ItemList>();
+        asc = FindObjectOfType<AudioSource>();
+        bm = FindObjectOfType<BoxManager>();
+        this.gameObject.name = "Box (" + item.name + ")";
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.y < -5f)
+        if (transform.position.y < -5f || transform.position.y > 10f)
         {
             Destroyed();
         }
@@ -26,24 +29,41 @@ public class BoxScript : MonoBehaviour
 
     void Destroyed()
     {
+        Destroy(GetComponent<FloatScript>());
         Destroy(GetComponent<Rigidbody>());
-        //iTween.rot(this.gameObject, Quaternion.identity.eulerAngles, 1f);
+        Destroy(GetComponent<Collider>());
 
         this.transform.rotation = Quaternion.identity;
-        this.transform.position = new Vector3(transform.position.x, il.Floor.transform.position.y + 1f, transform.position.z);
-        //iTween.MoveTo(this.gameObject, new Vector3(transform.position.x, il.Floor.transform.position.y + 1f, transform.position.z), 2f);
+        float height = (bm.Floor.transform.lossyScale.y / 2f) + .3f;
+        //bm.Floor.transform.position.y + 1f
+        this.transform.position = new Vector3(transform.position.x, height, transform.position.z);
 
-        GameObject pan = Instantiate(il.panel, transform.position, Quaternion.identity, transform);
+        GameObject pan = Instantiate(bm.panel, transform.position, Quaternion.identity, transform);
         pan.GetComponent<Renderer>().material.mainTexture = item.image;
-        iTween.MoveTo(pan, new Vector3(transform.position.x, transform.position.y + 2f, transform.position.z), 2f);
-        iTween.RotateTo(pan, new Vector3(-90f, 0f, 0f), 1f);
 
+
+        iTween.MoveTo(pan, new Vector3(transform.position.x, transform.position.y + 1.4f, transform.position.z), 2f);
+        iTween.RotateTo(pan, new Vector3(90f, 0f, 0f), 1f);
+
+        bm.boxes.Remove(this.gameObject);
+        bm.CheckBoxes();
+
+        CoconutManager.score += item.value;
         Destroy(this.gameObject, 3f);
     }
 
-    void TakeDamage(Vector3 velocity)
-    {
 
+    void TakeDamage(Vector3 v)
+    {
+        if (v.z < 0) v.z = -v.z;
+        int damage = (int)(v.z / 2f);
+        hp -= damage;
+        if (hp <= 0)
+        {
+            Destroyed();
+            return;
+        }
+        Debug.Log("Damage: " + damage + " / " + hp);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -51,6 +71,8 @@ public class BoxScript : MonoBehaviour
         if (collision.gameObject.CompareTag("Nut"))
         {
             TakeDamage(collision.relativeVelocity);
+            if (asc != null)
+            asc.Play();
         }
     }
 }
