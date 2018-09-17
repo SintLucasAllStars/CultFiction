@@ -2,70 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Recoil : MonoBehaviour
+[System.Serializable]
+public class Recoil
 {
+    int fire;
+    float multiplier = .1f;
 
-    float recoil;
-    bool isRecoiling;
-    Vector2 maxRecoil = Vector2.zero;
-    float speed;
+    [Header("Recoil Aim")]
+    [SerializeField] Vector2 recoilAimX;
+    [SerializeField] Vector2 recoilAimY;
 
-    Quaternion zero = Quaternion.Euler(0, 0, 0);
+    [Header("Recoil Hip")]
+    [SerializeField] Vector2 recoilHipX;
+    [SerializeField] Vector2 recoilHipY;
 
-
-    // Use this for initialization
-    public void Setup(Weapon currentWeapon)
+    public Vector3 GetRecoil(Vector3 forward, bool isAiming)
     {
-        maxRecoil = currentWeapon.maxRecoil;
-        speed = currentWeapon.recoilSpeed;
-
+        fire++;
+        forward.x += ((isAiming) ? Random.Range(recoilAimX.x, recoilAimX.y) : Random.Range(recoilHipX.x, recoilHipX.y)) * (multiplier * fire);
+        forward.y += ((isAiming) ? Random.Range(recoilAimY.x, recoilAimY.y) : Random.Range(recoilHipY.x, recoilHipY.y)) * (multiplier * fire);
+        return forward;
     }
 
-    public void StartRecoil()
+    public void ResetHits()
     {
-    }
-
-    public void EndRecoil()
-    {
-        //kogels bijhouden
-        //
-    }
-
-
-    public void AddRecoil(float time)
-    {
-        if(isRecoiling)
-        {
-            recoil += time;
-        }
-        else
-        {
-            recoil = Time.time + time;
-            isRecoiling = true;
-        }
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(recoil < Time.time)
-            isRecoiling = false;
-
-        RecoilWeapon();
-    }
-
-    void RecoilWeapon()
-    {
-        if(isRecoiling)
-        {
-
-            Quaternion maxRecoilRotation = Quaternion.Euler(-maxRecoil.x, maxRecoil.y, 0f);
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, maxRecoilRotation, Time.deltaTime * speed);
-        }
-        else if(Quaternion.identity != zero)
-        {
-            transform.localRotation = Quaternion.Slerp(transform.localRotation , Quaternion.identity, Time.deltaTime * speed / 2);
-        }
+        fire = 0;
     }
 }

@@ -137,7 +137,7 @@ public class Enemy : MonoBehaviour
     void SetMovementSpeed(Movement movement)
     {
 
-        if(currentMovenent != Movement.dead)
+        if(currentMovenent == Movement.dead)
             return;
 
         currentMovenent = movement;

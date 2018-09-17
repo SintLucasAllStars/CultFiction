@@ -4,8 +4,7 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
     [Header("Visual")]
-    [SerializeField]
-    Muzzle muzzleFlash;
+    [SerializeField] Muzzle muzzleFlash;
 
     [Header("Weapon Settings")]
     public int ammo;
@@ -17,24 +16,21 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] protected float fireDistance = 1000;
 
     [Header("Weapon Damage")]
-    [SerializeField]
-    int defaultDamage;
+    [SerializeField] int defaultDamage;
     [SerializeField] int headShotDamage;
     [SerializeField] int armLegDamage;
     [SerializeField] float shootDelay;
     public bool isAutomatic = false;
 
     [Header("Weapon Recoil")]
-    public Vector2 maxRecoil;
-    public float recoilSpeed;
-    public float recoilTime;
+    public Recoil recoil;
 
     [Header("Aim Settings")]
     [SerializeField] Vector3 aimPosition;
     [SerializeField] Vector3 aimRotation;
     [SerializeField] float fieldOfView;
 
-    public bool isAimedDown;
+    public bool isAming;
 
     Quaternion defaultRotation;
     Vector3 defaultPosition;
@@ -113,8 +109,10 @@ public abstract class Weapon : MonoBehaviour
     {
         if(cameraTransform == null)
             cameraTransform = Camera.main.transform;
-        Debug.DrawRay(cameraTransform.transform.position, cameraTransform.forward, Color.red, 20);
-        if(Physics.Raycast(cameraTransform.transform.position, cameraTransform.forward, out hit, fireDistance))
+
+        Vector3 forward = recoil.GetRecoil(cameraTransform.forward, isAming);
+        Debug.DrawRay(cameraTransform.transform.position, forward, Color.red, 20);
+        if(Physics.Raycast(cameraTransform.transform.position, forward, out hit, fireDistance))
         {
             return true;
         }
@@ -156,7 +154,7 @@ public abstract class Weapon : MonoBehaviour
 
     public virtual void Aim(bool aimDownSight)
     {
-        isAimedDown = aimDownSight;
+        isAming = aimDownSight;
         Camera.main.fieldOfView = (aimDownSight) ? fieldOfView: fieldOfViewDefault;
         transform.localPosition = (aimDownSight) ? aimPosition : defaultPosition;
         transform.localRotation = (aimDownSight) ? Quaternion.Euler(aimRotation) : defaultRotation;

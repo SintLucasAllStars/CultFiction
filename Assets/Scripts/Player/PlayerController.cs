@@ -26,7 +26,6 @@ public class PlayerController : MonoBehaviour
     [Header("Weapon")]
     public Weapon currentWeapon;
     public Weapon secondaryWeapon;
-    [SerializeField] Recoil recoil;
     [SerializeField] WeaponUI weaponUI;
 
     [Header("Player")]
@@ -45,7 +44,6 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         camera = Camera.main.gameObject.transform;
-        recoil.Setup(currentWeapon);
         weaponUI.UpdateWeapon(currentWeapon);
     }
 
@@ -67,7 +65,10 @@ public class PlayerController : MonoBehaviour
                 {
                     currentWeapon.Fire();
                     weaponUI.UpdateAmmo(currentWeapon.ammo, currentWeapon.ammoStockPile);
-                    //recoil.AddRecoil(currentWeapon.recoilTime);
+                }
+                else if(Input.GetMouseButtonUp(0))
+                {
+                    currentWeapon.recoil.ResetHits();
                 }
             }
             else
@@ -76,7 +77,10 @@ public class PlayerController : MonoBehaviour
                 {
                     currentWeapon.Fire();
                     weaponUI.UpdateAmmo(currentWeapon.ammo, currentWeapon.ammoStockPile);
-                    //recoil.AddRecoil(currentWeapon.recoilTime);
+                }
+                else if(Input.GetMouseButtonUp(0))
+                {
+                    currentWeapon.recoil.ResetHits();
                 }
             }
 
@@ -222,7 +226,6 @@ public class PlayerController : MonoBehaviour
 
         secondaryWeapon = weapon;
         weapon.Toggle(false);
-        recoil.Setup(currentWeapon);
         weaponUI.UpdateWeapon(currentWeapon);
         currentWeapon.Aim(false);
 
