@@ -8,7 +8,7 @@ public class AmmoBox : MonoBehaviour, IInteractable
 
     public void Interact(PlayerController controller)
     {
-        if(Gamemanager.instance.GetScore() > requiredPoints)
+        if(Gamemanager.instance.GetScore() >= requiredPoints)
         {
             Gamemanager.instance.AddToScore(requiredPoints);
             controller.currentWeapon.FillAmmo();

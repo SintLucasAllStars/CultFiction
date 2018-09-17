@@ -25,6 +25,8 @@ public class Spawner : MonoBehaviour
 
         if(spawn)
             StartCoroutine(SpawnTimer());
+        else
+            StopAllCoroutines();
     }
 
     IEnumerator SpawnTimer()
