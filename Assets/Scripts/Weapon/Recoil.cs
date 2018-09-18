@@ -18,14 +18,14 @@ public class Recoil
 
     public Vector3 GetRecoil(Vector3 forward, bool isAiming)
     {
-        fire++;
         forward.x += ((isAiming) ? Random.Range(recoilAimX.x, recoilAimX.y) : Random.Range(recoilHipX.x, recoilHipX.y)) * (multiplier * fire);
         forward.y += ((isAiming) ? Random.Range(recoilAimY.x, recoilAimY.y) : Random.Range(recoilHipY.x, recoilHipY.y)) * (multiplier * fire);
+        fire++;
         return forward;
     }
 
     public void ResetHits()
     {
-        fire = 0;
+        fire = 1;
     }
 }

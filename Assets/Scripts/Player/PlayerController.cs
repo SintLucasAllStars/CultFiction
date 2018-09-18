@@ -7,8 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     //Movement
     [Header("Movement")]
-    [SerializeField]
-    float walkSpeed;
+    [SerializeField] float walkSpeed;
     [SerializeField] float runSpeed;
     [SerializeField] float jumpSpeed;
 
@@ -17,8 +16,7 @@ public class PlayerController : MonoBehaviour
 
     //Mouse
     [Header("Mouse")]
-    [SerializeField]
-    Vector2 sensitivity;
+    [SerializeField] Vector2 sensitivity;
     [SerializeField] Vector2 clamp;
     [SerializeField] float range = 5;
 
@@ -64,7 +62,7 @@ public class PlayerController : MonoBehaviour
                 if(Input.GetMouseButton(0))
                 {
                     currentWeapon.Fire();
-                    weaponUI.UpdateAmmo(currentWeapon.ammo, currentWeapon.ammoStockPile);
+                    UpdateAmmo();
                 }
                 else if(Input.GetMouseButtonUp(0))
                 {
@@ -76,7 +74,7 @@ public class PlayerController : MonoBehaviour
                 if(Input.GetMouseButtonDown(0))
                 {
                     currentWeapon.Fire();
-                    weaponUI.UpdateAmmo(currentWeapon.ammo, currentWeapon.ammoStockPile);
+                    UpdateAmmo();
                 }
                 else if(Input.GetMouseButtonUp(0))
                 {
@@ -85,29 +83,28 @@ public class PlayerController : MonoBehaviour
             }
 
         }
-        if(Input.GetKey(KeyCode.R))
+        if(Input.GetButton("Reload"))
         {
             if(currentWeapon != null)
                 currentWeapon.Reload();
 
-            weaponUI.UpdateAmmo(currentWeapon.ammo, currentWeapon.ammoStockPile);
+            UpdateAmmo();
         }
 
         if(Input.GetMouseButtonDown(1))
         {
-            Debug.Log("Down");
             currentWeapon.Aim(true);
         }
 
         if(Input.GetMouseButtonUp(1))
         {
-            Debug.Log("Up");
             currentWeapon.Aim(false);
         }
 
 
         float scrollWheel = Input.GetAxis("Mouse ScrollWheel"); ;
-        if(scrollWheel > 0 || scrollWheel < 0)
+        if(scrollWheel > 0 || scrollWheel < 0 || Input.GetButtonDown("Toggle"))
+
         {
             SwapWeapon();
         }
@@ -205,8 +202,9 @@ public class PlayerController : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(camera.position, camera.forward, out hit, range) && hit.collider.CompareTag("Interactable"))
         {
-            if(Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0))
+            if(Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.E))
             {
+                Debug.Log("interact");
                 hit.collider.GetComponent<IInteractable>().Interact(this);
             }
         }
@@ -249,6 +247,11 @@ public class PlayerController : MonoBehaviour
             weaponUI.SetNewHealth(currentHeatlh, maxHealth);
             yield return new WaitForEndOfFrame();
         }
+    }
+
+    public void UpdateAmmo()
+    {
+        weaponUI.UpdateAmmo(currentWeapon.ammo, currentWeapon.ammoStockPile);
     }
 
 
