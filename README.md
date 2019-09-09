@@ -7,30 +7,28 @@ The idea is to show off your programming skills, your creativity and your organi
    * Creativity and concept - 25 points max
    * Visual quality - 20 points max
    * Overall game quality - 30 points max
-   
+
 ## Grade ranges
    * (0 - 40) - Onvoldoende
    * (41 - 60) - Voldoende
    * (61 - 85) - Goed
-   * (86 - 100) - Excelent 
+   * (86 - 100) - Excelent
 
-## The scenes: 
-https://www.youtube.com/watch?v=mC1ikwQ5Zgc 
+## The scenes:
+https://www.youtube.com/watch?v=mC1ikwQ5Zgc
 
-https://www.youtube.com/watch?v=FkV65vOQxGM 
+https://www.youtube.com/watch?v=FkV65vOQxGM
 
-https://www.youtube.com/watch?v=YdHAJ5Ypw6A 
+https://www.youtube.com/watch?v=YdHAJ5Ypw6A
 
 https://www.youtube.com/watch?v=IVG3D1JlQ2Q
 
-https://www.youtube.com/watch?v=GZR58d77a4A
+https://www.youtube.com/watch?v=lWz8NGIisMo
 
 https://www.youtube.com/watch?v=tLCTSMBUfmE
 
 ## Delivery:
 You will deliver the assignment by forking this repository, developing the game on your fork and sending a pull request.
-On the pull request description should be your name, a small text explaining what scene and the elements of the scene that inspired the game. 
+On the pull request description should be your name, a small text explaining what scene and the elements of the scene that inspired the game.
 
-The deadline for the pull requests is the 17th of September 2018.
-
-
+The deadline for the pull requests is the 20th of September 2019.
