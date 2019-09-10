@@ -5,37 +5,81 @@ using UnityEngine;
 public class PlayerFlyController : MonoBehaviour
 {
 
-    public Rigidbody rb;
+    [Header("Ship Stats")]
+    public float normalSpeed;
+    public float dashSpeed;
+    public float verticalSpeedMultiplyer;
+    public float horizontalSpeedMultiplyer;
 
-    // Use this for initialization
+    [Header("Camere's")]
+    public GameObject thirdPersonCamera;
+    public GameObject firstPersonCamera;
+    public GameObject backCamera;
+
+    bool firstPerson;
+
+    Rigidbody rb;
+    
     void Start()
     {
-        Debug.Log("Fly script added to: " + gameObject.name);
+        rb = GetComponent<Rigidbody>();
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
-        //rb.MovePosition(rb.position + transform.forward * Time.deltaTime * 10f);
-        transform.position += transform.forward * Time.deltaTime * 10f;
-        rb.velocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+        Movement();
+        CameraControl();
+    }
+
+    void Movement()
+    {
+        transform.position += transform.forward * Time.deltaTime * normalSpeed;
+
         if (Input.GetButton("Fire1"))
         {
-            //rb.MovePosition(rb.position + transform.forward * Time.deltaTime * 40f);
-            transform.position += transform.forward * Time.deltaTime * 40f;
+            transform.position += transform.forward * Time.deltaTime * dashSpeed;
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
             RegainControl();
         }
 
-        transform.Rotate(Input.GetAxis("Vertical"), 0.0f, -Input.GetAxis("Horizontal"));
-        
+        transform.Rotate(Input.GetAxis("Vertical") * verticalSpeedMultiplyer, 0.0f, -Input.GetAxis("Horizontal") * horizontalSpeedMultiplyer);
+    }
+
+    void CameraControl()
+    {
+        if (Input.GetKey(KeyCode.Tab))
+        {
+            if (firstPerson == true)
+            {
+                firstPersonCamera.SetActive(false);
+                backCamera.SetActive(true);
+            }
+            else
+            {
+                thirdPersonCamera.SetActive(false);
+                backCamera.SetActive(true);
+            }
+        }
+        else
+        {
+            if (firstPerson == true)
+            {
+                firstPersonCamera.SetActive(true);
+                backCamera.SetActive(false);
+            }
+            else
+            {
+                thirdPersonCamera.SetActive(true);
+                backCamera.SetActive(false);
+            }
+        }
     }
 
     void RegainControl()
     {
+        //Based on broken parts maybe set a certain amount of velocity and angular velocity
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
     }
