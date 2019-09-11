@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerFlyController : MonoBehaviour
+public class PlayerFlyController : Ship
 {
 
-    [Header("Ship Stats")]
-    public float normalSpeed;
-    public float dashSpeed;
+    [Header("Control Stats")]
     public float verticalSpeedMultiplyer;
     public float horizontalSpeedMultiplyer;
     
     [Header("Ship Parts")]
     public GameObject turboFX;
+
+    [Header("Damage FX")]
+    public GameObject[] damageStates;
 
     [Header("Camere's")]
     public GameObject thirdPersonCamera;
@@ -43,7 +44,7 @@ public class PlayerFlyController : MonoBehaviour
         }
         else
         {
-            transform.position += transform.forward * Time.deltaTime * normalSpeed;
+            transform.position += transform.forward * Time.deltaTime * shipSpeed;
             turboFX.SetActive(false);
         }
 
@@ -103,4 +104,26 @@ public class PlayerFlyController : MonoBehaviour
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
     }
+
+    void TakeDamage()
+    {
+
+    }
+
+    void PlayerStates(int health)
+    {
+        if (health < 80 && health > 50)
+        {
+            damageStates[0].SetActive(true);
+        }
+        else if (health < 50 && health > 30)
+        {
+            damageStates[1].SetActive(true);
+        }
+        else if (health < 30)
+        {
+            damageStates[2].SetActive(true);
+        }
+    }
+
 }
