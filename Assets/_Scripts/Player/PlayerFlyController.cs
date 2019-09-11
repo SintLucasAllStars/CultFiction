@@ -10,6 +10,9 @@ public class PlayerFlyController : MonoBehaviour
     public float dashSpeed;
     public float verticalSpeedMultiplyer;
     public float horizontalSpeedMultiplyer;
+    
+    [Header("Ship Parts")]
+    public GameObject turboFX;
 
     [Header("Camere's")]
     public GameObject thirdPersonCamera;
@@ -33,12 +36,17 @@ public class PlayerFlyController : MonoBehaviour
 
     void Movement()
     {
-        transform.position += transform.forward * Time.deltaTime * normalSpeed;
-
         if (Input.GetButton("Fire1"))
         {
             transform.position += transform.forward * Time.deltaTime * dashSpeed;
+            turboFX.SetActive(true);
         }
+        else
+        {
+            transform.position += transform.forward * Time.deltaTime * normalSpeed;
+            turboFX.SetActive(false);
+        }
+
         if (Input.GetKeyDown(KeyCode.R))
         {
             RegainControl();
@@ -49,18 +57,15 @@ public class PlayerFlyController : MonoBehaviour
 
     void CameraControl()
     {
+        if (Input.GetButtonDown("Fire2"))
+        {
+            SwitchCamera();
+        }
         if (Input.GetKey(KeyCode.Tab))
         {
-            if (firstPerson == true)
-            {
-                firstPersonCamera.SetActive(false);
-                backCamera.SetActive(true);
-            }
-            else
-            {
-                thirdPersonCamera.SetActive(false);
-                backCamera.SetActive(true);
-            }
+            thirdPersonCamera.SetActive(false);
+            firstPersonCamera.SetActive(false);
+            backCamera.SetActive(true);
         }
         else
         {
@@ -74,6 +79,21 @@ public class PlayerFlyController : MonoBehaviour
                 thirdPersonCamera.SetActive(true);
                 backCamera.SetActive(false);
             }
+        }
+    }
+
+    void SwitchCamera()
+    {
+        firstPerson = !firstPerson;
+        if (firstPerson == true)
+        {
+            firstPersonCamera.SetActive(true);
+            thirdPersonCamera.SetActive(false);
+        }
+        else
+        {
+            thirdPersonCamera.SetActive(true);
+            firstPersonCamera.SetActive(false);
         }
     }
 
