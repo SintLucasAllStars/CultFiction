@@ -2,15 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyDetection : Ship
+public class EnemyDetection : MonoBehaviour
 {
     public List<GameObject> enemys = new List<GameObject>();
+
+    public PlayerCombat pc;
+
+    private void Start()
+    {
+        pc = GameObject.FindObjectOfType<PlayerCombat>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
             enemys.Add(other.gameObject);
+            pc.FoundTarget();
             other.gameObject.GetComponent<EnemyBehaviour>().lockOn.SetActive(true);
         }
     }
@@ -19,6 +27,7 @@ public class EnemyDetection : Ship
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
+            pc.LoseTarget();
             enemys.Remove(other.gameObject);
             other.gameObject.GetComponent<EnemyBehaviour>().lockOn.SetActive(false);
         }

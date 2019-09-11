@@ -71,25 +71,6 @@ public class PlayerFlyController : Ship
         {
             SwitchCamera();
         }
-        if (Input.GetKey(KeyCode.Tab))
-        {
-            thirdPersonCamera.SetActive(false);
-            firstPersonCamera.SetActive(false);
-            backCamera.SetActive(true);
-        }
-        else
-        {
-            if (firstPerson == true)
-            {
-                firstPersonCamera.SetActive(true);
-                backCamera.SetActive(false);
-            }
-            else
-            {
-                thirdPersonCamera.SetActive(true);
-                backCamera.SetActive(false);
-            }
-        }
     }
 
     void SwitchCamera()
