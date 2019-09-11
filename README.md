@@ -32,3 +32,7 @@ You will deliver the assignment by forking this repository, developing the game 
 On the pull request description should be your name, a small text explaining what scene and the elements of the scene that inspired the game.
 
 The deadline for the pull requests is the 20th of September 2019.
+
+
+## Concept:
+At the start of the game you spawn on a deserted island. You have to collect as many coconuts as posible in a set time. You can collect the coconuts by trowing stones at them, once they fall down you get a point. The stones needed can be found arround the island.
