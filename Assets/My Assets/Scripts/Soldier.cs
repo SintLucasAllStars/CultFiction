@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Soldier : MonoBehaviour
 {
+    public GameObject worldSpaceUnit;
+    public bool selectUnit;
     public enum unitStatus
     {
         inactive = 0,
@@ -11,26 +13,27 @@ public class Soldier : MonoBehaviour
         selected = 2
     }
 
-    [SerializeField] private GameManager gm;
+    public unitStatus unitState;
+    public GameManager gm;
     // Start is called before the first frame update
     void Start()
     {
+        unitState = unitStatus.inactive;
+        worldSpaceUnit = this.gameObject;
         gm = GameObject.Find("Game Managers and debug").GetComponent<GameManager>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (gm.gamePhase == GameManager.Phase.BattleSideRed)
-        {
-            Debug.Log("RedSideTurn");
-            gm.gamePhase = GameManager.Phase.SwitchSide;
-        }
+       
 
         if (gm.gamePhase == GameManager.Phase.BattleSideBlue)
         {
             Debug.Log("BlueSideTurn");
             gm.gamePhase = GameManager.Phase.SwitchSide;
+            
         }
     }
 }
