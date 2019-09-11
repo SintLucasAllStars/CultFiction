@@ -7,9 +7,9 @@ public class Player : Spider
     private float _xDir;
     private float _zDir;
 
-    void Start()
+    protected override void Start()
     {
-        
+        base.Start();
     }
 
     void Update()
@@ -17,26 +17,43 @@ public class Player : Spider
         _xDir = Input.GetAxisRaw("Horizontal");
         _zDir = Input.GetAxisRaw("Vertical");
 
-        if (_xDir != 0 || _zDir != 0)
+        IsWalking = _xDir != 0 || _zDir != 0;
+        if (IsWalking)
         {
             Walk();
         }
     }
 
+    public override void AddFollower(FollowerSpider follower)
+    {
+        base.AddFollower(follower);
+    }
+
+    public override void RemoveFollower(FollowerSpider follower)
+    {
+        base.RemoveFollower(follower);
+    }
+
     protected override void Walk()
     {
         base.Walk();
-        Rotate();
+        Rotate(_xDir, _zDir);
     }
 
-    private void Rotate()
+    protected override void Rotate(float xDir, float zDir)
     {
-        Vector3 moveDir = Quaternion.LookRotation(new Vector3(_xDir, 0, _zDir), Vector3.up).eulerAngles;
-        Vector3 bodyDir = _body.transform.rotation.eulerAngles;
+        base.Rotate(xDir, zDir);
+    }
 
-        float newDir = Mathf.MoveTowardsAngle(bodyDir.y, moveDir.y - _body.transform.position.y, _turnSpeed * Time.deltaTime);
-        //Vector3 rotateDir = Vector3.RotateTowards(bodyDir, moveDir - _body.transform.position, _turnSpeed * Time.deltaTime, _turnSpeed);
-        //Vector3 newDir = Vector3.RotateTowards(bodyDir, moveDir - _body.transform.position, _turnSpeed * Time.deltaTime, _turnSpeed);
-        _body.transform.rotation = Quaternion.Euler(0, newDir, 0);
+    protected override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+
+        FollowerSpider hitSpider = other.gameObject.GetComponent<FollowerSpider>();
+        if (hitSpider != null && _followerSlots < _followers.Count)
+        {
+            AddFollower(hitSpider);
+            hitSpider.Leader = this;
+        }
     }
 }
