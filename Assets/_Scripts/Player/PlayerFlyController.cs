@@ -8,7 +8,8 @@ public class PlayerFlyController : Ship
     [Header("Control Stats")]
     public float verticalSpeedMultiplyer;
     public float horizontalSpeedMultiplyer;
-    
+    public bool gainControl;
+
     [Header("Ship Parts")]
     public GameObject turboFX;
 
@@ -22,11 +23,15 @@ public class PlayerFlyController : Ship
 
     bool firstPerson;
 
-    Rigidbody rb;
+    [HideInInspector]
+    public Rigidbody rb;
+
+    private PlayerUI pu;
     
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        pu = GameObject.FindObjectOfType<PlayerUI>();
     }
     
     void Update()
@@ -37,7 +42,7 @@ public class PlayerFlyController : Ship
 
     void Movement()
     {
-        if (Input.GetButton("Fire1"))
+        if (Input.GetKey(KeyCode.Space))
         {
             transform.position += transform.forward * Time.deltaTime * dashSpeed;
             turboFX.SetActive(true);
@@ -48,7 +53,11 @@ public class PlayerFlyController : Ship
             turboFX.SetActive(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && gainControl == false)
+        {
+            gainControl = true;
+        }
+        if (gainControl == true)
         {
             RegainControl();
         }
@@ -97,12 +106,16 @@ public class PlayerFlyController : Ship
             firstPersonCamera.SetActive(false);
         }
     }
-
+    
     void RegainControl()
     {
-        //Based on broken parts maybe set a certain amount of velocity and angular velocity
-        rb.velocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.Lerp(rb.angularVelocity, Vector3.zero, 0.15f);
+        rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.15f);
+        pu.DisableAlarm();
+        if (rb.angularVelocity == Vector3.zero && rb.velocity == Vector3.zero)
+        {
+            gainControl = false;
+        }
     }
 
     void TakeDamage()
