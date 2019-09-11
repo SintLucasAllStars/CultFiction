@@ -13,6 +13,7 @@ public class PlayerUI : MonoBehaviour
     public bool alarm;
     public Text rotYText;
     public Text rotZText;
+    public Text targetText;
     public Animator verticalBar;
     public Animator horizontalBar;
     public GameObject warning;
