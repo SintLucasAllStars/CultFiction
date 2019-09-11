@@ -40,8 +40,8 @@ public class PlayerUI : MonoBehaviour
 
     void SideBarAnimations()
     {
-        verticalBar.speed = Mathf.Abs(Input.GetAxis("Vertical"));
-        horizontalBar.speed = Mathf.Abs(Input.GetAxis("Horizontal"));
+        verticalBar.speed = Mathf.Abs(Input.GetAxis("Horizontal"));
+        horizontalBar.speed = Mathf.Abs(Input.GetAxis("Vertical"));
     }
 
     public void ActivateAlarm()
