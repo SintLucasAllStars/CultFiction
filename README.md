@@ -1,34 +1,36 @@
-# CultFiction
+<h1 align="center">Welcome to FixTheOD 👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0-blue.svg?cacheSeconds=2592000" />
+  <a href="https://github.com/ertugrul013/CultFiction/CultFiction/README.md">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
+  </a>
+  <a href="https://github.com/ertugrul013/CultFictio/LICENSE">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" target="_blank" />
+  </a>
+</p>
 
-Watch the following cult cinema scenes very carefully, chose one detail, ANY DETAIL big or small to make a micro-game or game  prototype out of.
-The idea is to show off your programming skills, your creativity and your organizational/production/decision making  skills. Therefore you should try to balance your game on these grading criteria:
+> People are having overdoses FIX by stabbing a siringe in their heart. Aim carefully or you will be put in jail
 
-   * Code organisation and complexity - 25 points max
-   * Creativity and concept - 25 points max
-   * Visual quality - 20 points max
-   * Overall game quality - 30 points max
+### 🏠 [Homepage](https://github.com/ertugrul013/CultFiction)
 
-## Grade ranges
-   * (0 - 40) - Onvoldoende
-   * (41 - 60) - Voldoende
-   * (61 - 85) - Goed
-   * (86 - 100) - Excelent
+## Idea
 
-## The scenes:
-https://www.youtube.com/watch?v=mC1ikwQ5Zgc
+## Usage
 
-https://www.youtube.com/watch?v=FkV65vOQxGM
+```
+Import the project in unity and you will be able to play the development build or download a build
+```
 
-https://www.youtube.com/watch?v=YdHAJ5Ypw6A
+## Author
 
-https://www.youtube.com/watch?v=IVG3D1JlQ2Q
+👤 **ertugrul013**
 
-https://www.youtube.com/watch?v=lWz8NGIisMo
+* Github: [@ertugrul013](https://github.com/ertugrul013)
 
-https://www.youtube.com/watch?v=tLCTSMBUfmE
+## 📝 License
 
-## Delivery:
-You will deliver the assignment by forking this repository, developing the game on your fork and sending a pull request.
-On the pull request description should be your name, a small text explaining what scene and the elements of the scene that inspired the game.
+Copyright © 2019 [ertugrul013](https://github.com/ertugrul013).<br />
+This project is [MIT](https://github.com/ertugrul013/CultFictio/LICENSE) licensed.
 
-The deadline for the pull requests is the 20th of September 2019.
+***
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
