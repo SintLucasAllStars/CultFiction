@@ -5,7 +5,7 @@ using UnityEngine;
 public class Soldier : MonoBehaviour
 {
     public GameObject worldSpaceUnit;
-    public bool selectUnit;
+
     public enum unitStatus
     {
         inactive = 0,
@@ -27,13 +27,22 @@ public class Soldier : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
-
         if (gm.gamePhase == GameManager.Phase.BattleSideBlue)
         {
             Debug.Log("BlueSideTurn");
             gm.gamePhase = GameManager.Phase.SwitchSide;
-            
         }
+    }
+    
+    void EndTurn()
+    {
+        if (gm.activeTeam == GameManager.ActiveTeam.RedTeam && unitState == unitStatus.selected)
+        {
+            Debug.Log("RedSideTurn");
+            gm.gamePhase = GameManager.Phase.SwitchSide;
+        }
+
+        gm.activeTeam = GameManager.ActiveTeam.NoTeam;
+        gm.gamePhase = GameManager.Phase.PrevSideRed;
     }
 }

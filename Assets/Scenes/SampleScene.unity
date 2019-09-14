@@ -407,9 +407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebb55b7039b7f78499715a0d8f8355c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridCubePrefab: {fileID: 3456387497588612371, guid: 725e6a4bbbdce2045902b8fafe5894d2,
-    type: 3}
-  digitalGrid: []
+  dGrid: []
 --- !u!114 &1243354626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -422,11 +420,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0afdc023f73d1964e8b2b155f329a33b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitDataBase: []
+  LevelBuildManager: {fileID: 0}
   redTeam: []
   blueTeam: []
-  testPrefabUnits:
-  - {fileID: 4625565179790596566, guid: 10654d2c85cf6454ea88116f58cc424f, type: 3}
-  - {fileID: 9137470218176006267, guid: 7fcbf0aae37db654aaa4adeea8e75d43, type: 3}
+  testPrefabUnitsRed:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  testPrefabUnitsBlue:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   gamePhase: 0
   activeTeam: 0
 --- !u!1 &1392487057 stripped
@@ -447,7 +452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dadbd23a5a05ca845a3b7968cd7da142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listID: 0
+  dListID: 0
   xAxis: 0
   yAxis: 0
   zAxis: 0

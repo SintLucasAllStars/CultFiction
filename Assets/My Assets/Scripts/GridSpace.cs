@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class GridSpace : MonoBehaviour
 {
-  public int listID;
+  public int dListID;
   public int xAxis;
   public int yAxis;
   public int zAxis;
