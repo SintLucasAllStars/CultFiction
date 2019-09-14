@@ -15,7 +15,7 @@
 
 ## Idea
 
-In the scene of pulp fiction where the gril has an overdose.
+In the scene of pulp fiction where the girl has an overdose.
 > see link: https://youtu.be/tLCTSMBUfmE?t=16 
 
 Your job in this game is help you junkies tot stay alive by stabbing a needle in their heart. But be careful all the junkies have a different hit area so aim carefully or they will die.
