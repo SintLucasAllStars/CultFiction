@@ -7,9 +7,13 @@ public class FollowerSpider : Spider
     [SerializeField]
     private float _preferedDistance = 0.1f;
 
-    private Spider leader;
+    private Spider _leader;
 
-    public Spider Leader { get => leader; set => leader = value; }
+    public Spider Leader
+    {
+        get { return _leader; }
+        set { _leader = value; }
+    }
 
     protected override void Start()
     {
@@ -42,5 +46,20 @@ public class FollowerSpider : Spider
     protected override void Rotate(float xDir, float zDir)
     {
         base.Rotate(xDir, zDir);
+    }
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+
+        if (Leader != null)
+        {
+            AddFollowerSpider(other);
+        }        
+    }
+
+    protected override void AddFollowerSpider(Collider hitTrigger)
+    {
+        base.AddFollowerSpider(hitTrigger);
     }
 }

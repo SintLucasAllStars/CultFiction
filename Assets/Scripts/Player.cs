@@ -24,11 +24,6 @@ public class Player : Spider
         }
     }
 
-    public override void AddFollower(FollowerSpider follower)
-    {
-        base.AddFollower(follower);
-    }
-
     public override void RemoveFollower(FollowerSpider follower)
     {
         base.RemoveFollower(follower);
@@ -49,11 +44,11 @@ public class Player : Spider
     {
         base.OnTriggerEnter(other);
 
-        FollowerSpider hitSpider = other.gameObject.GetComponent<FollowerSpider>();
-        if (hitSpider != null && _followerSlots < _followers.Count)
-        {
-            AddFollower(hitSpider);
-            hitSpider.Leader = this;
-        }
+        AddFollowerSpider(other);
+    }
+
+    protected override void AddFollowerSpider(Collider hitTrigger)
+    {
+        base.AddFollowerSpider(hitTrigger);
     }
 }

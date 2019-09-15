@@ -49,11 +49,6 @@ public class Spider : MonoBehaviour
         
     }
 
-    public virtual void  AddFollower(FollowerSpider follower)
-    {
-        _followers.Add(follower);
-    }
-
     public virtual void RemoveFollower(FollowerSpider follower)
     {
         if (_followerSlots > 0)
@@ -79,5 +74,18 @@ public class Spider : MonoBehaviour
     protected virtual void OnTriggerEnter(Collider other)
     {
         
+    }
+
+    protected virtual void AddFollowerSpider(Collider hitTrigger)
+    {
+        FollowerSpider hitSpider = hitTrigger.gameObject.GetComponent<FollowerSpider>();
+
+        if (hitSpider == null || hitSpider.Leader != null || _followers.Count >= _followerSlots)
+        {
+            return;
+        }
+        _followers.Add(hitSpider);
+        hitSpider.Leader = gameObject.GetComponent<Spider>();
+        hitSpider.Speed = Speed * 0.9f;
     }
 }
