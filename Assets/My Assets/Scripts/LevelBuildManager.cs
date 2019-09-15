@@ -9,7 +9,7 @@ public class LevelBuildManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // check level
+        dGridScript = GameObject.Find("Game Managers and debug").GetComponent<DGrid>();
     }
 
     // Update is called once per frame

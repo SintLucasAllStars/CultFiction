@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
     {
         // red team starts
         startingTeam = 1;
-        
+        LevelBuildManager = GameObject.Find("Game Managers and debug").GetComponent<LevelBuildManager>();
 
     }
 
@@ -62,7 +62,6 @@ public class GameManager : MonoBehaviour
         // Level Setup Later put in function
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            //SpawnUnits();
             SetupLevel();
 
            
@@ -108,7 +107,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void SpawnUnits()
+    void AssignUnitToTeam()
     {
         for (int i = 0; i < testPrefabUnitsRed.Count; i++)
         {
