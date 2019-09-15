@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class LockOnLookat : MonoBehaviour
 {
-    [SerializeField]
     private Transform target;
 
     private void Start()

@@ -11,7 +11,11 @@ public class TargetRocket : MonoBehaviour
     private float rotationSpeed;
     
     [SerializeField] private float focusDistance = 5;
+    public int damage;
     public Transform target;
+    public Transform explosionSpawn;
+    public GameObject explosion;
+    public bool enemyRocket;
     private bool isFollowingTarget = true;
     private Vector3 tempVector;
 
@@ -38,6 +42,41 @@ public class TargetRocket : MonoBehaviour
     private void MoveForward(float rate)
     {
         transform.Translate(Vector3.forward * rate * speed, Space.Self);
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (enemyRocket)
+        {
+            if (col.CompareTag("Player"))
+            {
+                col.GetComponent<PlayerFlyController>().TakeDamage(damage);
+                Explode();
+            }
+            else if (col.CompareTag("Enemy") == false) // To Prevent Exploding on spawm
+            {
+                Explode();
+            }
+        }
+        if (!enemyRocket)
+        {
+            if (col.CompareTag("Enemy"))
+            {
+                col.GetComponent<EnemyBehaviour>().health -= damage;
+                Explode();
+            }
+            else if (col.CompareTag("Player") == false) // To Prevent Exploding on spawm
+            {
+                Explode();
+            }
+        }
+        Debug.Log(col.gameObject.name);
+    }
+
+    void Explode()
+    {
+        Instantiate(explosion, explosionSpawn.position, Quaternion.identity);
+        Destroy(this.gameObject);
     }
 
 }

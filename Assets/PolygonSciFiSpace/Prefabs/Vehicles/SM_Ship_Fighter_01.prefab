@@ -112,7 +112,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47beafe669ca56e4e88a7025bb18d6a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!1 &1836386092
 GameObject:
   m_ObjectHideFlags: 0
@@ -205,6 +204,7 @@ GameObject:
   - component: {fileID: 23514865417621352}
   - component: {fileID: 1890877435}
   - component: {fileID: 1890877434}
+  - component: {fileID: 102572465}
   m_Layer: 0
   m_Name: SM_Ship_Fighter_01
   m_TagString: Enemy
@@ -298,4 +298,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0251f8d7165dc574986f4de4b7ec2ee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 200
+  shipSpeed: 0
+  dashSpeed: 0
   lockOn: {fileID: 1539531681}
+--- !u!54 &102572465
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1122383940670264}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

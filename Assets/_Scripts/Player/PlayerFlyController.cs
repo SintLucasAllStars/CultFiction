@@ -6,6 +6,7 @@ public class PlayerFlyController : Ship
 {
 
     [Header("Control Stats")]
+    public bool playerHasControl;
     public float verticalSpeedMultiplyer;
     public float horizontalSpeedMultiplyer;
     public bool gainControl;
@@ -36,8 +37,11 @@ public class PlayerFlyController : Ship
     
     void Update()
     {
-        Movement();
-        CameraControl();
+        if (playerHasControl)
+        {
+            Movement();
+            CameraControl();
+        }
     }
 
     void Movement()
@@ -99,12 +103,13 @@ public class PlayerFlyController : Ship
         }
     }
 
-    void TakeDamage()
+    public void TakeDamage(int damage)
     {
-
+        health -= damage;
+        CheckPlayerStates(health);
     }
 
-    void PlayerStates(int health)
+    void CheckPlayerStates(int health)
     {
         if (health < 80 && health > 50)
         {

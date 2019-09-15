@@ -14,15 +14,18 @@ public class PlayerUI : MonoBehaviour
     public Text rotYText;
     public Text rotZText;
     public Text targetText;
+    public Text reloadText;
     public Animator verticalBar;
     public Animator horizontalBar;
     public GameObject warning;
     
     private PlayerFlyController playerRef;
+    private PlayerCombat playerCombatRef;
 
     private void Start()
     {
         playerRef = GameObject.FindObjectOfType<PlayerFlyController>();
+        playerCombatRef = GameObject.FindObjectOfType<PlayerCombat>();
     }
 
     void Update()
@@ -59,9 +62,17 @@ public class PlayerUI : MonoBehaviour
         warning.SetActive(false);
     }
 
-    void DisplayShoot()
+    public void StartReloadTimer()
     {
+        StartCoroutine(ReloadTimer());
+    }
 
+    IEnumerator ReloadTimer()
+    {
+        reloadText.text = "Reloading";
+        yield return new WaitForSeconds(5);
+        reloadText.text = "Missiles Ready";
+        playerCombatRef.reloading = false;
     }
 
 }
