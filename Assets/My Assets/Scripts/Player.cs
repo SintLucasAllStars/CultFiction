@@ -23,11 +23,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            SpawnUnit(gm.unitDataBase[0],Vector3.zero);
-        }
-
+      
         //Debug.Log(Input.inputString);
         
         if (Input.anyKeyDown)
@@ -45,20 +41,28 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             LayerMask mask;
-            SelectionRaycast();
-            Debug.Log("input mouse buttons work");
-            //normal soldier cost 1
             if (gm.gamePhase == GameManager.Phase.SelectingRedUnit)
             {
                 mask = LayerMask.GetMask("Unit Selection");
                 // make sure a unit is selected to be spawned for next phase
-                   
+                if (SelectionRaycast(mask))
+                {
+                    
+                }
             }
 
             if (gm.gamePhase == GameManager.Phase.SpawningRedUnits)
             {
                 mask = LayerMask.GetMask("Player Unit Spawns");
-                PlaceUnit(selectedUnitToPlace, selection.transform.position, selectedUnitToPlace.GetComponent<Soldier>().unitCost);  
+                if (SelectionRaycast(mask))
+                {
+                    PlaceUnit(selectedUnitToPlace, selection.transform.position, selectedUnitToPlace.GetComponent<Soldier>().unitCost);
+                }
+                else
+                {
+                    Debug.Log("Didnt place unit");
+                }
+                
             }
  
             //SelectionRaycast();
@@ -75,18 +79,44 @@ public class Player : MonoBehaviour
         }
     }
 
-    void SelectionRaycast(LayerMask selectionMask)
+    bool SelectionRaycast(LayerMask selectionMask)
     {
        
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray,out hit, Mathf.Infinity, mask))
+        
+        
+        if (selectionMask == LayerMask.GetMask("Unit Selection"))
         {
-            selection = hit.collider.gameObject;
-            Debug.Log("Raycast void player spawn layer detected");
+            // select unit
+            Debug.Log("just before true");
+
+            return true;
         }
-        Debug.DrawRay(ray.origin, ray.direction, Color.red,20 );
+        
+        
+        //mask Player Unit Spawns
+        if (selectionMask == LayerMask.GetMask("Player Unit Spawns"))
+        {
+            if (Physics.Raycast(ray,out hit, Mathf.Infinity))
+            {
+                selection = hit.collider.gameObject;
+                //Debug.Log("Raycast void" + "" + selectionMask.ToString());
+            } 
+            // spawn unit on location 
+            Debug.Log("just before true");
+
+            return true;
+        }
+        
+      
+        
+        
+        
+        //Debug.DrawRay(ray.origin, ray.direction, Color.red,20 );
         //Debug.Log("raycast void end");
+        Debug.Log("just before false");
+        return false;
 
     }
 
@@ -101,8 +131,5 @@ public class Player : MonoBehaviour
         Debug.Log("Placing unit");
     }
 
-    void SpawnUnit(GameObject unit, Vector3 spawnLocation)
-    {
-        Instantiate(unit, spawnLocation, Quaternion.identity);
-    }
+   
 }
