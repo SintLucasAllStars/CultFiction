@@ -10,8 +10,8 @@ public class LockOnLookat : MonoBehaviour
     {
         target = GameObject.FindObjectOfType<PlayerFlyController>().transform;
     }
-
-    void Update()
+    
+    public void RotateToPlayer()
     {
         transform.LookAt(target);
     }

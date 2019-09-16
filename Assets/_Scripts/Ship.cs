@@ -23,11 +23,11 @@ public class Ship : MonoBehaviour
         {
             damageStates[0].SetActive(true);
         }
-        else if (health < (health/2) && health > 1)
+        if (health < (health/2))
         {
             damageStates[1].SetActive(true);
         }
-        else if (health < 1)
+        if (health < 1)
         {
             damageStates[2].SetActive(true);
         }

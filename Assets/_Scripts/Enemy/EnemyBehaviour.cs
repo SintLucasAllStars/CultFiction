@@ -6,13 +6,11 @@ public class EnemyBehaviour : Ship
 {
     public GameObject lockOn;
 
-    void Start()
-    {
-        
-    }
+    public LockOnLookat rotateToPlayer;
     
     void Update()
     {
-        
+        rotateToPlayer.RotateToPlayer();
     }
+
 }

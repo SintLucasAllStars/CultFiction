@@ -9,11 +9,15 @@ public class ShipTurret : MonoBehaviour
     public GameObject missilePrefab;
     public float shootDistance;
     public float reloadTime;
+    public LockOnLookat rotation;
     bool reloading = false;
+
+    EnemyBehaviour eb;
 
     void Start()
     {
         target = GameObject.FindObjectOfType<PlayerFlyController>().transform;
+        eb = GetComponent<EnemyBehaviour>();
     }
     
     void Update()
@@ -23,9 +27,13 @@ public class ShipTurret : MonoBehaviour
 
     void CheckDistance()
     {
-        if (Vector3.Distance(target.position, transform.position) < shootDistance && reloading == false)
+        if (Vector3.Distance(target.position, transform.position) < shootDistance && reloading == false && eb.health > 0)
         {
             Shoot();
+        }
+        if (eb.health > 1)
+        {
+            rotation.RotateToPlayer();
         }
     }
 
