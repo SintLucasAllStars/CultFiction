@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     private GameManager gm;
     private int unitPoints = 10;
     public GameObject selection;
+    private GameObject selectedUnitToPlace;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -35,37 +36,47 @@ public class Player : MonoBehaviour
 
     void PlayerInputCheck(String playerInput)
     {
-        GameObject selectedUnitToPlace = gm.unitDataBase[0];
+         
 
-        //moue input actions
+        //Input categorised by gamephase
+       
+        //Mouse Input
         if (Input.GetMouseButtonDown(0))
         {
-            LayerMask mask;
-            if (gm.gamePhase == GameManager.Phase.SelectingRedUnit)
+            if (gm.gamePhase == GameManager.Phase.SelectingPlayerUnit)
             {
-                mask = LayerMask.GetMask("Unit Selection");
+               // mask = LayerMask.NameToLayer("Unit Selection");
                 // make sure a unit is selected to be spawned for next phase
-                if (SelectionRaycast(mask))
+                if (SelectionRaycast())
                 {
-                    
+                    Debug.Log("select unit");
+                    gm.gamePhase = GameManager.Phase.SpawningRedUnits;
                 }
+                else
+                {
+                    Debug.Log("didnt select unit");
+                }
+                //Debug.Log(mask.value);
+                return;
             }
 
             if (gm.gamePhase == GameManager.Phase.SpawningRedUnits)
             {
-                mask = LayerMask.GetMask("Player Unit Spawns");
-                if (SelectionRaycast(mask))
+               // mask =  LayerMask.NameToLayer("Player Unit Spawns");
+                if (SelectionRaycast())
                 {
+                    // in selectionraycast bool select the unit you want to spawn. amd put it as parameter for placeunit
                     PlaceUnit(selectedUnitToPlace, selection.transform.position, selectedUnitToPlace.GetComponent<Soldier>().unitCost);
+                    Debug.Log("placed unit");
                 }
                 else
                 {
                     Debug.Log("Didnt place unit");
                 }
+                return;
                 
             }
  
-            //SelectionRaycast();
         }
 
         //keyboard input actions (specific to upper and lower cased letters)
@@ -79,45 +90,49 @@ public class Player : MonoBehaviour
         }
     }
 
-    bool SelectionRaycast(LayerMask selectionMask)
+    bool SelectionRaycast()
     {
-       
+        // selection categorised by gamephase
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        
-        
-        if (selectionMask == LayerMask.GetMask("Unit Selection"))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         {
-            // select unit
-            Debug.Log("just before true");
-
-            return true;
+            selection = hit.collider.gameObject;
         }
-        
-        
-        //mask Player Unit Spawns
-        if (selectionMask == LayerMask.GetMask("Player Unit Spawns"))
+
+        // for layer 9 select unit
+        if (gm.gamePhase == GameManager.Phase.SelectingPlayerUnit)
         {
-            if (Physics.Raycast(ray,out hit, Mathf.Infinity))
+            if (selection.layer == LayerMask.NameToLayer("Unit Selection"))
             {
-                selection = hit.collider.gameObject;
-                //Debug.Log("Raycast void" + "" + selectionMask.ToString());
-            } 
-            // spawn unit on location 
-            Debug.Log("just before true");
+                //select unit on selection object
+                selectedUnitToPlace = gm.unitDataBase[hit.collider.gameObject.GetComponent<UnitSelectUI>().unitID];
+               
+                Debug.Log("just before true select unit");
+                Debug.Log("layer 9 hit");
 
-            return true;
+                return true;
+            }
         }
-        
-      
-        
-        
-        
+
+        //for layer 8 player unit spawns
+
+        if (gm.gamePhase == GameManager.Phase.SpawningRedUnits)
+        {
+            if (selection.layer == LayerMask.NameToLayer("Player Unit Spawns"))
+            {
+                // spawn unit on location 
+                Debug.Log("just before true spawn unit");
+                Debug.Log("layer 8 hit");
+
+                return true;
+            }
+        }
+
         //Debug.DrawRay(ray.origin, ray.direction, Color.red,20 );
         //Debug.Log("raycast void end");
         Debug.Log("just before false");
         return false;
-
     }
 
     void PlaceUnit(GameObject unit, Vector3 spawnPos, int unitCost)
@@ -127,9 +142,23 @@ public class Player : MonoBehaviour
         {
             Instantiate(unit, spawnPos, Quaternion.identity);
             unitPoints = unitPoints - unitCost;
+            if (unitPoints == 0)
+            {
+                
+            }
         }
         Debug.Log("Placing unit");
     }
 
-   
+    public void SelectUnitButton()
+    {
+        
+    }
+
+    void ConfirmUnits()
+    {
+        
+    }
+
+
 }

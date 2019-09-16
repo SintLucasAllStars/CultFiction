@@ -10,16 +10,18 @@ public class GameManager : MonoBehaviour
     public enum Phase
     {
         PreBattle = 1,
-        SelectingRedUnit = 2,
-        SelectingBlueUnit = 3,
+        SelectingPlayerUnit = 2,
+        SelectingAiUnit = 3,
         SpawningRedUnits = 4,
-        SpawningBlueUnits = 5,
-        BattleSideRed = 6,
-        SwitchSide = 7,
-        PrevSideBlue = 8,
-        PrevSideRed = 9,
-        BattleSideBlue = 10,
-        BattleEnd = 11
+        PlayerUnitPointsEmpty = 5,
+        AiUnitPointsEmpty = 6,
+        SpawningBlueUnits = 7,
+        BattleSideRed = 8,
+        BattleSideBlue = 9,
+        SwitchSide = 10,
+        PrevSideBlue = 11,
+        PrevSideRed = 12,
+        BattleEnd = 13
     }
     
     public enum ActiveTeam
@@ -79,7 +81,7 @@ public class GameManager : MonoBehaviour
         if (startingTeam == 1)
         {
             SwitchToRedTeam();
-            gamePhase = Phase.SelectingRedUnit;
+            gamePhase = Phase.SelectingPlayerUnit;
             PhaseLoop();
 
         }
@@ -143,7 +145,7 @@ public class GameManager : MonoBehaviour
 
     public void PhaseLoop()
     {
-        if (gamePhase == Phase.SelectingRedUnit)
+        if (gamePhase == Phase.SelectingPlayerUnit)
         {
             Debug.Log("you can now spawn your units");
         }
