@@ -5,6 +5,7 @@ using UnityEngine;
 public class Soldier : MonoBehaviour
 {
     public GameObject worldSpaceUnit;
+    public int unitCost;
 
     public enum unitStatus
     {
@@ -16,7 +17,7 @@ public class Soldier : MonoBehaviour
     public unitStatus unitState;
     public GameManager gm;
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
         unitState = unitStatus.inactive;
         worldSpaceUnit = this.gameObject;
@@ -33,7 +34,12 @@ public class Soldier : MonoBehaviour
             gm.gamePhase = GameManager.Phase.SwitchSide;
         }
     }
-    
+
+    public virtual void Move()
+    {
+        
+    }
+
     void EndTurn()
     {
         if (gm.activeTeam == GameManager.ActiveTeam.RedTeam && unitState == unitStatus.selected)

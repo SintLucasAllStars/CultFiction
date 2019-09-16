@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 {
     private GameManager gm;
     private int unitPoints = 10;
+    public GameObject selection;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -38,11 +39,28 @@ public class Player : MonoBehaviour
 
     void PlayerInputCheck(String playerInput)
     {
+        GameObject selectedUnitToPlace = gm.unitDataBase[0];
+
         //moue input actions
         if (Input.GetMouseButtonDown(0))
         {
+            LayerMask mask;
             SelectionRaycast();
             Debug.Log("input mouse buttons work");
+            //normal soldier cost 1
+            if (gm.gamePhase == GameManager.Phase.SelectingRedUnit)
+            {
+                mask = LayerMask.GetMask("Unit Selection");
+                // make sure a unit is selected to be spawned for next phase
+                   
+            }
+
+            if (gm.gamePhase == GameManager.Phase.SpawningRedUnits)
+            {
+                mask = LayerMask.GetMask("Player Unit Spawns");
+                PlaceUnit(selectedUnitToPlace, selection.transform.position, selectedUnitToPlace.GetComponent<Soldier>().unitCost);  
+            }
+ 
             //SelectionRaycast();
         }
 
@@ -57,18 +75,30 @@ public class Player : MonoBehaviour
         }
     }
 
-    void SelectionRaycast()
+    void SelectionRaycast(LayerMask selectionMask)
     {
+       
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        LayerMask mask = LayerMask.GetMask("Player Unit Spawns");
-        if (Physics.Raycast(ray, Mathf.Infinity, mask))
+        if (Physics.Raycast(ray,out hit, Mathf.Infinity, mask))
         {
+            selection = hit.collider.gameObject;
             Debug.Log("Raycast void player spawn layer detected");
         }
         Debug.DrawRay(ray.origin, ray.direction, Color.red,20 );
-        Debug.Log("raycast void end");
+        //Debug.Log("raycast void end");
 
+    }
+
+    void PlaceUnit(GameObject unit, Vector3 spawnPos, int unitCost)
+    {
+        //Soldier unitScript = unit.GetComponent;
+        if (unitPoints > 0)
+        {
+            Instantiate(unit, spawnPos, Quaternion.identity);
+            unitPoints = unitPoints - unitCost;
+        }
+        Debug.Log("Placing unit");
     }
 
     void SpawnUnit(GameObject unit, Vector3 spawnLocation)

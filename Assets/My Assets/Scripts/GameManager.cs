@@ -10,14 +10,16 @@ public class GameManager : MonoBehaviour
     public enum Phase
     {
         PreBattle = 1,
-        SpawningRedUnits = 2,
-        SpawningBlueUnits = 3,
-        BattleSideRed = 3,
-        SwitchSide = 4,
-        PrevSideBlue = 5,
-        PrevSideRed = 6,
-        BattleSideBlue = 7,
-        BattleEnd = 8
+        SelectingRedUnit = 2,
+        SelectingBlueUnit = 3,
+        SpawningRedUnits = 4,
+        SpawningBlueUnits = 5,
+        BattleSideRed = 6,
+        SwitchSide = 7,
+        PrevSideBlue = 8,
+        PrevSideRed = 9,
+        BattleSideBlue = 10,
+        BattleEnd = 11
     }
     
     public enum ActiveTeam
@@ -31,8 +33,8 @@ public class GameManager : MonoBehaviour
     public LevelBuildManager LevelBuildManager; 
     public List<GameObject> redTeam;
     public List<GameObject> blueTeam;
-    public List<GameObject> testPrefabUnitsRed;
-    public List<GameObject> testPrefabUnitsBlue;
+    /*public List<GameObject> testPrefabUnitsRed;
+    public List<GameObject> testPrefabUnitsBlue;*/
 
     private int startingTeam;
 
@@ -77,7 +79,7 @@ public class GameManager : MonoBehaviour
         if (startingTeam == 1)
         {
             SwitchToRedTeam();
-            gamePhase = Phase.SpawningRedUnits;
+            gamePhase = Phase.SelectingRedUnit;
             PhaseLoop();
 
         }
@@ -109,10 +111,9 @@ public class GameManager : MonoBehaviour
 
     void AssignUnitToTeam()
     {
-        for (int i = 0; i < testPrefabUnitsRed.Count; i++)
+        /*for (int i = 0; i < testPrefabUnitsRed.Count; i++)
         {
-            var unit = testPrefabUnitsRed[i];
-            var spawnedUnit = Instantiate(unit, unit.transform.position, Quaternion.identity);
+         
 
             if (spawnedUnit.CompareTag("Red Team"))
             {
@@ -122,8 +123,8 @@ public class GameManager : MonoBehaviour
             {
                 blueTeam.Add(spawnedUnit);
             }
-        }
-    }
+        }*/
+    }    
 
     
 
@@ -142,7 +143,7 @@ public class GameManager : MonoBehaviour
 
     public void PhaseLoop()
     {
-        if (gamePhase == Phase.SpawningRedUnits)
+        if (gamePhase == Phase.SelectingRedUnit)
         {
             Debug.Log("you can now spawn your units");
         }
