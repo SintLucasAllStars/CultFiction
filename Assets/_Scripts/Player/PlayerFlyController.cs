@@ -13,10 +13,7 @@ public class PlayerFlyController : Ship
 
     [Header("Ship Parts")]
     public GameObject turboFX;
-
-    [Header("Damage FX")]
-    public GameObject[] damageStates;
-
+    
     [Header("Camere's")]
     public GameObject thirdPersonCamera;
     public GameObject firstPersonCamera;
@@ -102,27 +99,4 @@ public class PlayerFlyController : Ship
             gainControl = false;
         }
     }
-
-    public void TakeDamage(int damage)
-    {
-        health -= damage;
-        CheckPlayerStates(health);
-    }
-
-    void CheckPlayerStates(int health)
-    {
-        if (health < 80 && health > 50)
-        {
-            damageStates[0].SetActive(true);
-        }
-        else if (health < 50 && health > 30)
-        {
-            damageStates[1].SetActive(true);
-        }
-        else if (health < 30)
-        {
-            damageStates[2].SetActive(true);
-        }
-    }
-
 }

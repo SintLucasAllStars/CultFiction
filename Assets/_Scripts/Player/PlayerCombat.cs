@@ -16,7 +16,7 @@ public class PlayerCombat : MonoBehaviour
     public GameObject minigun;
     public Transform missileSpawn1;
     public Transform missileSpawn2;
-    public GameObject misslePrefab;
+    public GameObject missilePrefab;
 
     void Start()
     {
@@ -29,10 +29,10 @@ public class PlayerCombat : MonoBehaviour
     {
         if (hasTarget && Input.GetKeyDown(KeyCode.F) && reloading == false)
         {
-            GameObject missle1 = Instantiate(misslePrefab, missileSpawn1.position, missileSpawn2.rotation);
+            GameObject missle1 = Instantiate(missilePrefab, missileSpawn1.position, missileSpawn2.rotation);
             missle1.GetComponent<TargetRocket>().target = target;
             missle1.GetComponent<TargetRocket>().enemyRocket = false;
-            GameObject missle2 = Instantiate(misslePrefab, missileSpawn2.position, missileSpawn2.rotation);
+            GameObject missle2 = Instantiate(missilePrefab, missileSpawn2.position, missileSpawn2.rotation);
             missle2.GetComponent<TargetRocket>().target = target;
             missle2.GetComponent<TargetRocket>().enemyRocket = false;
 

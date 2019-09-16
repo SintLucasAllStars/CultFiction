@@ -62,7 +62,7 @@ public class TargetRocket : MonoBehaviour
         {
             if (col.CompareTag("Enemy"))
             {
-                col.GetComponent<EnemyBehaviour>().health -= damage;
+                col.GetComponent<EnemyBehaviour>().TakeDamage(damage);
                 Explode();
             }
             else if (col.CompareTag("Player") == false) // To Prevent Exploding on spawm
