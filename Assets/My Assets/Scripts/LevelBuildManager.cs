@@ -32,21 +32,14 @@ public class LevelBuildManager : MonoBehaviour
     
     public void CreateWorldSpaceGrid()
     {
-        
-        
-        
-        
-        
         for (int i = 0; i < dGridScript.dGrid.Count; i++)
         {
-            GridSpace dGridSpaceScript = dGridScript.dGrid[i];
+            DigitalGridSpace dGridSpaceValuesInstance = dGridScript.dGrid[i];
 
-            GameObject space = Instantiate(gridCubePrefab, dGridSpaceScript.PositionV3(), Quaternion.identity);
-            space.GetComponent<GridSpace>().xAxis = dGridSpaceScript.xAxis;
-            space.GetComponent<GridSpace>().yAxis = dGridSpaceScript.yAxis;
-            space.GetComponent<GridSpace>().zAxis = dGridSpaceScript.zAxis;
-            space.GetComponent<GridSpace>().dListID = i;
-            space.GetComponent<GridSpace>().worldGridSpace = space;
+            GameObject space = Instantiate(gridCubePrefab, dGridSpaceValuesInstance.PositionV3(), Quaternion.identity);
+            space.GetComponent<GridSpace>().SetValuesWhenInstantiated(dGridSpaceValuesInstance.xAxis,dGridSpaceValuesInstance.yAxis,dGridSpaceValuesInstance.zAxis, i);
+            //may not need this
+            //space.GetComponent<GridSpace>().worldGridSpace = space;
         }
     }
 }

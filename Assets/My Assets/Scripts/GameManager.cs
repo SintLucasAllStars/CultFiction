@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
         PreBattle = 1,
         SelectingPlayerUnit = 2,
         SelectingAiUnit = 3,
-        SpawningRedUnits = 4,
+        SpawningPlayerUnits = 4,
         PlayerUnitPointsEmpty = 5,
         AiUnitPointsEmpty = 6,
         SpawningBlueUnits = 7,
@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     public LevelBuildManager LevelBuildManager; 
     public List<GameObject> redTeam;
     public List<GameObject> blueTeam;
+    public GameObject selectedUnitToPlace;
     /*public List<GameObject> testPrefabUnitsRed;
     public List<GameObject> testPrefabUnitsBlue;*/
 
@@ -145,9 +146,25 @@ public class GameManager : MonoBehaviour
 
     public void PhaseLoop()
     {
+        // player loop
         if (gamePhase == Phase.SelectingPlayerUnit)
         {
-            Debug.Log("you can now spawn your units");
+            Debug.Log("you can now select and place your units");
+        }
+
+        
+        
+        // Ai loop
+        if (gamePhase == Phase.SelectingAiUnit)
+        {
+            Debug.Log("Ai is now selecting units");
+            gamePhase = Phase.SpawningBlueUnits;
+            
+        }
+
+        if (gamePhase == Phase.SpawningBlueUnits)
+        {
+            Debug.Log("Ai is spawning units");
         }
     }
 

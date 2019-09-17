@@ -19,6 +19,28 @@ public class UiButtonManager : MonoBehaviour
 
     public void UnitSelectButton(int unitID)
     {
-        
+        if (CheckPhase(gm.gamePhase))
+        {
+            gm.selectedUnitToPlace = gm.unitDataBase[unitID];
+        }
+
+        gm.gamePhase = GameManager.Phase.SpawningPlayerUnits;
+        Debug.Log("unit selected");
+    }
+
+    public void UnitPlacementConfirm()
+    {
+        gm.gamePhase = GameManager.Phase.SelectingAiUnit;
+        gm.PhaseLoop();
+    }
+
+    public bool CheckPhase(GameManager.Phase currentPhase)
+    {
+        if (currentPhase == GameManager.Phase.SelectingPlayerUnit)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

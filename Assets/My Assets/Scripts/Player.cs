@@ -9,7 +9,10 @@ public class Player : MonoBehaviour
     private GameManager gm;
     private int unitPoints = 10;
     public GameObject selection;
-    private GameObject selectedUnitToPlace;
+
+    
+    public UiButtonManager uiManager;
+
     // Start is called before the first frame update
     private void Awake()
     {
@@ -19,64 +22,63 @@ public class Player : MonoBehaviour
     void Start()
     {
         gm = GameObject.Find("Game Managers and debug").GetComponent<GameManager>();
+        uiManager = GameObject.Find("Game Managers and debug").GetComponent<UiButtonManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-      
         //Debug.Log(Input.inputString);
-        
+
         if (Input.anyKeyDown)
         {
-            
-            PlayerInputCheck(Input.inputString);   
+            PlayerInputCheck(Input.inputString);
         }
     }
 
     void PlayerInputCheck(String playerInput)
     {
-         
-
         //Input categorised by gamephase
-       
+
         //Mouse Input
         if (Input.GetMouseButtonDown(0))
         {
-            if (gm.gamePhase == GameManager.Phase.SelectingPlayerUnit)
+            /*if (gm.gamePhase == GameManager.Phase.SelectingPlayerUnit)
             {
-               // mask = LayerMask.NameToLayer("Unit Selection");
+                // mask = LayerMask.NameToLayer("Unit Selection");
                 // make sure a unit is selected to be spawned for next phase
                 if (SelectionRaycast())
                 {
                     Debug.Log("select unit");
-                    gm.gamePhase = GameManager.Phase.SpawningRedUnits;
+                    gm.gamePhase = GameManager.Phase.SpawningPlayerUnits;
                 }
                 else
                 {
                     Debug.Log("didnt select unit");
                 }
+
                 //Debug.Log(mask.value);
                 return;
             }
+*/
 
-            if (gm.gamePhase == GameManager.Phase.SpawningRedUnits)
+            if (gm.gamePhase == GameManager.Phase.SpawningPlayerUnits)
             {
-               // mask =  LayerMask.NameToLayer("Player Unit Spawns");
+                // mask =  LayerMask.NameToLayer("Player Unit Spawns");
                 if (SelectionRaycast())
                 {
+                    GameObject unit = gm.selectedUnitToPlace;
                     // in selectionraycast bool select the unit you want to spawn. amd put it as parameter for placeunit
-                    PlaceUnit(selectedUnitToPlace, selection.transform.position, selectedUnitToPlace.GetComponent<Soldier>().unitCost);
+                    PlaceUnit(unit, selection.transform.position, unit.GetComponent<Soldier>().unitCost);
                     Debug.Log("placed unit");
                 }
                 else
                 {
                     Debug.Log("Didnt place unit");
                 }
+
                 return;
-                
             }
- 
         }
 
         //keyboard input actions (specific to upper and lower cased letters)
@@ -84,6 +86,7 @@ public class Player : MonoBehaviour
         {
             Debug.Log("H works");
         }
+
         if (playerInput == "r")
         {
             Debug.Log("R works");
@@ -106,8 +109,8 @@ public class Player : MonoBehaviour
             if (selection.layer == LayerMask.NameToLayer("Unit Selection"))
             {
                 //select unit on selection object
-                selectedUnitToPlace = gm.unitDataBase[hit.collider.gameObject.GetComponent<UnitSelectUI>().unitID];
                
+
                 Debug.Log("just before true select unit");
                 Debug.Log("layer 9 hit");
 
@@ -117,7 +120,7 @@ public class Player : MonoBehaviour
 
         //for layer 8 player unit spawns
 
-        if (gm.gamePhase == GameManager.Phase.SpawningRedUnits)
+        if (gm.gamePhase == GameManager.Phase.SpawningPlayerUnits)
         {
             if (selection.layer == LayerMask.NameToLayer("Player Unit Spawns"))
             {
@@ -142,22 +145,17 @@ public class Player : MonoBehaviour
         {
             Instantiate(unit, spawnPos, Quaternion.identity);
             unitPoints = unitPoints - unitCost;
-            if (unitPoints == 0)
-            {
-                
-            }
         }
+
         Debug.Log("Placing unit");
     }
 
     public void SelectUnitButton()
     {
-        
     }
 
     void ConfirmUnits()
     {
-        
     }
 
 

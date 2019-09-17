@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class DGrid : MonoBehaviour
 {
-    [SerializeField] public List<GridSpace> dGrid;
+    [SerializeField] public List<DigitalGridSpace> dGrid;
 
     // Start is called before the first frame update
     void Start()
     {
-        dGrid = new List<GridSpace>();
+        dGrid = new List<DigitalGridSpace>();
     }
 
  
@@ -20,7 +20,8 @@ public class DGrid : MonoBehaviour
         {
             for (int j = 0; j < zSize; j++)
             {
-                dGrid.Add(new GridSpace(j, i));
+                
+                dGrid.Add(new DigitalGridSpace(j,i));
             }
         }
     }
@@ -33,7 +34,7 @@ public class DGrid : MonoBehaviour
             {
                 for (int k = 0; k < ysize; k++)
                 {
-                    dGrid.Add(new GridSpace(k, j, i));
+                    dGrid.Add(new DigitalGridSpace(k, j, i));
                 }
             }
         }
