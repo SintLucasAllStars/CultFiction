@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     
 
     public LevelBuildManager levelBuildManager;
+    public UiButtonManager uiManager;
     public List<GameObject> redTeam;
     public List<GameObject> blueTeam;
 
@@ -46,8 +47,10 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         // red team starts
-        startingTeam = 1;
+        uiManager = GameObject.Find("Game Managers and debug").GetComponent<UiButtonManager>();
         levelBuildManager = GameObject.Find("Game Managers and debug").GetComponent<LevelBuildManager>();
+        startingTeam = 1;
+        
     }
 
     // Update is called once per frame

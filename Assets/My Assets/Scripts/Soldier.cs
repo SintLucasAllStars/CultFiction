@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Soldier : MonoBehaviour
 {
-    public GameObject worldSpaceUnit;
+    public int unitId;
+    //public GameObject worldSpaceUnit;
+    public GameObject unitMoveSet;
     public int unitCost;
 
     public enum unitStatus
@@ -19,8 +21,9 @@ public class Soldier : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Start()
     {
+        
         unitState = unitStatus.inactive;
-        worldSpaceUnit = this.gameObject;
+        //worldSpaceUnit = this.gameObject;
         gm = GameObject.Find("Game Managers and debug").GetComponent<GameManager>();
         
     }
@@ -39,6 +42,14 @@ public class Soldier : MonoBehaviour
     public virtual void Shoot(GameObject target)
     {
         
+    }
+
+    public virtual void Select()
+    {
+        unitState = Soldier.unitStatus.selected;
+        unitMoveSet = gm.uiManager.unitMoveSet[unitId];
+        unitMoveSet.SetActive(true);
+
     }
 
     void EndTurn()

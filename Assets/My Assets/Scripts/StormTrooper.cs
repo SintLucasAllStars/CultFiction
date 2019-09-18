@@ -18,6 +18,11 @@ public class StormTrooper : Soldier
         Debug.Log("stormtrooper subclass ");
     }
 
+    public override void Select()
+    {
+        base.Select();
+    }
+
     public override void Shoot(GameObject target)
     {
         base.Shoot(target);

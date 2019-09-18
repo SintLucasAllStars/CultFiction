@@ -152,7 +152,7 @@ public class Player : MonoBehaviour
                     {
                         listUnit.unitState = Soldier.unitStatus.active;
                     }
-                    selection.GetComponent<Soldier>().unitState = Soldier.unitStatus.selected;
+                    selection.GetComponent<Soldier>().Select();
                 }
             }
         }
@@ -175,14 +175,4 @@ public class Player : MonoBehaviour
 
         Debug.Log("Placing unit");
     }
-
-    public void SelectUnitButton()
-    {
-    }
-
-    void ConfirmUnits()
-    {
-    }
-
-
 }
