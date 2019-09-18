@@ -7,7 +7,8 @@ public class ShootGolfBall : MonoBehaviour
     public GameObject currentBall;
     public GameObject spawnpoint;
     public GameObject golfball;
-    Quaternion ClubOriginalRot;
+    Vector3 qrntPos;
+    Quaternion qrntRot;
     public GameObject club;
     public int multiplier;
     public float maxStrength;
@@ -16,65 +17,42 @@ public class ShootGolfBall : MonoBehaviour
     Vector3 shootPos;
     public GameObject RotatePoint;
     public GameObject dirPos;
+    float rot = -1;
     // Start is called before the first frame update
     void Start()
     {
         Respawn();
-        ClubOriginalRot = club.transform.rotation;
+        SavePos();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                if (hit.collider.tag == "Shootground")
-                {
-                    Debug.Log("Hit this point ");
-                    Debug.Log(hit.point);
-                    dirPos.transform.position = hit.point;
-                }
-                else
-                {
-                    Debug.Log("You have to choose a position on the shootground");
-                }
-            }
-        }
         // Moves the club around but causes issues
         if (Input.GetKey(KeyCode.A))
         {
-            RotatePoint.transform.Rotate(new Vector3(0, 1), Space.World);
+            SavePos();
+            RotateClub(1);
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            RotatePoint.transform.Rotate(new Vector3(0, -1), Space.World);
+            SavePos();
+            RotateClub(-1);
         }
 
         if (Input.GetKey(KeyCode.Space))
         {
-            float rot = -1;
-            if(power >= maxStrength)
-            {
-                power = maxStrength;
-                rot = 0;
-            }
-            else
-            {
-                power += multiplier * Time.deltaTime;
-            }
-            club.transform.Rotate(new Vector3(rot, 0), Space.Self);
+            Power();
             //orPos = club.transform.position;
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
             //club.transform.position = orPos;
-            club.transform.rotation = ClubOriginalRot;
+            club.transform.position = qrntPos;
+            club.transform.rotation = qrntRot;
             Shoot(power);
+            power = 0;
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -102,5 +80,31 @@ public class ShootGolfBall : MonoBehaviour
             currentBall = Instantiate(golfball, spawnpoint.transform.position, Quaternion.identity);
         else
             Debug.Log("There is already a ball noob shoot this one first");
+    }
+
+    private void SavePos()
+    {
+        qrntPos = club.transform.position;
+        qrntRot = club.transform.rotation;
+    }
+
+    private void RotateClub(int i)
+    {
+        RotatePoint.transform.Rotate(new Vector3(0, i), Space.World);
+    }
+
+    private void Power()
+    {
+        if (power >= maxStrength)
+        {
+            power = maxStrength;
+            rot = 0;
+        }
+        else
+        {
+            power += multiplier * Time.deltaTime;
+            rot = -1;
+        }
+        club.transform.Rotate(new Vector3(rot, 0), Space.Self);
     }
 }
