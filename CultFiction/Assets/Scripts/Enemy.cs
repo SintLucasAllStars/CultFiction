@@ -27,7 +27,8 @@ public class Enemy : MonoBehaviour
         transform.LookAt(nav.destination);
         if (Vector3.Distance(nav.destination, gameObject.transform.position) <= 1)
         {
-            nav.isStopped = true;
+            Gamemanager.instance.UpdateHealth();
+            Destroy(gameObject);
         }
     }
     

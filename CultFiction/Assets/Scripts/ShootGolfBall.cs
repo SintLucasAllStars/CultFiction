@@ -51,11 +51,7 @@ public class ShootGolfBall : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Space))
         {
             isShooting = false;
-            //club.transform.position = orPos;
             Shoot(power);
-            club.transform.position = qrntPos;
-            club.transform.rotation = qrntRot;
-            power = 0;
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -66,6 +62,7 @@ public class ShootGolfBall : MonoBehaviour
 
     public void Shoot(float strenght)
     {
+        Gamemanager.instance.UpdateTimesShot();
         Vector3 dir;
         dir = currentBall.transform.position - dirPos.transform.position;
         dir.Normalize();
@@ -73,6 +70,8 @@ public class ShootGolfBall : MonoBehaviour
         power = 0;
         Destroy(currentBall, 5);
         currentBall = null;
+        club.transform.position = qrntPos;
+        club.transform.rotation = qrntRot;
         Respawn();
     }
 
