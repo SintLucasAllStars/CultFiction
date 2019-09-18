@@ -97,5 +97,7 @@ public class Spider : MonoBehaviour
         _followers.Add(hitSpider);
         hitSpider.Leader = gameObject.GetComponent<Spider>();
         hitSpider.Speed = Speed * 0.9f;
+
+        GameManager.Instance.CurrentSpiders++;
     }
 }

@@ -43,6 +43,10 @@ public class FollowerSpider : Spider
     public override void Die()
     {
         base.Die();
+        if (Leader != null)
+        {
+            GameManager.Instance.CurrentSpiders--;
+        }
     }
 
     protected override void Walk()

@@ -32,6 +32,7 @@ public class Player : Spider
     public override void Die()
     {
         base.Die();
+        GameManager.Instance.GameIsRunnning = false;
     }
 
     protected override void Walk()

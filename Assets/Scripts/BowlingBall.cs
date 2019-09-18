@@ -11,6 +11,9 @@ public class BowlingBall : MonoBehaviour
     private float _launchDelay = 1.0f;
 
     [SerializeField]
+    private float _lifeTime = 10.0f;
+
+    [SerializeField]
     private float _maxOffset = 1f;
 
     [SerializeField]
@@ -21,6 +24,7 @@ public class BowlingBall : MonoBehaviour
 
     void Start()
     {
+        Destroy(gameObject, _lifeTime);
         _rigidbody = GetComponent<Rigidbody>();
 
         ChooseRandomColor();
