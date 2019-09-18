@@ -18,6 +18,7 @@ public class ShootGolfBall : MonoBehaviour
     public GameObject RotatePoint;
     public GameObject dirPos;
     float rot = -1;
+    bool isShooting = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,27 +32,29 @@ public class ShootGolfBall : MonoBehaviour
         // Moves the club around but causes issues
         if (Input.GetKey(KeyCode.A))
         {
-            SavePos();
-            RotateClub(1);
+            CheckIfShooting();
+            RotateClub(2);
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            SavePos();
-            RotateClub(-1);
+            CheckIfShooting();
+            RotateClub(-2);
         }
 
         if (Input.GetKey(KeyCode.Space))
         {
+            isShooting = true;
             Power();
             //orPos = club.transform.position;
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
+            isShooting = false;
             //club.transform.position = orPos;
+            Shoot(power);
             club.transform.position = qrntPos;
             club.transform.rotation = qrntRot;
-            Shoot(power);
             power = 0;
         }
 
@@ -86,6 +89,14 @@ public class ShootGolfBall : MonoBehaviour
     {
         qrntPos = club.transform.position;
         qrntRot = club.transform.rotation;
+    }
+
+    private void CheckIfShooting()
+    {
+        if (!isShooting)
+        {
+            SavePos();
+        }
     }
 
     private void RotateClub(int i)
