@@ -8,12 +8,11 @@ public class GoodBoi : Soldier
     public override void Start()
     {
         base.Start();
-        Move();
     }
 
     public override void Move()
     {
         base.Move();
-        Debug.Log("Goodboi subclass");
+       
     }
 }

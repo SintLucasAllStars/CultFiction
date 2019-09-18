@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+// this class is for creating a list with a certain size and coordinates for when a world space grid is instantiated 
 public class DigitalGridSpace
 {
-  public int dListID;
   public int xAxis;
   public int yAxis;
   public int zAxis;
-  
+
   private void Awake()
   {
     //Default

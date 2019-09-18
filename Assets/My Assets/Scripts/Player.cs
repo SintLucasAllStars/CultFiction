@@ -70,6 +70,7 @@ public class Player : MonoBehaviour
                     GameObject unit = gm.selectedUnitToPlace;
                     // in selectionraycast bool select the unit you want to spawn. amd put it as parameter for placeunit
                     PlaceUnit(unit, selection.transform.position, unit.GetComponent<Soldier>().unitCost);
+                    selection.GetComponent<GridSpace>().spaceMovable = false;
                     Debug.Log("placed unit");
                 }
                 else
@@ -82,7 +83,15 @@ public class Player : MonoBehaviour
             {
                 if (SelectionRaycast())
                 {   
-                    
+                    Debug.Log("Select unit action");
+                }
+            }
+
+            if (gm.gamePhase == GameManager.Phase.SelectPlayerUnitAction)
+            {
+                if (SelectionRaycast())
+                {
+                    Debug.Log("it dit it till here lol");
                 }
             }
             
@@ -100,17 +109,17 @@ public class Player : MonoBehaviour
         }
     }
 
-    bool SelectionRaycast()
+   public bool SelectionRaycast()
     {
         // selection categorised by gamephase
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
+       
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         {
             selection = hit.collider.gameObject;
         }
 
-        // for layer 9 select unit
         if (gm.gamePhase == GameManager.Phase.SelectingPlayerUnit)
         {
             if (selection.layer == LayerMask.NameToLayer("Unit Selection"))
@@ -125,7 +134,6 @@ public class Player : MonoBehaviour
             }
         }
 
-        //for layer 8 player unit spawns
 
         if (gm.gamePhase == GameManager.Phase.SpawningPlayerUnits)
         {
@@ -148,13 +156,38 @@ public class Player : MonoBehaviour
                     Soldier listUnit = gm.redTeam[i].GetComponent<Soldier>();
                     
                     // this happens when you select a different unit while other unit is selected
-                    if (listUnit.unitState == Soldier.unitStatus.selected)
+                    if (listUnit.unitState == Soldier.unitStatus.Selected)
                     {
-                        listUnit.unitState = Soldier.unitStatus.active;
+                        listUnit.unitState = Soldier.unitStatus.Active;
                     }
-                    selection.GetComponent<Soldier>().Select();
                 }
+                selection.GetComponent<Soldier>().Select();
+                gm.selectedActiveUnit = selection;
             }
+        }
+        
+        // only do this one if you want it to return true otherwise find a other way
+        if (gm.gamePhase == GameManager.Phase.SelectPlayerUnitAction)
+        {
+            if (selection.layer == LayerMask.NameToLayer("Player Unit"))
+            {
+                for (int i = 0; i < gm.redTeam.Count; i++)
+                {
+                    Soldier listUnit = gm.redTeam[i].GetComponent<Soldier>();
+
+                    // this happens when you select a different unit while other unit is selected
+                    if (listUnit.unitState == Soldier.unitStatus.Selected)
+                    {
+                        listUnit.unitState = Soldier.unitStatus.Active;
+                    }
+                }
+
+                selection.GetComponent<Soldier>().Select();
+                gm.selectedActiveUnit = selection;
+                return false;
+            }
+
+            return true;
         }
 
         //Debug.DrawRay(ray.origin, ray.direction, Color.red,20 );
@@ -168,8 +201,9 @@ public class Player : MonoBehaviour
         //Soldier unitScript = unit.GetComponent;
         if (unitPoints > 0)
         {
-            GameObject unitInstance =  Instantiate(unit, spawnPos, Quaternion.identity);;
+            GameObject unitInstance = Instantiate(unit, spawnPos, Quaternion.identity);;
             unitPoints = unitPoints - unitCost;
+            unitInstance.GetComponent<Soldier>().ocupiedSpace = selection;
             gm.redTeam.Add(unitInstance);
         }
 

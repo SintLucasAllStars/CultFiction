@@ -18,7 +18,9 @@ public class GameManager : MonoBehaviour
         AiUnitPointsEmpty = 6,
         SpawningAiUnits = 7,
         BattlePlayer = 8,
-        BattleAi = 9,
+        SelectPlayerUnitAction = 9,
+        SelectAiUnitAction = 10, 
+        BattleAi = 11,
         
         BattleEnd = 13
     }
@@ -30,6 +32,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> blueTeam;
 
     public GameObject selectedUnitToPlace;
+    public GameObject selectedActiveUnit;
     /*public List<GameObject> testPrefabUnitsRed;
     public List<GameObject> testPrefabUnitsBlue;*/
 
@@ -46,6 +49,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         // red team starts
         uiManager = GameObject.Find("Game Managers and debug").GetComponent<UiButtonManager>();
         levelBuildManager = GameObject.Find("Game Managers and debug").GetComponent<LevelBuildManager>();
@@ -147,7 +151,7 @@ public class GameManager : MonoBehaviour
 
             for (int i = 0; i < redTeam.Count; i++)
             {
-                redTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.active;
+                redTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.Active;
             }
             
             gamePhase = Phase.BattlePlayer;
@@ -156,20 +160,44 @@ public class GameManager : MonoBehaviour
 
         if (gamePhase == Phase.BattleAi)
         {
+            
+            // here initiate ai loop
             for (int i = 0; i < redTeam.Count; i++)
             {
-                redTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.active;
+                redTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.Active;
             }
             
             for (int i = 0; i < blueTeam.Count; i++)
             {
-                blueTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.inactive;
+                blueTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.Inactive;
             }
             
-            //
             
-            
+
             gamePhase = Phase.BattlePlayer;
+        }
+    }
+
+
+    //check after every action so you know if all units have done their actions.
+    public void CheckTeam()
+    {
+        int amountOfUnits = redTeam.Count;
+        int amount = 0;
+
+        foreach (var soldierInstance in redTeam)
+        {
+            Soldier instance = soldierInstance.GetComponent<Soldier>();
+            if (instance.CheckActionPoints() != true)
+            {
+                amount = amount + 1;
+                Debug.Log("nobody can do anymore actions");
+            }
+        }
+
+        if (amount == amountOfUnits)
+        {
+            gamePhase = Phase.BattleAi;
         }
     }
 

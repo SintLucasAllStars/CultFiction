@@ -11,6 +11,7 @@ public class GridSpace : MonoBehaviour
     public int spaceX;
     public int spaceY;
     public int spaceZ;
+    public bool spaceMovable;
 
     //private GameManager gm;
     // Start is called before the first frame update
@@ -25,7 +26,7 @@ public class GridSpace : MonoBehaviour
         
     }
     
-    public void SetValuesWhenInstantiated(int x,int y,int z, int ID)
+    public void SetValuesWhenInstantiated(int x,int y,int z, int ID, bool move)
     {
         
         // id used for movement calculation
@@ -33,6 +34,8 @@ public class GridSpace : MonoBehaviour
         spaceX = x;
         spaceY = y;
         spaceZ = z;
+        spaceMovable = move;
+
     }
     
 }

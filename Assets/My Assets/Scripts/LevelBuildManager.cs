@@ -48,7 +48,7 @@ public class LevelBuildManager : MonoBehaviour
             }
 
             GameObject space = Instantiate(cube, dGridSpaceValuesInstance.PositionV3(), Quaternion.identity);
-            space.GetComponent<GridSpace>().SetValuesWhenInstantiated(dGridSpaceValuesInstance.xAxis,dGridSpaceValuesInstance.yAxis,dGridSpaceValuesInstance.zAxis, i);
+            space.GetComponent<GridSpace>().SetValuesWhenInstantiated(dGridSpaceValuesInstance.xAxis,dGridSpaceValuesInstance.yAxis,dGridSpaceValuesInstance.zAxis, i, false);
             //may not need this
             //space.GetComponent<GridSpace>().worldGridSpace = space;
         }

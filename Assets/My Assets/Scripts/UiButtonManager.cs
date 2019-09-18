@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,9 +7,16 @@ public class UiButtonManager : MonoBehaviour
 {
     private GameManager gm;
     public List<GameObject> unitMoveSet;
+    public GameObject unitSelectionUi;
+
+    
     // Start is called before the first frame update
     void Start()
     {
+        for (int i = 0; i < unitMoveSet.Count; i++)
+        {
+            unitMoveSet[i].SetActive(false);
+        }
         gm = GameObject.Find("Game Managers and debug").GetComponent<GameManager>();
     }
 
@@ -51,20 +59,33 @@ public class UiButtonManager : MonoBehaviour
             gm.gamePhase = GameManager.Phase.SelectingAiUnit;
         }
 
-        if (gm.gamePhase == GameManager.Phase.BattlePlayer)
+        if (gm.gamePhase == GameManager.Phase.SelectPlayerUnitAction)
         {
             for (int i = 0; i < gm.blueTeam.Count; i++)
             {
-                gm.blueTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.active;
+                gm.blueTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.Active;
             }
 
             for (int i = 0; i < gm.redTeam.Count; i++)
             {
-                gm.redTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.inactive;
+                gm.redTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.Inactive;
             }
             gm.gamePhase = GameManager.Phase.BattleAi;
         }
         
         gm.PhaseLoop();
+    }
+
+  
+
+    public void StormTrooperAction(int action)
+    {
+        // stormTrooper
+        
+            if (action == 0)
+            {
+                gm.selectedActiveUnit.GetComponent<StormTrooper>().Move();
+            }
+        
     }
 }

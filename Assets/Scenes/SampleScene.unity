@@ -515,9 +515,9 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 1492286900}
   - {fileID: 1307815194}
   - {fileID: 1722467976}
-  - {fileID: 1492286900}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -711,7 +711,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &913512349
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1023,7 +1023,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1243354628}
-        m_MethodName: UnitSelectButton
+        m_MethodName: StormTrooperAction
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1156,6 +1156,7 @@ MonoBehaviour:
   redTeam: []
   blueTeam: []
   selectedUnitToPlace: {fileID: 0}
+  selectedActiveUnit: {fileID: 0}
   gamePhase: 0
 --- !u!114 &1243354627
 MonoBehaviour:
@@ -1188,7 +1189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitMoveSet:
   - {fileID: 913512348}
-  - {fileID: 0}
+  unitSelectionUi: {fileID: 1722467975}
 --- !u!1 &1307815193
 GameObject:
   m_ObjectHideFlags: 0
@@ -1218,7 +1219,7 @@ RectTransform:
   m_Children:
   - {fileID: 1613570938}
   m_Father: {fileID: 552529886}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1387,7 +1388,7 @@ RectTransform:
   m_Children:
   - {fileID: 913512349}
   m_Father: {fileID: 552529886}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1727,7 +1728,7 @@ RectTransform:
   m_Children:
   - {fileID: 221409131}
   m_Father: {fileID: 552529886}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
