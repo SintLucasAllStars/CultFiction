@@ -29,6 +29,11 @@ public class Player : Spider
         base.RemoveFollower(follower);
     }
 
+    public override void Die()
+    {
+        base.Die();
+    }
+
     protected override void Walk()
     {
         base.Walk();

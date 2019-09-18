@@ -16,6 +16,9 @@ public class Spider : MonoBehaviour
     [SerializeField]
     private float _speed = 0.0f;
 
+    [SerializeField]
+    private GameObject _deadSpider;
+
     protected List<FollowerSpider> _followers = new List<FollowerSpider>();
 
     protected Animator _animator;
@@ -44,17 +47,24 @@ public class Spider : MonoBehaviour
         _animator = GetComponentInChildren<Animator>();
     }
 
-    void Update()
-    {
-        
-    }
-
     public virtual void RemoveFollower(FollowerSpider follower)
     {
         if (_followerSlots > 0)
         {
             _followers.Remove(follower);
         }
+    }
+
+    public virtual void Die()
+    {
+        GameObject deadSpider = Instantiate(_deadSpider, transform.position, transform.rotation);
+
+        for (int i = 0; i < _followers.Count; i++)
+        {
+            _followers[i].Leader = null;
+        }
+
+        Destroy(gameObject);
     }
 
     protected virtual void Walk()
