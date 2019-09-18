@@ -1,13 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("World Values")]
     public int amountOfTurrets;
     public int amountOfShields;
     public List<ShipTurret> turrets = new List<ShipTurret>();
     public List<ShipShieldGen> shields = new List<ShipShieldGen>();
+
+    [Header("UI")]
+    public Text currentShields;
+    public Text maxShields;
+    public Text currentTurrets;
+    public Text maxTurrets;
 
     void Start()
     {
@@ -16,17 +24,14 @@ public class GameManager : MonoBehaviour
 
         amountOfTurrets = turrets.Count;
         amountOfShields = shields.Count;
-    }
-    
-    void Update()
-    {
-            foreach (ShipTurret i in turrets)
-            {
-                i.GetComponentInChildren<ForceShield>().gameObject.SetActive(false);
-            }
+
+        maxTurrets.text = amountOfTurrets.ToString();
+        maxShields.text = amountOfShields.ToString();
+
+        UpdateCanvas();
     }
 
-    void ShieldDestroyed()
+    public void ShieldDestroyed()
     {
         amountOfShields -= 1;
         if (amountOfShields < 1)
@@ -36,15 +41,23 @@ public class GameManager : MonoBehaviour
                 i.GetComponentInChildren<ForceShield>().gameObject.SetActive(false);
             }
         }
+        UpdateCanvas();
     }
 
-    void TurretDestroyed()
+    public void TurretDestroyed()
     {
         amountOfTurrets -= 1;
         if (amountOfTurrets < 1)
         {
             Debug.Log("Ship Nutrualized");
         }
+        UpdateCanvas();
+    }
+
+    void UpdateCanvas()
+    {
+        currentTurrets.text = amountOfTurrets.ToString();
+        currentShields.text = amountOfShields.ToString();
     }
 
 }

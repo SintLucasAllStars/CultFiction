@@ -61,7 +61,7 @@ public class PlayerCombat : MonoBehaviour
 
     IEnumerator LockOn()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1);
         hasTarget = true;
         pu.targetText.text = "Target Found";
         Debug.Log("Target Assigned can shoot");
@@ -69,7 +69,7 @@ public class PlayerCombat : MonoBehaviour
 
     IEnumerator ResetUI()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1);
         pu.targetText.text = "No Target";
     }
 

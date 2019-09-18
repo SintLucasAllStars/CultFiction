@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Ship : MonoBehaviour
 {
-    
     public int health;
     private int maxHealth;
     public float shipSpeed;
