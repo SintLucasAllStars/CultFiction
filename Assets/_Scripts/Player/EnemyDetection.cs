@@ -17,13 +17,13 @@ public class EnemyDetection : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            enemys.Add(other.gameObject);
-            pc.FoundTarget();
             EnemyBehaviour eb = other.gameObject.GetComponent<EnemyBehaviour>();
             if (eb.dead == true)
             {
                 return;
             }
+            enemys.Add(other.gameObject);
+            pc.FoundTarget();
             other.gameObject.GetComponent<EnemyBehaviour>().lockOn.SetActive(true);
         }
     }

@@ -60,4 +60,14 @@ public class GameManager : MonoBehaviour
         currentShields.text = amountOfShields.ToString();
     }
 
+    public void Win()
+    {
+
+    }
+
+    public void Lose()
+    {
+
+    }
+
 }
