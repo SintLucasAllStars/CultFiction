@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class ShipTurret : MonoBehaviour
 {
-    private Transform target;
+
+    [Header("References")]
     public Transform barrel;
     public GameObject missilePrefab;
-    public float shootDistance;
-    public float reloadTime;
     public LockOnLookat rotation;
-    bool reloading = false;
 
+    [Header("Turret Stats")]
+    public float reloadTime;
+    public LayerMask scanHitable;
+    public int turretRange;
+    
+    private bool reloading = false;
+    private Transform target;
+    
     EnemyBehaviour eb;
 
     void Start()
@@ -24,10 +30,10 @@ public class ShipTurret : MonoBehaviour
     {
         CheckDistance();
     }
-
+    
     void CheckDistance()
     {
-        if (Vector3.Distance(target.position, transform.position) < shootDistance && reloading == false && eb.health > 0)
+        if (PlayerInSight() && reloading == false && eb.health > 0)
         {
             Shoot();
         }
@@ -35,6 +41,21 @@ public class ShipTurret : MonoBehaviour
         {
             rotation.RotateToPlayer();
         }
+    }
+
+    bool PlayerInSight()
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, (target.position - transform.position), out hit, Mathf.Infinity, scanHitable))
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                Debug.Log("I see Ship");
+                return true;
+            }
+        }
+        return false;
     }
 
     void Shoot()

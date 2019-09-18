@@ -48,7 +48,11 @@ public class TargetRocket : MonoBehaviour
     {
         if (enemyRocket)
         {
-            if (col.CompareTag("Player"))
+            if (col.CompareTag("Shield"))
+            {
+                return;
+            }
+            else if(col.CompareTag("Player"))
             {
                 col.GetComponent<PlayerFlyController>().TakeDamage(damage);
                 Explode();
@@ -60,7 +64,11 @@ public class TargetRocket : MonoBehaviour
         }
         if (!enemyRocket)
         {
-            if (col.CompareTag("Enemy"))
+            if (col.CompareTag("Shield"))
+            {
+                Explode();
+            }
+            else if (col.CompareTag("Enemy"))
             {
                 col.GetComponent<EnemyBehaviour>().TakeDamage(damage);
                 Explode();

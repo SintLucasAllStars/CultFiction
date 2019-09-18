@@ -5,25 +5,31 @@ using UnityEngine;
 public class Ship : MonoBehaviour
 {
     public int health;
+    private int maxHealth;
     public float shipSpeed;
     public float dashSpeed;
 
     [Header("Damage FX")]
     public GameObject[] damageStates;
 
+    private void Awake()
+    {
+        maxHealth = health;
+    }
+    
     public void TakeDamage(int damage)
     {
         health -= damage;
-        CheckPlayerStates(health);
+        CheckDamageStates(health);
     }
 
-    void CheckPlayerStates(int health)
+    void CheckDamageStates(int health)
     {
-        if (health > (health / 2))
+        if (health > (maxHealth / 2))
         {
             damageStates[0].SetActive(true);
         }
-        if (health < (health/2))
+        else if (health < (maxHealth / 2))
         {
             damageStates[1].SetActive(true);
         }
