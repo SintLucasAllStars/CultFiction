@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,6 +33,12 @@ public class FollowerSpider : Spider
         }
         else
         {
+            if (IsWalking)
+            {
+                IsWalking = false;
+            }
+        }
+    }
 
     public override void Die()
     {
