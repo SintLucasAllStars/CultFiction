@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3467520520557573119}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Stormtrooper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,8 +41,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2994607504707324407}
   - component: {fileID: 323258209955208432}
-  m_Layer: 0
-  m_Name: stormtrooper 1
+  - component: {fileID: -4938457979892965159}
+  m_Layer: 10
+  m_Name: Playerstormtrooper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,6 +82,19 @@ MonoBehaviour:
   unitCost: 2
   unitState: 0
   gm: {fileID: 0}
+--- !u!65 &-4938457979892965159
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2293918187677973476}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 4.070799, z: 1}
+  m_Center: {x: 0, y: 1.5353994, z: 0}
 --- !u!1 &4616869485734967908
 GameObject:
   m_ObjectHideFlags: 0
@@ -91,7 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4066039068046208177}
   - component: {fileID: 8710842254330457999}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HemisphereLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,7 +197,7 @@ GameObject:
   - component: {fileID: 1824469426233520137}
   - component: {fileID: 4448314009104540926}
   - component: {fileID: 2922735604497834834}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Stormtrooper 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +274,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4099087585308997020}
   - component: {fileID: 9135820162613752550}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PointLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}

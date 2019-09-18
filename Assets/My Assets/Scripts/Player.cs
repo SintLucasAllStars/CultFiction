@@ -76,9 +76,16 @@ public class Player : MonoBehaviour
                 {
                     Debug.Log("Didnt place unit");
                 }
-
-                return;
             }
+
+            if (gm.gamePhase == GameManager.Phase.BattlePlayer)
+            {
+                if (SelectionRaycast())
+                {   
+                    
+                }
+            }
+            
         }
 
         //keyboard input actions (specific to upper and lower cased letters)
@@ -129,6 +136,24 @@ public class Player : MonoBehaviour
                 Debug.Log("layer 8 hit");
 
                 return true;
+            }
+        }
+
+        if (gm.gamePhase == GameManager.Phase.BattlePlayer)
+        {
+            if (selection.layer == LayerMask.NameToLayer("Player Unit"));
+            {
+                for (int i = 0; i < gm.redTeam.Count; i++)
+                {
+                    Soldier listUnit = gm.redTeam[i].GetComponent<Soldier>();
+                    
+                    // this happens when you select a different unit while other unit is selected
+                    if (listUnit.unitState == Soldier.unitStatus.selected)
+                    {
+                        listUnit.unitState = Soldier.unitStatus.active;
+                    }
+                    selection.GetComponent<Soldier>().unitState = Soldier.unitStatus.selected;
+                }
             }
         }
 

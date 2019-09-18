@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 451918175415317060}
   - component: {fileID: 3149989928024893251}
+  - component: {fileID: 668050817180283573}
   m_Layer: 0
   m_Name: Ai Trooper
   m_TagString: Untagged
@@ -81,6 +82,19 @@ MonoBehaviour:
   unitCost: 2
   unitState: 0
   gm: {fileID: 0}
+--- !u!65 &668050817180283573
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3467438523584004183}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 4.070799, z: 1}
+  m_Center: {x: 0, y: 1.5353994, z: 0}
 --- !u!1 &4848306872023945778
 GameObject:
   m_ObjectHideFlags: 0

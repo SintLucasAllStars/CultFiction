@@ -56,6 +56,11 @@ public class UiButtonManager : MonoBehaviour
             {
                 gm.blueTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.active;
             }
+
+            for (int i = 0; i < gm.redTeam.Count; i++)
+            {
+                gm.redTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.inactive;
+            }
             gm.gamePhase = GameManager.Phase.BattleAi;
         }
         

@@ -20,16 +20,11 @@ public class GameManager : MonoBehaviour
         BattlePlayer = 8,
         BattleAi = 9,
         
-        
-        SwitchSide = 10,
-        PrevSideBlue = 11,
-        PrevSideRed = 12,
-        
         BattleEnd = 13
     }
     
 
-    public LevelBuildManager LevelBuildManager;
+    public LevelBuildManager levelBuildManager;
     public List<GameObject> redTeam;
     public List<GameObject> blueTeam;
 
@@ -52,7 +47,7 @@ public class GameManager : MonoBehaviour
     {
         // red team starts
         startingTeam = 1;
-        LevelBuildManager = GameObject.Find("Game Managers and debug").GetComponent<LevelBuildManager>();
+        levelBuildManager = GameObject.Find("Game Managers and debug").GetComponent<LevelBuildManager>();
     }
 
     // Update is called once per frame
@@ -68,8 +63,8 @@ public class GameManager : MonoBehaviour
     void SetupLevel()
     {
         gamePhase = Phase.PreBattle;
-        LevelBuildManager.dGridScript.CreateDigitalGrid(20, 20);
-        LevelBuildManager.CreateWorldSpaceGrid();
+        levelBuildManager.dGridScript.CreateDigitalGrid(20, 20);
+        levelBuildManager.CreateWorldSpaceGrid();
 
         if (startingTeam == 1)
         {
@@ -162,6 +157,15 @@ public class GameManager : MonoBehaviour
             {
                 redTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.active;
             }
+            
+            for (int i = 0; i < blueTeam.Count; i++)
+            {
+                blueTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.inactive;
+            }
+            
+            //
+            
+            
             gamePhase = Phase.BattlePlayer;
         }
     }
