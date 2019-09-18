@@ -27,7 +27,13 @@ public class CameraMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 targetMovementPos = new Vector3(_target.transform.position.x + _xOffset, _target.transform.position.y + _yOffset, _target.transform.position.z + _zOffset);
-        transform.position = Vector3.MoveTowards(transform.position, targetMovementPos, _lerpSpeed * Time.deltaTime);
+        if (_target != null)
+        {
+            float targetX = _target.transform.position.x + _xOffset;
+            float targetY = _target.transform.position.y + _yOffset;
+            float targetZ = _target.transform.position.z + _zOffset;
+            Vector3 targetMovementPos = new Vector3(targetX, targetY, targetZ);
+            transform.position = Vector3.MoveTowards(transform.position, targetMovementPos, _lerpSpeed * Time.deltaTime);
+        }
     }
 }
