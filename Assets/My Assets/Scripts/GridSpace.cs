@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class GridSpace : MonoBehaviour
 {
+    public String side;
     public int spaceID;
     public int spaceX;
     public int spaceY;

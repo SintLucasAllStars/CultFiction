@@ -5,7 +5,8 @@ using UnityEngine;
 public class LevelBuildManager : MonoBehaviour
 {
     public DGrid dGridScript;
-    public GameObject gridCubePrefab;
+    public GameObject playerGridCubePrefab;
+    public GameObject aiGridCubePrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,8 +36,18 @@ public class LevelBuildManager : MonoBehaviour
         for (int i = 0; i < dGridScript.dGrid.Count; i++)
         {
             DigitalGridSpace dGridSpaceValuesInstance = dGridScript.dGrid[i];
+            GameObject cube;
+            int test = dGridScript.dGrid.Count/2;
+            if (i < test)
+            {
+                cube = playerGridCubePrefab;
+            }
+            else
+            {
+                cube = aiGridCubePrefab;
+            }
 
-            GameObject space = Instantiate(gridCubePrefab, dGridSpaceValuesInstance.PositionV3(), Quaternion.identity);
+            GameObject space = Instantiate(cube, dGridSpaceValuesInstance.PositionV3(), Quaternion.identity);
             space.GetComponent<GridSpace>().SetValuesWhenInstantiated(dGridSpaceValuesInstance.xAxis,dGridSpaceValuesInstance.yAxis,dGridSpaceValuesInstance.zAxis, i);
             //may not need this
             //space.GetComponent<GridSpace>().worldGridSpace = space;

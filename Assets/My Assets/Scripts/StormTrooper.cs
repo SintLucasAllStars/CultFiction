@@ -17,4 +17,10 @@ public class StormTrooper : Soldier
         base.Move();
         Debug.Log("stormtrooper subclass ");
     }
+
+    public override void Shoot(GameObject target)
+    {
+        base.Shoot(target);
+    }
+    
 }

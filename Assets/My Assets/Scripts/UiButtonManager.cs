@@ -28,10 +28,9 @@ public class UiButtonManager : MonoBehaviour
         Debug.Log("unit selected");
     }
 
-    public void UnitPlacementConfirm()
+    public void ConfirmButton()
     {
-        gm.gamePhase = GameManager.Phase.SelectingAiUnit;
-        gm.PhaseLoop();
+        EndTurn();
     }
 
     public bool CheckPhase(GameManager.Phase currentPhase)
@@ -42,5 +41,24 @@ public class UiButtonManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void EndTurn()
+    {
+        if (gm.gamePhase == GameManager.Phase.SpawningPlayerUnits)
+        {
+            gm.gamePhase = GameManager.Phase.SelectingAiUnit;
+        }
+
+        if (gm.gamePhase == GameManager.Phase.BattlePlayer)
+        {
+            for (int i = 0; i < gm.blueTeam.Count; i++)
+            {
+                gm.blueTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.active;
+            }
+            gm.gamePhase = GameManager.Phase.BattleAi;
+        }
+        
+        gm.PhaseLoop();
     }
 }

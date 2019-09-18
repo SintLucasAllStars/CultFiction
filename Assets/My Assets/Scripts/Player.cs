@@ -143,8 +143,9 @@ public class Player : MonoBehaviour
         //Soldier unitScript = unit.GetComponent;
         if (unitPoints > 0)
         {
-            Instantiate(unit, spawnPos, Quaternion.identity);
+            GameObject unitInstance =  Instantiate(unit, spawnPos, Quaternion.identity);;
             unitPoints = unitPoints - unitCost;
+            gm.redTeam.Add(unitInstance);
         }
 
         Debug.Log("Placing unit");
