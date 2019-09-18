@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class Shop : Singleton<Shop>
 {
-    private Animator _animator;
+    private Animator _animator = null;
 
     [SerializeField]
-    private ShopItem[] _shopItems;
+    public GameObject _shopItemPrefab = null;
 
     [SerializeField]
-    public GameObject _shopItemPrefab;
+    private ShopItem[] _shopItems = null;
 
     [SerializeField]
-    private Transform _shopContainer;
+    private Transform _shopContainer = null;
 
     private List<ItemPrefab> _currentItemsContainers = new List<ItemPrefab>();
 
-    private bool _isOpened;
-
-    private void Start() => _animator = GetComponent<Animator>();
+    private bool _isOpened = false;
 
     private Dictionary<string, bool> _boughtItems = new Dictionary<string, bool>();
+
+    private void Start() => _animator = GetComponent<Animator>();
 
     public void ToggleShop()
     {
@@ -76,7 +76,8 @@ public class Shop : Singleton<Shop>
 
     public void Purchase(ShopItem item)
     {
-        GameManager.Instance.UpdateMoney(-item.Price);
+        BankAccount.Instance.RemoveMoney(item.Price);
         _boughtItems[item.ItemName] = true;
+        SoundEffectManager.Instance.PlaySound(SoundEffectName.PurchaseItem);
     }
 }

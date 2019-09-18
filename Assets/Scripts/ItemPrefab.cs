@@ -9,10 +9,10 @@ public class ItemPrefab : MonoBehaviour
     private ShopItem _shopItem;
 
     [SerializeField]
-    private TextMeshProUGUI _priceText;
+    private TextMeshProUGUI _priceText = null;
 
     [SerializeField]
-    private Image _itemImage;
+    private Image _itemImage = null;
 
     public void InitShopItem(ShopItem item)
     {
@@ -23,7 +23,7 @@ public class ItemPrefab : MonoBehaviour
 
     public void Purchase()
     {
-        if (!GameManager.Instance.HasEnoughMoney(_shopItem.Price))
+        if (!BankAccount.Instance.HasEnoughMoney(_shopItem.Price))
             return;
 
         if(_shopItem is PhysicalShopItem)
@@ -32,7 +32,7 @@ public class ItemPrefab : MonoBehaviour
             if (!ObjectManager.Instance.CanPlaceObject(item.ShopObject))
                 return;
 
-            ObjectManager.Instance.PlaceObject(item.ShopObject.Object);
+            ObjectManager.Instance.PlaceObject(item);
         }
 
         Shop.Instance.CloseShop();

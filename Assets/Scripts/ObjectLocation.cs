@@ -8,18 +8,18 @@ public enum ObjectType
     Machine
 }
 
-public class ObjectLocation : MonoBehaviour
+public class ObjectLocation : IInteractable
 {
     [SerializeField]
-    private ObjectType _objectType;
+    private ObjectType _objectType = ObjectType.Table;
     public ObjectType ObjectType => _objectType;
 
     [SerializeField]
-    private SpriteRenderer _location;
+    private SpriteRenderer _location = null;
 
-    private GameObject _object;
+    private GameObject _object = null;
 
-    private bool _isUsed;
+    private bool _isUsed = false;
     public bool IsUsed => _isUsed;
 
     private void Start() => Enable(false);
@@ -27,12 +27,24 @@ public class ObjectLocation : MonoBehaviour
     public void OnDrop(GameObject obj)
     {
         _isUsed = true;
+
         _object = Instantiate(obj, this.transform);
+
         Enable(false);
-        ObjectManager.Instance.ShowLocations(false);
+
+        ObjectManager.Instance.ShowAllLocations(false);
+        ObjectManager.Instance.SetMode(ObjectMode.Normal);
     }
 
-    private void OnMouseDown() => OnDrop(ObjectManager.Instance.Object);
-
     public void Enable(bool enabled) => _location.gameObject.SetActive(enabled);
+
+    private void OnMouseDown() => Interact();
+
+    protected override void Interact()
+    {
+        if (!ObjectManager.Instance.InObjectMode())
+            return;
+
+        OnDrop(ObjectManager.Instance.Object.ShopObject.Object);
+    }
 }

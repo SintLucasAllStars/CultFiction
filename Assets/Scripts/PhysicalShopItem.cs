@@ -5,18 +5,18 @@ using UnityEngine;
 public class PhysicalShopItem : ShopItem
 {
     [SerializeField]
-    private ShopObject _shopObject = new ShopObject();
-    public ShopObject ShopObject => _shopObject;
+    private RestaurantObject _shopObject = new RestaurantObject();
+    public RestaurantObject ShopObject => _shopObject;
 }
 
 [System.Serializable]
-public class ShopObject
+public class RestaurantObject
 {
     [SerializeField]
-    private GameObject _object;
+    private GameObject _object = null;
     public GameObject Object => _object;
 
     [SerializeField]
-    private ObjectType _objectType;
+    private ObjectType _objectType = ObjectType.Table;
     public ObjectType ObjectType => _objectType;
 }
