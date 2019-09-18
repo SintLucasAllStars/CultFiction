@@ -47,7 +47,7 @@ public class ShipTurret : MonoBehaviour
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, (target.position - transform.position), out hit, Mathf.Infinity, scanHitable))
+        if (Physics.Raycast(transform.position, (target.position - transform.position), out hit, turretRange, scanHitable))
         {
             if (hit.collider.CompareTag("Player"))
             {

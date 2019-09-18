@@ -19,6 +19,11 @@ public class EnemyDetection : MonoBehaviour
         {
             enemys.Add(other.gameObject);
             pc.FoundTarget();
+            EnemyBehaviour eb = other.gameObject.GetComponent<EnemyBehaviour>();
+            if (eb.dead == true)
+            {
+                return;
+            }
             other.gameObject.GetComponent<EnemyBehaviour>().lockOn.SetActive(true);
         }
     }
