@@ -44,4 +44,15 @@ public class BowlingBall : MonoBehaviour
         yield return new WaitForSeconds(_launchDelay);
         LaunchBall();
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Spider hitSpider = collision.gameObject.GetComponent<Spider>();
+        if (hitSpider == null)
+        {
+            return;
+        }
+
+        hitSpider.Die();
+    }
 }
