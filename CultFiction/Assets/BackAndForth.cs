@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class BackAndForth : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class BackAndForth : MonoBehaviour
     private Vector3 startPos;
 
     public GameObject stormTrooper;
+    public List<GameObject> enemys;
 
     void Start()
     {
@@ -27,7 +29,7 @@ public class BackAndForth : MonoBehaviour
     IEnumerator Spawner()
     {
         yield return new WaitForSeconds(Random.Range(3, 6));
-        Instantiate(stormTrooper, this.transform.position, Quaternion.identity);
+        Instantiate(enemys[Random.Range(0, enemys.Count)], this.transform.position, Quaternion.identity);
         StartCoroutine(Spawner());
     }
 }

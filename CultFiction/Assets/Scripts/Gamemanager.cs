@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Gamemanager : MonoBehaviour
 {
@@ -40,6 +41,7 @@ public class Gamemanager : MonoBehaviour
         healthImages.RemoveAt(curImg -1);
         if(healthImages.Count == 0)
         {
+            SceneManager.LoadScene(3);
             Debug.Log("You died, you failed to defend your planet. The dark lord has taken over");
         }
     }

@@ -8,7 +8,10 @@ public class SoundManagerScript : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+            instance = this;
+        else if (instance != null)
+            Destroy(gameObject);
         DontDestroyOnLoad(instance);
     }
 }

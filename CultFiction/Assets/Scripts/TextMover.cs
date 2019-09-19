@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class TextMover : MonoBehaviour
 {
+    public int timeToLoad;
+    public int scene;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,13 +19,13 @@ public class TextMover : MonoBehaviour
         transform.Translate(new Vector3(0, 2 * Time.deltaTime, 0));
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(scene);
         }
     }
 
     IEnumerator LoadLevel()
     {
-        yield return new WaitForSeconds(30);
-        SceneManager.LoadScene(2);
+        yield return new WaitForSeconds(timeToLoad);
+        SceneManager.LoadScene(scene);
     }
 }
