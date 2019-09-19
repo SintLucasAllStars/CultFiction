@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -12,14 +11,17 @@ public class Gamemanager : MonoBehaviour
     public int timesShot;
     public List<Image> healthImages;
     [SerializeField]
-    TextMeshProUGUI scoreTxt;
+    Text scoreTxt;
     [SerializeField]
-    TextMeshProUGUI timeShotTxt;
+    Text timeShotTxt;
+    [SerializeField]
+    Text HighscoreTxt;
     
 
     private void Awake()
     {
         instance = this;
+        HighscoreTxt.text = "Highscore: " + PlayerPrefs.GetInt("Highscore").ToString();
     }
 
     public void UpdatePoints(int addedPoints)
@@ -41,8 +43,18 @@ public class Gamemanager : MonoBehaviour
         healthImages.RemoveAt(curImg -1);
         if(healthImages.Count == 0)
         {
+            SaveHighscore();
             SceneManager.LoadScene(3);
             Debug.Log("You died, you failed to defend your planet. The dark lord has taken over");
         }
+    }
+
+    public void SaveHighscore()
+    {
+        int prefHigh = PlayerPrefs.GetInt("Highscore");
+        if (points > prefHigh)
+            PlayerPrefs.SetInt("Highscore", points);
+        else
+            Debug.Log("Highscore not reached");
     }
 }
