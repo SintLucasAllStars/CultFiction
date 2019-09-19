@@ -17,7 +17,7 @@ public class Ship : MonoBehaviour
         maxHealth = health;
     }
     
-    public void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage)
     {
         health -= damage;
         CheckDamageStates(health);

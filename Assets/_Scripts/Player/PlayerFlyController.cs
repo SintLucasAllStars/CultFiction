@@ -41,6 +41,15 @@ public class PlayerFlyController : Ship
         }
     }
 
+    public override void TakeDamage(int damage)
+    {
+        base.TakeDamage(damage);
+        if (health <= 0)
+        {
+            FindObjectOfType<GameManager>().Lose();
+        }
+    }
+
     void Movement()
     {
         if (Input.GetKey(KeyCode.Space))

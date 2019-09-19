@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+
     [Header("World Values")]
     public int amountOfTurrets;
     public int amountOfShields;
@@ -17,11 +19,15 @@ public class GameManager : MonoBehaviour
     public Text currentTurrets;
     public Text maxTurrets;
 
+    private Animator anim;
+
     void Start()
     {
+        anim = GetComponent<Animator>();
+
         turrets.AddRange(GameObject.FindObjectsOfType<ShipTurret>());
         shields.AddRange(GameObject.FindObjectsOfType<ShipShieldGen>());
-
+        
         amountOfTurrets = turrets.Count;
         amountOfShields = shields.Count;
 
@@ -62,12 +68,29 @@ public class GameManager : MonoBehaviour
 
     public void Win()
     {
-
+        if (amountOfTurrets == 0)
+        {
+            anim.Play("Win");
+        }
     }
 
     public void Lose()
     {
+        if (amountOfTurrets == 0)
+        {
+            anim.Play("Lose");
+        }
+    }
 
+    IEnumerator Restart()
+    {
+        yield return new WaitForSeconds(10);
+        Retry();
+    }
+
+    public void Retry()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
 }
