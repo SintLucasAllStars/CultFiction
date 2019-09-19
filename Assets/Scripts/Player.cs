@@ -12,7 +12,7 @@ public class Player : Spider
         base.Start();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         _xDir = Input.GetAxisRaw("Horizontal");
         _zDir = Input.GetAxisRaw("Vertical");

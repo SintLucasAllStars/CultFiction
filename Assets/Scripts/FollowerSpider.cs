@@ -20,7 +20,7 @@ public class FollowerSpider : Spider
         base.Start();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (Leader != null)
         {
