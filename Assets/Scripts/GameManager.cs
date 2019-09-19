@@ -87,6 +87,10 @@ public class GameManager : MonoBehaviour
             _currentTime += Time.deltaTime;
             _uiManager.UpdateTimer(_currentTime);
         }
+        else if (Input.GetButtonDown("Jump"))
+        {
+            StartNewRound();
+        }
     }
 
     public void StartNewRound()
