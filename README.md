@@ -1,3 +1,13 @@
+# Game: SpaceShooter
+The game is inspired by the Star Wars scene.
+
+## Controls:
+W - A - S - D for movement
+
+Right mouse click to change view perspective
+
+When locked on a target press F to fire missles.
+
 # CultFiction
 
 Watch the following cult cinema scenes very carefully, chose one detail, ANY DETAIL big or small to make a micro-game or game  prototype out of.
