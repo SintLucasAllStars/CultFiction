@@ -42,13 +42,41 @@ public class StormTrooper : Soldier
         
         actionEnd = true;
     }
+    
+    
+
+    public override void Shoot()
+    {
+        if (hasShot != true)
+        {
+            base.Shoot();
+            unitState = unitStatus.DoingAction;
+            StartCoroutine(WaitForActionEnd(1));
+            // now show shooting range
+        }
+        else
+        {
+            Debug.Log("unit has already shot this turn");
+        }
+    }
+    
+    
+    public override void ShootConfirm()
+    {
+        base.ShootConfirm();
+        Soldier instance;
+        instance = playerObject.selection.GetComponent<Soldier>();
+        instance.TakeDamage(2);
+        actionEnd = true;
+
+    }
+
 
     public override IEnumerator WaitForActionEnd(int action)
     {
         // move action
         if (action == 0)
         {
-            
             ///////// problem
             while (actionEnd != true)
             {
@@ -59,9 +87,10 @@ public class StormTrooper : Soldier
                         MoveConfirm();
                     }
                 }
+
                 yield return null;
             }
-            
+
             hasMoved = true;
             if (CheckActionPoints())
             {
@@ -70,7 +99,14 @@ public class StormTrooper : Soldier
             else
             {
                 unitState = unitStatus.Inactive;
-                gm.CheckTeam();
+                if (gm.CheckTeam())
+                {
+                    gm.gamePhase = GameManager.Phase.BattleAi;
+                }
+                else
+                {
+                    gm.gamePhase = GameManager.Phase.BattlePlayer;
+                }
             }
         }
 
@@ -81,13 +117,17 @@ public class StormTrooper : Soldier
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    if (playerObject.SelectionRaycast())
+                    playerObject.SelectionRaycast();
+
+                    if (playerObject.selection.layer == LayerMask.NameToLayer("Ai Unit"))
                     {
-                        MoveConfirm();
+                        ShootConfirm();
                     }
                 }
+
                 yield return null;
             }
+
             hasShot = true;
             if (CheckActionPoints())
             {
@@ -97,12 +137,21 @@ public class StormTrooper : Soldier
             else
             {
                 unitState = unitStatus.Inactive;
-                gm.CheckTeam();
+                // checks if whole team has done its actions
+                if (gm.CheckTeam())
+                {
+                    Debug.Log("nobody can do anymore actions");
+                    Debug.Log("Switching to ai");
+                    gm.gamePhase = GameManager.Phase.BattleAi;
+                }
+                else
+                {
+                    gm.gamePhase = GameManager.Phase.BattlePlayer;
+                }
             }
-
         }
-        actionEnd = false;
 
+        actionEnd = false;
     }
 
     
@@ -112,9 +161,6 @@ public class StormTrooper : Soldier
         base.Select();
     }
 
-    public override void Shoot(GameObject target)
-    {
-        base.Shoot(target);
-    }
+    
     
 }

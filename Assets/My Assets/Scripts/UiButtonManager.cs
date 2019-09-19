@@ -86,6 +86,11 @@ public class UiButtonManager : MonoBehaviour
             {
                 gm.selectedActiveUnit.GetComponent<StormTrooper>().Move();
             }
-        
+
+            if (action == 1)
+            {
+                gm.selectedActiveUnit.GetComponent<StormTrooper>().Shoot();
+            }
+
     }
 }

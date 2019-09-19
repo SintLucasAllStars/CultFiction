@@ -180,7 +180,7 @@ public class GameManager : MonoBehaviour
 
 
     //check after every action so you know if all units have done their actions.
-    public void CheckTeam()
+    public bool CheckTeam()
     {
         int amountOfUnits = redTeam.Count;
         int amount = 0;
@@ -188,17 +188,25 @@ public class GameManager : MonoBehaviour
         foreach (var soldierInstance in redTeam)
         {
             Soldier instance = soldierInstance.GetComponent<Soldier>();
+           
+            // mayby change to check unitstate later
             if (instance.CheckActionPoints() != true)
             {
                 amount = amount + 1;
-                Debug.Log("nobody can do anymore actions");
+                Debug.Log("Selected unit cant do anymore action");
             }
         }
 
         if (amount == amountOfUnits)
         {
-            gamePhase = Phase.BattleAi;
+           
+            return true;
         }
+        else
+        {
+            return false;
+        }
+        
     }
 
     public void EndBattle()

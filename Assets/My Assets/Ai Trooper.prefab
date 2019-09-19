@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2293573618180196428}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Stormtrooper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 451918175415317060}
   - component: {fileID: 3149989928024893251}
   - component: {fileID: 668050817180283573}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Ai Trooper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,10 +78,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6116a6cd312b0a14ba92fa9ec4ab4de1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerObject: {fileID: 0}
   unitId: 1
-  worldSpaceUnit: {fileID: 0}
   unitMoveSet: {fileID: 0}
   unitCost: 2
+  movementAllowance: 0
+  hasMoved: 0
+  hasShot: 0
+  actionEnd: 0
+  ocupiedSpace: {fileID: 0}
+  hp: 10
   unitState: 0
   gm: {fileID: 0}
 --- !u!65 &668050817180283573
@@ -107,7 +113,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1669024529720987183}
   - component: {fileID: 5837657493468154197}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PointLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +205,7 @@ GameObject:
   - component: {fileID: 3934637276752317370}
   - component: {fileID: 1328813139435806541}
   - component: {fileID: 523778801035532513}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Stormtrooper 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,7 +282,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1704061028966438658}
   - component: {fileID: 6280360285676295228}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HemisphereLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}

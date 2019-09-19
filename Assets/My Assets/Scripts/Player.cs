@@ -151,6 +151,8 @@ public class Player : MonoBehaviour
         {
             if (selection.layer == LayerMask.NameToLayer("Player Unit"));
             {
+                Soldier instance = selection.GetComponent<Soldier>();
+
                 for (int i = 0; i < gm.redTeam.Count; i++)
                 {
                     Soldier listUnit = gm.redTeam[i].GetComponent<Soldier>();
@@ -161,12 +163,18 @@ public class Player : MonoBehaviour
                         listUnit.unitState = Soldier.unitStatus.Active;
                     }
                 }
-                selection.GetComponent<Soldier>().Select();
-                gm.selectedActiveUnit = selection;
+
+                if (instance.unitState != Soldier.unitStatus.Inactive)
+                {
+                    instance.Select();
+                    gm.selectedActiveUnit = selection;
+                }
+                
             }
         }
         
         // only do this one if you want it to return true otherwise find a other way
+        // ummmm make a way so you can use this for a lot of unit actions now im limited to a few
         if (gm.gamePhase == GameManager.Phase.SelectPlayerUnitAction)
         {
             if (selection.layer == LayerMask.NameToLayer("Player Unit"))
@@ -187,7 +195,11 @@ public class Player : MonoBehaviour
                 return false;
             }
 
-            return true;
+            if (selection.layer == LayerMask.NameToLayer("Player Unit Spawns"))
+            {
+                return true;
+            }
+
         }
 
         //Debug.DrawRay(ray.origin, ray.direction, Color.red,20 );

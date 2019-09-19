@@ -17,6 +17,7 @@ public class Soldier : MonoBehaviour
     public bool hasShot;
     public bool actionEnd;
     public GameObject ocupiedSpace;
+    public int hp;
 
     public enum unitStatus
     {
@@ -58,8 +59,13 @@ public class Soldier : MonoBehaviour
     {
         
     }
-    
-    public virtual void Shoot(GameObject target)
+
+    public virtual void ShootConfirm()
+    {
+        
+    }
+
+    public virtual void Shoot()
     {
         
     }
@@ -90,6 +96,11 @@ public class Soldier : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public virtual void TakeDamage(int dmg)
+    {
+        hp = hp - dmg;
     }
 
 }
