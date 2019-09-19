@@ -45,6 +45,7 @@ public class FollowerSpider : Spider
         base.Die();
         if (Leader != null)
         {
+            Leader.RemoveFollower(this);
             GameManager.Instance.CurrentSpiders--;
         }
     }
