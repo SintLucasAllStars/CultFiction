@@ -57,21 +57,40 @@ public class Shop : Singleton<Shop>
         }
     }
 
-    public bool CanBuyUpgrade(string postReq, string preReq)
+    public bool CanBuyUpgrade(string[] postReq, string[] preReq)
     {
+        bool canBuy = false;
+
+        if (preReq.Length == 0)
+            canBuy = true;
+
+        if (postReq.Length == 0)
+            canBuy = true;
+
         //If the post req is in here, it cannot be bought again.
-        if (_boughtItems.ContainsKey(postReq) && !string.IsNullOrEmpty(postReq))
-            return false;
+        for (int i = 0; i < postReq.Length; i++)
+        {
+            if (_boughtItems.ContainsKey(postReq[i]) && !string.IsNullOrEmpty(postReq[i]))
+                return false;
+            else
+                canBuy = true;
+        }
 
-        //If the preReq is empty then it can be bought.
-        if (string.IsNullOrEmpty(preReq))
-            return true;
+        for (int i = 0; i < preReq.Length; i++)
+        {
+            if (!_boughtItems.ContainsKey(preReq[i]))
+                return false;
 
-        //If it does contain the preReq it means they can either be bought or not bought depending on the value in the dictionary (refunds?)
-        if (_boughtItems.ContainsKey(preReq))
-            return _boughtItems[preReq];
+            //If the preReq is empty then it can be bought.
+            if (string.IsNullOrEmpty(preReq[i]))
+                canBuy = true;
 
-        return false;
+            //If it does contain the preReq it means they can either be bought or not bought depending on the value in the dictionary (refunds?)
+            if (_boughtItems.ContainsKey(preReq[i]))
+                canBuy = _boughtItems[preReq[i]];
+        }
+
+        return canBuy;
     }
 
     public void Purchase(ShopItem item)

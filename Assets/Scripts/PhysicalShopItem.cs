@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+[CreateAssetMenu(fileName = "ShopItem_Physical", menuName = "Game/ShopItem_Physical", order = 1)]
 public class PhysicalShopItem : ShopItem
 {
     [SerializeField]
@@ -19,4 +18,11 @@ public class RestaurantObject
     [SerializeField]
     private ObjectType _objectType = ObjectType.Table;
     public ObjectType ObjectType => _objectType;
+}
+
+public enum ObjectType
+{
+    Table,
+    Machine,
+    Customer
 }

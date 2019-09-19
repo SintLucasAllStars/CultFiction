@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public enum ObjectMode
 {
@@ -8,28 +9,39 @@ public enum ObjectMode
 
 public class ObjectManager : Singleton<ObjectManager>
 {
-    private List<ObjectLocation> _objectLocations = new List<ObjectLocation>();
+    private List<ObjectContainer> _objectLocations = new List<ObjectContainer>();
 
-    private PhysicalShopItem _object;
-    public PhysicalShopItem Object => _object;
+    private GameObject _object;
+    public GameObject Object => _object;
 
     private ObjectMode _buildMode = ObjectMode.Normal;
 
-    private void Start() => _objectLocations = new List<ObjectLocation>(FindObjectsOfType<ObjectLocation>());
+    private void Start() => FindLocations();
 
-    public void PlaceObject(PhysicalShopItem obj)
+    public void FindLocations() => _objectLocations = new List<ObjectContainer>(FindObjectsOfType<ObjectContainer>());
+
+    public void PlaceObject(RestaurantObject obj)
+    {
+        SetMode(ObjectMode.BuildMode);
+        _object = obj.Object;
+        ShowLocations(true, obj.ObjectType);
+    }
+
+    public void ReplaceObject(GameObject obj, ObjectType type)
     {
         SetMode(ObjectMode.BuildMode);
         _object = obj;
-        ShowLocations(true, obj.ShopObject.ObjectType);
+        ShowLocations(true, type);
     }
 
-    public bool CanPlaceObject(RestaurantObject shopObject)
+    public bool CanPlaceObject(ObjectType objectType)
     {
-        if (_objectLocations.Find(x => x.ObjectType == shopObject.ObjectType))
-            return true;
-        else
-            return false;
+        for (int i = 0; i < _objectLocations.Count; i++)
+        {
+            if (_objectLocations[i].ObjectType == objectType && !_objectLocations[i].IsUsed)
+                return true;
+        }
+        return false;
     }
 
     public void ShowLocations(bool enabled, ObjectType objectType)
@@ -51,6 +63,7 @@ public class ObjectManager : Singleton<ObjectManager>
         {
             case ObjectMode.Normal:
                 _object = null;
+                ShowAllLocations(false);
                 break;
             case ObjectMode.BuildMode:
                 break;
@@ -58,4 +71,10 @@ public class ObjectManager : Singleton<ObjectManager>
     }
 
     public bool InObjectMode() => _buildMode == ObjectMode.BuildMode;
+
+    public void StopObjectMode() => SetMode(ObjectMode.Normal);
+
+    public Chair[] GetChairs() => FindObjectsOfType<Chair>();
+
+    public Machine[] GetMachines() => FindObjectsOfType<Machine>();
 }

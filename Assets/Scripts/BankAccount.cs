@@ -30,6 +30,7 @@ public class BankAccount : Singleton<BankAccount>
         _money -= i;
         UpdateText();
     }
+
     public bool HasEnoughMoney(int price)
     {
         if (price > _money)

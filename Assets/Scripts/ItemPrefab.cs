@@ -29,10 +29,15 @@ public class ItemPrefab : MonoBehaviour
         if(_shopItem is PhysicalShopItem)
         {
             PhysicalShopItem item = (PhysicalShopItem)_shopItem;
-            if (!ObjectManager.Instance.CanPlaceObject(item.ShopObject))
+            if (!ObjectManager.Instance.CanPlaceObject(item.ShopObject.ObjectType))
                 return;
 
-            ObjectManager.Instance.PlaceObject(item);
+            ObjectManager.Instance.PlaceObject(item.ShopObject);
+        }
+        else if(_shopItem is FoodShopItem)
+        {
+            FoodShopItem item = (FoodShopItem)_shopItem;
+            KitchenManager.Instance.AddFood(item.ShopObject);
         }
 
         Shop.Instance.CloseShop();

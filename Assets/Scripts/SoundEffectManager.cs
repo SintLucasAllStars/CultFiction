@@ -5,6 +5,10 @@ using UnityEngine;
 public enum SoundEffectName
 {
     PurchaseItem,
+    Button,
+    Error,
+    Money,
+    Select,
     GameOver
 }
 
