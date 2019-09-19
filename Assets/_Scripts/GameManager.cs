@@ -76,10 +76,7 @@ public class GameManager : MonoBehaviour
 
     public void Lose()
     {
-        if (amountOfTurrets == 0)
-        {
-            anim.Play("Lose");
-        }
+        anim.Play("Lose");
     }
 
     IEnumerator Restart()

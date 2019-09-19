@@ -25,11 +25,13 @@ public class PlayerFlyController : Ship
     public Rigidbody rb;
 
     private PlayerUI pu;
+    private GameManager gm;
     
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         pu = GameObject.FindObjectOfType<PlayerUI>();
+        gm = GameObject.FindObjectOfType<GameManager>();
     }
     
     void Update()
@@ -44,9 +46,10 @@ public class PlayerFlyController : Ship
     public override void TakeDamage(int damage)
     {
         base.TakeDamage(damage);
-        if (health <= 0)
+        if (health < 1)
         {
-            FindObjectOfType<GameManager>().Lose();
+            gm.Lose();
+            Debug.Log("Lose");
         }
     }
 

@@ -78,7 +78,6 @@ public class TargetRocket : MonoBehaviour
                 Explode();
             }
         }
-        Debug.Log(col.gameObject.name);
     }
 
     void Explode()
