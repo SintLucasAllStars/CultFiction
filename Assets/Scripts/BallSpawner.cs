@@ -11,10 +11,10 @@ public class BallSpawner : MonoBehaviour
     private List<Material> _materials = new List<Material>();
 
     [SerializeField]
-    private float _spawnIntervalMin = 1.0f;
+    private int _spawnIntervalMin = 1;
 
     [SerializeField]
-    private float _spawnIntervalMax = 1.0f;
+    private int _spawnIntervalMax = 7;
 
     private void Start()
     {
@@ -23,7 +23,7 @@ public class BallSpawner : MonoBehaviour
 
     private IEnumerator SpawnBall()
     {
-        yield return new WaitForSeconds(Random.Range(_spawnIntervalMax, _spawnIntervalMax));
+        yield return new WaitForSeconds(Random.Range(_spawnIntervalMin, _spawnIntervalMax));
         Instantiate(_bowlingBall, transform.position, Quaternion.identity);
         StartCoroutine(SpawnBall());
     }
