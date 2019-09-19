@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BowlingManager : MonoBehaviour
 {
+    [SerializeField]
+    private AudioSource _audioSource;
+
     [SerializeField]
     private Camera _camera;
 
@@ -25,17 +29,23 @@ public class BowlingManager : MonoBehaviour
 
     private Throwing _bowlingBall;
 
-    private float _timeTillNextBall = 1;
+    private float _timeTillNextBall = 2;
+    private float _audioStart = 1;
+
     private int _maxballs = 2;
     private int _ballNumber;
+    private int _ballsThrown = 0;
+    private int _lastpinns;
 
     private bool _isBowling;
+    private bool _firstPinn;
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && _bowlingBall != null)
         {
             _bowlingBall.Throw();
+            _ballsThrown++;
         }
 
         HitPins();
@@ -65,9 +75,26 @@ public class BowlingManager : MonoBehaviour
             if (_pins[i].transform.eulerAngles.x > 45 && _pins[i].transform.eulerAngles.x < 315 || _pins[i].transform.eulerAngles.z > 45 && _pins[i].transform.eulerAngles.z < 315)
             {
                 hitPins++;
+                if (!_firstPinn)
+                {
+                    _audioSource.Play();
+                    _audioSource.time = _audioStart;
+                    _firstPinn = true;
+                }
             }
         }
         _scoreText.text = hitPins + "";
+        if (hitPins == _pins.Count)
+        {
+            Invoke("EndGame", _timeTillNextBall);
+
+            if (_ballsThrown == 1)
+            {
+                _scoreText.text = "STRIKE";
+                return;
+            }
+            _scoreText.text = "SPARE";
+        }
     }
 
     private void SpawnBall()
@@ -78,7 +105,7 @@ public class BowlingManager : MonoBehaviour
 
     private void EndGame()
     {
-
+        SceneManager.LoadScene(0);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -89,7 +116,6 @@ public class BowlingManager : MonoBehaviour
             Destroy(ball);
             if (_ballNumber != _maxballs)
             {
-
                 Invoke("SpawnBall", _timeTillNextBall);
             }
             else

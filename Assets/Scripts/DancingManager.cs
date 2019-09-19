@@ -36,7 +36,7 @@ public class DancingManager : MonoBehaviour
     private float _points;
     private float _arrowsPast;
     private float _rotationModifier = 10;
-    private float _powerModifier = 5;
+    private float _powerModifier = 6;
 
     private int _power = 0;
 
