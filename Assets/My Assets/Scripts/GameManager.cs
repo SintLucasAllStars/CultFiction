@@ -33,6 +33,9 @@ public class GameManager : MonoBehaviour
 
     public GameObject selectedUnitToPlace;
     public GameObject selectedActiveUnit;
+
+    public GameObject aiObject;
+    public AiPlayer aiInstance;
     /*public List<GameObject> testPrefabUnitsRed;
     public List<GameObject> testPrefabUnitsBlue;*/
 
@@ -54,7 +57,9 @@ public class GameManager : MonoBehaviour
         uiManager = GameObject.Find("Game Managers and debug").GetComponent<UiButtonManager>();
         levelBuildManager = GameObject.Find("Game Managers and debug").GetComponent<LevelBuildManager>();
         startingTeam = 1;
-        
+        aiObject = GameObject.Find("Ai Object");
+        aiInstance = aiObject.GetComponent<AiPlayer>();
+
     }
 
     // Update is called once per frame
@@ -64,6 +69,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             SetupLevel();
+        }
+
+        if (Input.GetKeyDown((KeyCode.E)))
+        {
+            blueTeam.RemoveAt(blueTeam.Count - 1);
         }
     }
 
@@ -127,10 +137,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Game is waiting for player input");
         }
 
-        if (gamePhase == Phase.BattlePlayer)
-        {
-            gamePhase = Phase.BattleAi;
-        }
+        
 
         // Ai loop
         if (gamePhase == Phase.SelectingAiUnit)
@@ -142,13 +149,22 @@ public class GameManager : MonoBehaviour
         if (gamePhase == Phase.SpawningAiUnits)
         {
             GameObject unit;
+            Soldier soldierInstance;
             Debug.Log("Ai is spawning units");
             for (int i = 0; i < aiPattern.Count; i++)
             {
-                unit = Instantiate(unitDataBase[1], aiPattern[i], Quaternion.identity);
+                Vector3 spawnPos = aiPattern[i];
+                int spawnPosx = Mathf.FloorToInt(spawnPos.x);
+                int spawnPosz = Mathf.FloorToInt(spawnPos.z);
+                unit = Instantiate(unitDataBase[1], spawnPos, Quaternion.identity);
+                soldierInstance = unit.GetComponent<Soldier>();
                 blueTeam.Add(unit);
+                // -1 because count return 1 too much
+                int worldGridId = aiInstance.AiCalculateNewSpaceId(spawnPosx, spawnPosz);
+                soldierInstance.ocupiedSpace = levelBuildManager.worldSpaceGrid[worldGridId];
             }
 
+            // player begins
             for (int i = 0; i < redTeam.Count; i++)
             {
                 redTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.Active;
@@ -157,24 +173,37 @@ public class GameManager : MonoBehaviour
             gamePhase = Phase.BattlePlayer;
             Debug.Log("player first move");
         }
-
-        if (gamePhase == Phase.BattleAi)
+        
+        if (gamePhase == Phase.BattlePlayer)
         {
-            
-            // here initiate ai loop
             for (int i = 0; i < redTeam.Count; i++)
             {
-                redTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.Active;
+                Soldier playerUnit = redTeam[i].GetComponent<Soldier>();
+                playerUnit.unitState = Soldier.unitStatus.Active;
+                playerUnit.ResetActionPoints();
             }
             
             for (int i = 0; i < blueTeam.Count; i++)
             {
                 blueTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.Inactive;
             }
+        }
+        
+        if (gamePhase == Phase.BattleAi)
+        {
             
+            // here initiate ai loop
+            for (int i = 0; i < redTeam.Count; i++)
+            {
+                redTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.Inactive;
+            }
             
-
-            gamePhase = Phase.BattlePlayer;
+            for (int i = 0; i < blueTeam.Count; i++)
+            {
+                blueTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.Active;
+            }
+            
+            aiInstance.TakeTurn();
         }
     }
 

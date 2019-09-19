@@ -7,6 +7,7 @@ public class LevelBuildManager : MonoBehaviour
     public DGrid dGridScript;
     public GameObject playerGridCubePrefab;
     public GameObject aiGridCubePrefab;
+    public List<GameObject> worldSpaceGrid;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,7 +49,8 @@ public class LevelBuildManager : MonoBehaviour
             }
 
             GameObject space = Instantiate(cube, dGridSpaceValuesInstance.PositionV3(), Quaternion.identity);
-            space.GetComponent<GridSpace>().SetValuesWhenInstantiated(dGridSpaceValuesInstance.xAxis,dGridSpaceValuesInstance.yAxis,dGridSpaceValuesInstance.zAxis, i, false);
+            space.GetComponent<GridSpace>().SetValuesWhenInstantiated(dGridSpaceValuesInstance.xAxis,dGridSpaceValuesInstance.yAxis,dGridSpaceValuesInstance.zAxis, i, true);
+            worldSpaceGrid.Add(space);
             //may not need this
             //space.GetComponent<GridSpace>().worldGridSpace = space;
         }

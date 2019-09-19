@@ -214,9 +214,12 @@ public class Player : MonoBehaviour
         if (unitPoints > 0)
         {
             GameObject unitInstance = Instantiate(unit, spawnPos, Quaternion.identity);;
+            Soldier soldierInstance = unitInstance.GetComponent<Soldier>();
             unitPoints = unitPoints - unitCost;
-            unitInstance.GetComponent<Soldier>().ocupiedSpace = selection;
+            soldierInstance.ocupiedSpace = selection;
             gm.redTeam.Add(unitInstance);
+            // - 1 because count wil return 1 too much
+            soldierInstance.worldSpaceGridId = gm.redTeam.Count - 1;
         }
 
         Debug.Log("Placing unit");

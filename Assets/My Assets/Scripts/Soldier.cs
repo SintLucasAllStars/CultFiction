@@ -6,8 +6,12 @@ using UnityEngine;
 
 public class Soldier : MonoBehaviour
 {
-    public Player playerObject;
+    public Player playerInstance;
+    public AiPlayer aiInstance;
+    //type of unit
     public int unitId;
+    //list id i dont use it i think
+    public int worldSpaceGridId;
     //public GameObject worldSpaceUnit;
     public GameObject unitMoveSet;
     public int unitCost;
@@ -35,7 +39,8 @@ public class Soldier : MonoBehaviour
     public virtual void Start()
     {
         //worldSpaceUnit = this.gameObject;
-        playerObject = GameObject.Find("Player Object").GetComponent<Player>();
+        playerInstance = GameObject.Find("Player Object").GetComponent<Player>();
+        aiInstance = GameObject.Find("Ai Object").GetComponent<AiPlayer>();
         gm = GameObject.Find("Game Managers and debug").GetComponent<GameManager>();
         
         unitState = unitStatus.Inactive;
@@ -59,6 +64,14 @@ public class Soldier : MonoBehaviour
     {
         
     }
+
+    public virtual void AiMoveConfirm(int gridMax, int gridMinimum)
+    {
+        
+    }
+
+    // just do this for 2D grid for now
+    
 
     public virtual void ShootConfirm()
     {
@@ -103,4 +116,9 @@ public class Soldier : MonoBehaviour
         hp = hp - dmg;
     }
 
+    public void ResetActionPoints()
+    {
+        hasMoved = false;
+        hasShot = false;
+    }
 }

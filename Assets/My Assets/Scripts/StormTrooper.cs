@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
+using UnityEngine.UIElements;
+using Random = System.Random;
 
 public class StormTrooper : Soldier
 {
@@ -36,14 +38,50 @@ public class StormTrooper : Soldier
         base.MoveConfirm();
         // move here
         // selectionraycast is jut to get the space the unit want to go to
-        gameObject.transform.position = playerObject.selection.transform.position;
+        gameObject.transform.position = playerInstance.selection.transform.position;
         ocupiedSpace.GetComponent<GridSpace>().spaceMovable = true;
-        ocupiedSpace = playerObject.selection;
+        ocupiedSpace = playerInstance.selection;
         
         actionEnd = true;
     }
+
+    public override void AiMoveConfirm(int gridMax, int gridMinimum)
+    {
+        Vector3 aiCurrentPos;
+        int xMax;
+        int xCurrent;
+        int xMin;
+        int zMax;
+        int zCurrent;
+        int zMin;
+        int newId;
+
+        aiCurrentPos = aiInstance.aiUnitInstance.ocupiedSpace.transform.position;
+        xCurrent = Mathf.FloorToInt(aiCurrentPos.x);
+        xMax = xCurrent + movementAllowance;
+        xMin = xCurrent - movementAllowance;
+
+        zCurrent = Mathf.FloorToInt(aiCurrentPos.z);
+        zMax = zCurrent + movementAllowance;
+        zMin = zCurrent - movementAllowance;
+        
+        // +1 because its exclusive i think
+        int xNew = UnityEngine.Random.Range(xMin, xMax);
+        int zNew = UnityEngine.Random.Range(zMin, zMax);
+
+
+        // now actually move the dam unit
+        newId = aiInstance.AiCalculateNewSpaceId(Mathf.Clamp(xNew, 0, gridMax), Mathf.Clamp(zNew, 0,gridMax));
+
+        gameObject.transform.position = gm.levelBuildManager.worldSpaceGrid[newId].transform.position;
+        ocupiedSpace.GetComponent<GridSpace>().spaceMovable = true;
+        ocupiedSpace = gm.levelBuildManager.worldSpaceGrid[newId];
+
+        actionEnd = true;
+    }
+
     
-    
+
 
     public override void Shoot()
     {
@@ -65,7 +103,7 @@ public class StormTrooper : Soldier
     {
         base.ShootConfirm();
         Soldier instance;
-        instance = playerObject.selection.GetComponent<Soldier>();
+        instance = playerInstance.selection.GetComponent<Soldier>();
         instance.TakeDamage(2);
         actionEnd = true;
 
@@ -75,40 +113,59 @@ public class StormTrooper : Soldier
     public override IEnumerator WaitForActionEnd(int action)
     {
         // move action
-        if (action == 0)
+
+        if (gm.gamePhase != GameManager.Phase.BattleAi)
         {
-            ///////// problem
-            while (actionEnd != true)
+            if (action == 0)
             {
-                if (Input.GetMouseButtonDown(0))
+                ///////// problem
+                while (actionEnd != true)
                 {
-                    if (playerObject.SelectionRaycast())
+                    if (Input.GetMouseButtonDown(0))
                     {
-                        MoveConfirm();
+                        if (playerInstance.SelectionRaycast())
+                        {
+                            MoveConfirm();
+                        }
                     }
+
+                    yield return null;
                 }
 
-                yield return null;
-            }
-
-            hasMoved = true;
-            if (CheckActionPoints())
-            {
-                unitState = unitStatus.Selected;
-            }
-            else
-            {
-                unitState = unitStatus.Inactive;
-                if (gm.CheckTeam())
+                hasMoved = true;
+                if (CheckActionPoints())
                 {
-                    gm.gamePhase = GameManager.Phase.BattleAi;
+                    unitState = unitStatus.Selected;
                 }
                 else
                 {
-                    gm.gamePhase = GameManager.Phase.BattlePlayer;
+                    unitState = unitStatus.Inactive;
+                    if (gm.CheckTeam())
+                    {
+                        gm.gamePhase = GameManager.Phase.BattleAi;
+                        gm.PhaseLoop();
+                    }
+                    else
+                    {
+                        gm.gamePhase = GameManager.Phase.BattlePlayer;
+                    }
                 }
+            } 
+        }
+        else
+        {
+            if (action == 0)
+            {
+                while (actionEnd != true)
+                {
+
+                    yield return null;
+                }
+
+                hasMoved = true;
             }
         }
+       
 
         // shoot action
         if (action == 1)
@@ -117,9 +174,9 @@ public class StormTrooper : Soldier
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    playerObject.SelectionRaycast();
+                    playerInstance.SelectionRaycast();
 
-                    if (playerObject.selection.layer == LayerMask.NameToLayer("Ai Unit"))
+                    if (playerInstance.selection.layer == LayerMask.NameToLayer("Ai Unit"))
                     {
                         ShootConfirm();
                     }
@@ -143,6 +200,7 @@ public class StormTrooper : Soldier
                     Debug.Log("nobody can do anymore actions");
                     Debug.Log("Switching to ai");
                     gm.gamePhase = GameManager.Phase.BattleAi;
+                    gm.PhaseLoop();
                 }
                 else
                 {
