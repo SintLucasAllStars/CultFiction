@@ -163,6 +163,7 @@ namespace AFPC
         protected virtual void Update()
         {
             Process();
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         public event Action OnProcess;

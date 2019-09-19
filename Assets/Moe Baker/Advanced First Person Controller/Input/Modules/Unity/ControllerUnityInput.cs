@@ -64,7 +64,7 @@ namespace AFPC
             Move = moveAxis.RawValue;
 
             Jump = Input.GetButton(jumpButton);
-            Sprint = Input.GetButton(sprintButton);
+            Sprint = Input.GetButtonDown(sprintButton);
 
             Crouch = Input.GetButtonDown(crouchButton);
             Prone = Input.GetButtonDown(proneButton);
