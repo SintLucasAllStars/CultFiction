@@ -51,8 +51,8 @@ public class Player : Singelton<Player>
 
             if (_isJumping)
             {
-                _rb.AddForce(new Vector3(0, _jumpVelocity, 0), ForceMode.Impulse);
                 _isJumping = false;
+                _rb.AddForce(new Vector3(0, _jumpVelocity, 0), ForceMode.Impulse);
             }
         }
     }
@@ -86,10 +86,10 @@ public class Player : Singelton<Player>
     private void Jump()
     {
         RaycastHit hit;
-        Debug.DrawRay(this.transform.position, transform.forward.normalized * 40, Color.red);
+        Debug.DrawRay(transform.position, -Vector3.up * 1, Color.red);
 
-        if (Input.GetKeyDown(KeyCode.Space) && Physics.Raycast(transform.position, -transform.up, out hit, 2))
-        _isJumping = true;
+        if (Input.GetKeyDown(KeyCode.Space) && Physics.Raycast(transform.position, -Vector3.up, out hit, 1.2f, 9))
+            _isJumping = true;
     }
 
     private void Sprint()
