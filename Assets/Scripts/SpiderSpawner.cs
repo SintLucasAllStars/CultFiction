@@ -52,7 +52,7 @@ public class SpiderSpawner : MonoBehaviour
         LineRenderer rope = spider.AddComponent<LineRenderer>();
 
         rope.material = _webMaterial;
-        rope.widthMultiplier = 0.05f;
+        rope.widthMultiplier = 0.025f;
         rope.SetPosition(0, spawnPos);
         rope.SetPosition(1, spider.transform.position);
         StartCoroutine(LerpSpiderMovement(spider, spawnPos, rope));
