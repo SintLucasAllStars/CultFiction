@@ -45,6 +45,7 @@ public class BowlingManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && _bowlingBall != null)
         {
             _bowlingBall.Throw();
+            _bowlingBall = null;
             _ballsThrown++;
         }
 
