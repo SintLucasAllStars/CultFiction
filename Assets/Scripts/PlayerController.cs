@@ -50,6 +50,11 @@ public class PlayerController : MonoBehaviour
             transform.position = new Vector3(47.565f, 0.99f, -6.605f);
         }
 
+        if (col.gameObject.tag == "End4")
+        {
+            transform.position = new Vector3(60.9f, 0.99f, -5.2f);
+        }
+
         if (col.gameObject.tag == "Boost")
         {
             rb.velocity = (col.transform.forward * 8);
