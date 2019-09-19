@@ -23,6 +23,10 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
         anim = GetComponent<Animator>();
 
         turrets.AddRange(GameObject.FindObjectsOfType<ShipTurret>());
