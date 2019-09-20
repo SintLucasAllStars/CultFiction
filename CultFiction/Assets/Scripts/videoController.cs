@@ -7,6 +7,8 @@ public class videoController : extendedFunctions
     [SerializeField] private GameObject videoPlayerGameObject;
     private VideoPlayer videoPlayer;
 
+    [SerializeField] private VideoClip clip;
+
     void Awake()
     {
         if (instance == null)
@@ -35,14 +37,13 @@ public class videoController : extendedFunctions
                     {
                         if (gameController.instance.isPhoneClicked)
                         {
-                            //escape
-                            Debug.Log("escape");
-
+                            gameController.instance.SecondPart();
                             return;
                         }
                         else
                         {
-                            Debug.Log("here");
+                            //there is a known bug that causes the videoplayer to not loop
+                            //So you need to stop the clip and play it again to avoid the bug
                             videoPlayer.Stop();
                             StartVideoHandler();
                             videoPlayer.Play();

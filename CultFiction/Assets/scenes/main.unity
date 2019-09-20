@@ -32,7 +32,7 @@ RenderSettings:
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
-  m_DefaultReflectionMode: 0
+  m_DefaultReflectionMode: 1
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
@@ -43,7 +43,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
-  m_LightingDataAsset: {fileID: 112000036, guid: 0a4c1f4691dcb4443be280be2f8cb4b8,
+  m_LightingDataAsset: {fileID: 112000036, guid: c1c4981b9174e4d6d983bd439006d4d5,
     type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -276,7 +276,7 @@ RectTransform:
   - {fileID: 553589764}
   - {fileID: 1161502719}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -295,6 +295,7 @@ GameObject:
   - component: {fileID: 88268828}
   - component: {fileID: 88268827}
   - component: {fileID: 88268832}
+  - component: {fileID: 88268831}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -364,7 +365,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 16.844, y: -0.351, z: -0.034}
+  m_LocalEulerAnglesHint: {x: 76.1938, y: -87.9008, z: -0.0006689802}
+--- !u!111 &88268831
+Animation:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 88268826}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: dc230dcbc68d14fc3968555f2bf64a3d, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: dc230dcbc68d14fc3968555f2bf64a3d, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!114 &88268832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,8 +392,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f6640971b9274e4182eb89ac343f14f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patient: {fileID: 1031989466727862, guid: 4cded843df3c14c5191375a12257df37, type: 2}
+  patient: {fileID: 1035663526685968, guid: 50e42784b485c4257abb8a6d5415b4a7, type: 2}
   isPhoneClicked: 0
+  animation: {fileID: 88268831}
 --- !u!1 &105523395
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,6 +822,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1951240830}
+        m_MethodName: SetButtonColor
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 553589765}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &553589766
@@ -990,22 +1018,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 832292200}
---- !u!1 &895567888 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 100004, guid: 201ebc51d804245328796ba3dd888db0, type: 3}
-  m_PrefabInternal: {fileID: 1863464467}
---- !u!65 &895567889
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 895567888}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &926537745
 GameObject:
   m_ObjectHideFlags: 0
@@ -1088,7 +1100,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 0dcc13b89c8c3394796cbfb0ad15b796, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -2.5
+      value: -1.88
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0dcc13b89c8c3394796cbfb0ad15b796, type: 2}
       propertyPath: m_LocalPosition.y
@@ -1100,19 +1112,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0dcc13b89c8c3394796cbfb0ad15b796, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0dcc13b89c8c3394796cbfb0ad15b796, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0.70129246
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0dcc13b89c8c3394796cbfb0ad15b796, type: 2}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0dcc13b89c8c3394796cbfb0ad15b796, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.7128737
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0dcc13b89c8c3394796cbfb0ad15b796, type: 2}
       propertyPath: m_RootOrder
@@ -1120,7 +1132,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0dcc13b89c8c3394796cbfb0ad15b796, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 89.062004
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 0dcc13b89c8c3394796cbfb0ad15b796, type: 2}
       propertyPath: m_StaticEditorFlags
@@ -1288,6 +1300,17 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1951240830}
+        m_MethodName: SetButtonColor
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1161502720}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1564,7 +1587,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 0.70134085, g: 0.8720708, b: 1, a: 1}
+  m_Color: {r: 0.1851211, g: 0.21380274, b: 0.2352941, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -1586,7 +1609,7 @@ Light:
     m_Bits: 4294967295
   m_Lightmapping: 1
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0.6
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
@@ -1663,7 +1686,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: d6f143bd606d59b44a91fb82d7fff49b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 1.67
+      value: 1.65
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d6f143bd606d59b44a91fb82d7fff49b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -1671,7 +1694,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d6f143bd606d59b44a91fb82d7fff49b, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -4.51
+      value: -4.79
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d6f143bd606d59b44a91fb82d7fff49b, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1789,7 +1812,7 @@ VideoPlayer:
   m_ControlledAudioTrackCount: 1
   m_PlayOnAwake: 1
   m_SkipOnDrop: 1
-  m_Looping: 1
+  m_Looping: 0
   m_WaitForFirstFrame: 0
   m_FrameReadyEventEnabled: 0
 --- !u!4 &1498307412
@@ -1817,6 +1840,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayerGameObject: {fileID: 1498307410}
+  clip: {fileID: 32900000, guid: 247b9607c64d8462882fbe47c94c9b61, type: 3}
 --- !u!1 &1542398473
 GameObject:
   m_ObjectHideFlags: 0
@@ -1950,35 +1974,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1632677446
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1632677447}
-  m_Layer: 0
-  m_Name: '----GameController----'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1632677447
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1632677446}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.073927, y: -2.8119278, z: -6.826023}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1772100673
 GameObject:
@@ -2019,7 +2015,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1824472095
 GameObject:
@@ -2060,7 +2056,7 @@ Light:
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 0.85294116, g: 0.7790657, b: 0.47037196, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.6
   m_Range: 12
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -2196,7 +2192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e52c8a5276a94a519160edc95e9c68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreText: {fileID: 0}
 --- !u!4 &1951240831
 Transform:
   m_ObjectHideFlags: 0
@@ -2208,7 +2203,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1969437486
 GameObject:

@@ -22,13 +22,14 @@ public class gameController : MonoBehaviour
     [SerializeField] private GameObject patient;
     private patientController pController;
     public bool isPhoneClicked = false;
+    [SerializeField] private Animation animation;
     private int score;
+    private int amountOfHits;
 
     void Start()
     {
-        SpawnPatient();
+        //SpawnPatient();
         videoController.instance.StartVideoHandler();
-        Debug.Log("1");
     }
 
     public void SpawnPatient()
@@ -36,8 +37,7 @@ public class gameController : MonoBehaviour
         try
         {
             var p = Instantiate(patient, new Vector3(-16.04f, 0, -0.65f), Quaternion.identity);
-            pController = p.GetComponent<patientController>();
-            pController.InitPatient();
+            pController = p.transform.GetChild(0).GetComponent<patientController>();
         }
         catch (MissingComponentException m)
         {
@@ -48,8 +48,18 @@ public class gameController : MonoBehaviour
 
     public void PatientHit()
     {
-        pController.RemovePatient();
-        score += 100;
-        uiController.instance.ShowScore(score);
+        amountOfHits++;
+
+        if (amountOfHits > 5)
+        {
+            pController.target = 1;
+            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(2);
+        }
+    }
+
+    public void SecondPart()
+    {
+        animation.Play();
+        SpawnPatient();
     }
 }

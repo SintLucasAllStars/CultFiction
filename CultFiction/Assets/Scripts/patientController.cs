@@ -12,9 +12,6 @@ public class patientController : extendedFunctions
     }
 
     [SerializeField] private State state;
-
-    public GameObject radiusObject;
-    public float radiusOption;
     public patient _patient;
 
     /// <summary>
@@ -25,27 +22,15 @@ public class patientController : extendedFunctions
 
     private float speed = 0.15f;
 
-    void Update()
+    void Awake()
     {
-        transform.position = Vector3.MoveTowards(this.transform.position, _patient.positions[target], speed);
-    }
-
-    public void InitPatient()
-    {
-        _patient = new patient(this.gameObject, radiusObject, Random.Range(2, 4));
+        Debug.Log("HERE");
+        _patient = new patient(this.gameObject, Random.Range(2, 4));
         state = State.spawned;
         Wait(5f, () => { state = State.onTheTable; });
-        Debug.Log(state);
     }
-
-    public void RemovePatient()
+    void Update()
     {
-        state = State.lived;
-        target = 1;
-        Wait(5f, () =>
-        {
-            gameController.instance.SpawnPatient();
-            Destroy(this.gameObject);
-        });
+        this.transform.position = Vector3.MoveTowards(this.transform.position, _patient.positions[target], speed);
     }
 }

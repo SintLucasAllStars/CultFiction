@@ -1,8 +1,7 @@
 using UnityEngine;
-using TMPro;
-using System;
+using UnityEngine.UI;
 
-public class uiController : MonoBehaviour
+public class uiController : extendedFunctions
 {
     #region Singleton
     public static uiController instance;
@@ -15,8 +14,6 @@ public class uiController : MonoBehaviour
 
     private bool isPaused;
 
-
-    [SerializeField] private TextMeshProUGUI scoreText;
     public void PauseGame()
     {
         if (isPaused)
@@ -27,19 +24,26 @@ public class uiController : MonoBehaviour
         Time.timeScale = 0;
         isPaused = !isPaused;
     }
-    public void ShowScore(int score)
+
+    public void SwitchScene(int index)
     {
-        scoreText.text = "score: " + score;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(index);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 
     public void WillYouAnswer(bool isAnswering)
     {
-        Debug.Log("clicked");
         gameController.instance.isPhoneClicked = isAnswering;
     }
 
-    void UpdateMistakes()
+    public void SetButtonColor(Button but)
     {
-
+        var mapped = Map(148, 0, 255, 0, 1);
+        var alpha = Map(150, 0, 255, 0, 1);
+        but.image.color = new Color(mapped, mapped, mapped, alpha);
     }
 }
