@@ -24,11 +24,12 @@ public class Player : Singelton<Player>
 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         _rb = this.GetComponent<Rigidbody>();
         _speed = 5f;
         _paused = false;
         _isJumping = false;
-        _jumpVelocity = 5;
+        _jumpVelocity = 8;
         _startPos = transform.position;
     }
 
@@ -86,7 +87,6 @@ public class Player : Singelton<Player>
     private void Jump()
     {
         RaycastHit hit;
-        Debug.DrawRay(transform.position, -Vector3.up * 1, Color.red);
 
         if (Input.GetKeyDown(KeyCode.Space) && Physics.Raycast(transform.position, -Vector3.up, out hit, 1.2f, 9))
             _isJumping = true;
