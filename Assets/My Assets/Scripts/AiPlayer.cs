@@ -6,7 +6,6 @@ using Random = UnityEngine.Random;
 
 public class AiPlayer : MonoBehaviour
 {
-    public List<GameObject> aiUnits;
     public GameManager gm;
     public GameObject selectedAiUnit;
     public Soldier aiUnitInstance;
@@ -21,7 +20,7 @@ public class AiPlayer : MonoBehaviour
 
     public void TakeTurn()
     {
-        aiUnits = gm.blueTeam;
+        
         // il make stupid simple ai
         // it wil just choose random unit and move it forward and then shoot the closest player unit
         StartCoroutine(DoUnitActions());
@@ -31,7 +30,7 @@ public class AiPlayer : MonoBehaviour
 
     void ChooseUnit(int unit)
     {
-        selectedAiUnit = aiUnits[unit];
+        selectedAiUnit = gm.blueTeam[unit];
         aiUnitInstance = selectedAiUnit.GetComponent<Soldier>();
     }
 
@@ -48,29 +47,26 @@ public class AiPlayer : MonoBehaviour
     void ShootUnit()
     {
         aiUnitInstance.Shoot();
-        aiUnitInstance.AiShootConfirm(gm.redTeam.Count);
+        aiUnitInstance.AiShootConfirm(gm.redTeam.Count );
     }
 
     public IEnumerator DoUnitActions()
     {
-        for (int i = 0; i < aiUnits.Count; i++)
+        for (int i = 0; i < gm.blueTeam.Count; i++)
         {
             ChooseUnit(i);
             MoveUnit();
             ShootUnit(); 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
         }
 
-        for (int i = 0; i < gm.redTeam.Count; i++)
-        {
-            Soldier playerUnit = gm.redTeam[i].GetComponent<Soldier>();
-            
-
-        }
+        gm.uiManager.UpdateStatus("ai is done");
         gm.gamePhase = GameManager.Phase.BattlePlayer;
         gm.PhaseLoop();
     }
     
+    
+    // for moving the ai units
     public  int AiCalculateNewSpaceId(int xAxis, int zAxis)
     {
         int id = 0;
@@ -79,7 +75,6 @@ public class AiPlayer : MonoBehaviour
         int z = zAxis * 20 ;
 
         id = x + z;
-        Debug.Log(id);
         return id;
     }
     

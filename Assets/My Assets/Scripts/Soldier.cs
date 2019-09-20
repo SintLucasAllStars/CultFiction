@@ -23,7 +23,7 @@ public class Soldier : MonoBehaviour
     public GameObject ocupiedSpace;
     public int hp;
     public int firePower;
-    public GameObject unitShader;
+    public GameObject marker;
 
     public enum unitStatus
     {
@@ -44,11 +44,13 @@ public class Soldier : MonoBehaviour
         playerInstance = GameObject.Find("Player Object").GetComponent<Player>();
         aiInstance = GameObject.Find("Ai Object").GetComponent<AiPlayer>();
         gm = GameObject.Find("Game Managers and debug").GetComponent<GameManager>();
-        
+        marker = transform.GetChild(0).gameObject;
+        marker.SetActive(false);
         unitState = unitStatus.Inactive;
         hasMoved = false;
         hasShot = false;
         actionEnd = false;
+        
     }
 
     // Update is called once per frame
@@ -94,10 +96,11 @@ public class Soldier : MonoBehaviour
     public virtual void Select()
     {
         unitState = Soldier.unitStatus.Selected;
-        unitMoveSet = gm.uiManager.unitMoveSet[unitId];
+        // 0 because i have only 1 type of unit
+        unitMoveSet = gm.uiManager.unitMoveSet[0];
         unitMoveSet.SetActive(true);
         gm.gamePhase = GameManager.Phase.SelectPlayerUnitAction;
-
+        marker.SetActive(true);
     }
 
     void EndTurn()
@@ -119,7 +122,7 @@ public class Soldier : MonoBehaviour
         return false;
     }
 
-    public virtual void TakeDamage(int dmg)
+    public virtual void TakeDamage(int dmg, Soldier possibleDeath)
     {
         hp = hp - dmg;
         
@@ -141,7 +144,7 @@ public class Soldier : MonoBehaviour
         return false;
     }
 
-    public virtual void CheckDeath()
+    public virtual void CheckDeath(Soldier deathTarget)
     {
         
     }

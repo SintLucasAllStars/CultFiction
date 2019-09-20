@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     private GameManager gm;
-    private int unitPoints = 10;
+    public  int unitPoints = 10;
     public GameObject selection;
 
     
@@ -124,11 +125,7 @@ public class Player : MonoBehaviour
         {
             if (selection.layer == LayerMask.NameToLayer("Unit Selection"))
             {
-                //select unit on selection object
-               
-
-                Debug.Log("just before true select unit");
-                Debug.Log("layer 9 hit");
+                //check if raycast is hitting a player unit
 
                 return true;
             }
@@ -168,6 +165,10 @@ public class Player : MonoBehaviour
                 {
                     instance.Select();
                     gm.selectedActiveUnit = selection;
+                }
+                else
+                {
+                    uiManager.UpdateStatus("this unit has no more actions");
                 }
                 
             }
@@ -216,10 +217,11 @@ public class Player : MonoBehaviour
             GameObject unitInstance = Instantiate(unit, new Vector3(spawnPos.x,spawnPos.y + 0.5f,spawnPos.z), Quaternion.identity);;
             Soldier soldierInstance = unitInstance.GetComponent<Soldier>();
             unitPoints = unitPoints - unitCost;
+            uiManager.UpdatePoints();
             soldierInstance.ocupiedSpace = selection;
             gm.redTeam.Add(unitInstance);
             // - 1 because count wil return 1 too much
-            soldierInstance.worldSpaceGridId = gm.redTeam.Count - 1;
+            soldierInstance.unitId = gm.redTeam.Count - 1;
         }
 
         Debug.Log("Placing unit");

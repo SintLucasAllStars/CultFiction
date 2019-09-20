@@ -70,7 +70,8 @@ public class StormTrooper : Soldier
         int zNew = UnityEngine.Random.Range(zMin, zMax);
 
 
-        // now actually move the dam unit
+        // now actually move the dam unit // CLAMP DOESNT RETURN IF IT IS OUTSIDE THE GIVEN RANGE THATSA A PROBLEM rip
+        // the reel problem is not that the resolt can be a id thats bigger or smaller that the min or maximum gridsize
         newId = aiInstance.AiCalculateNewSpaceId(Mathf.Clamp(xNew, 0, gridMax), Mathf.Clamp(zNew, 0,gridMax));
 
         gameObject.transform.position = gm.levelBuildManager.worldSpaceGrid[newId].transform.position;
@@ -103,7 +104,7 @@ public class StormTrooper : Soldier
     {
         base.ShootConfirm();
         var instance = playerInstance.selection.GetComponent<Soldier>();
-        instance.TakeDamage(firePower);
+        instance.TakeDamage(firePower, instance);
         actionEnd = true;
 
     }
@@ -113,7 +114,9 @@ public class StormTrooper : Soldier
         base.AiShootConfirm(playerTeamMax);
         int randomTarget = UnityEngine.Random.Range(0,playerTeamMax);
         Soldier instance = gm.redTeam[randomTarget].GetComponent<Soldier>();
-        instance.TakeDamage(firePower);
+        instance.TakeDamage(firePower, instance);
+        actionEnd = true;
+
     }
 
 
@@ -143,17 +146,22 @@ public class StormTrooper : Soldier
                 if (CheckActionPoints())
                 {
                     unitState = unitStatus.Selected;
+                    gm.uiManager.UpdateStatus("now use shoot");
                 }
                 else
                 {
+                    marker.SetActive(false);
+
                     unitState = unitStatus.Inactive;
-                    if (gm.CheckTeam())
+                    if (gm.CheckTeamActionPoints())
                     {
+                        gm.uiManager.UpdateStatus("all your units have used their action switching to ai");
                         gm.gamePhase = GameManager.Phase.BattleAi;
                         gm.PhaseLoop();
                     }
                     else
                     {
+                        gm.uiManager.UpdateStatus("this unit has used all his action");
                         gm.gamePhase = GameManager.Phase.BattlePlayer;
                     }
                 }
@@ -185,17 +193,19 @@ public class StormTrooper : Soldier
                 }
                 else
                 {
+                    marker.SetActive(false);
                     unitState = unitStatus.Inactive;
                     // checks if whole team has done its actions
-                    if (gm.CheckTeam())
+                    if (gm.CheckTeamActionPoints())
                     {
-                        Debug.Log("nobody can do anymore actions");
-                        Debug.Log("Switching to ai");
+                        gm.uiManager.UpdateStatus("all your units have used their action switching to ai");
                         gm.gamePhase = GameManager.Phase.BattleAi;
                         gm.PhaseLoop();
                     }
                     else
                     {
+                        gm.uiManager.UpdateStatus("this unit has used all his action");
+                        unitMoveSet.SetActive(false);
                         gm.gamePhase = GameManager.Phase.BattlePlayer;
                     }
                 }
@@ -247,26 +257,41 @@ public class StormTrooper : Soldier
         base.Select();
     }
 
-    public override void TakeDamage(int dmg)
+    public override void TakeDamage(int dmg, Soldier possibleDeath)
     {
-        base.TakeDamage(dmg);
-        CheckDeath();
+        base.TakeDamage(dmg, possibleDeath);
+        CheckDeath(possibleDeath);
     }
 
-    public override void CheckDeath()
+    public override void CheckDeath(Soldier deathTarget)
     {
-        base.CheckDeath();
-        if (CheckHp())
+        base.CheckDeath(deathTarget);
+        if (deathTarget.CheckHp())
         {
-            gm.redTeam.RemoveAt(unitId);
-            if (gm.redTeam.Count == 0)
+            if (gm.gamePhase == GameManager.Phase.BattleAi)
             {
-                Debug.Log("Player is dead");
+                gm.redTeam.RemoveAt(deathTarget.unitId);
+                if (gm.redTeam.Count == 0)
+                {
+                    Debug.Log("Player is dead");
+                }
+                else
+                {
+                 gm.ResetUnitsId();   
+                }
             }
 
-            if (gm.blueTeam.Count == 0)
+            if (gm.gamePhase == GameManager.Phase.SelectPlayerUnitAction)
             {
-                Debug.Log("Ai units Dead");
+                gm.blueTeam.RemoveAt(deathTarget.unitId);
+                if (gm.blueTeam.Count == 0)
+                {
+                    Debug.Log("Ai units Dead");
+                }
+                else
+                {
+                    gm.ResetUnitsId();   
+                }
             }
             gameObject.SetActive(false);
         }

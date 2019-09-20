@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -36,8 +37,8 @@ public class GameManager : MonoBehaviour
     public GameObject selectedUnitToPlace;
     public GameObject selectedActiveUnit;
 
-    public GameObject aiObject;
     public AiPlayer aiInstance;
+    public Player playerInstance;
     /*public List<GameObject> testPrefabUnitsRed;
     public List<GameObject> testPrefabUnitsBlue;*/
 
@@ -59,8 +60,7 @@ public class GameManager : MonoBehaviour
         uiManager = GameObject.Find("Game Managers and debug").GetComponent<UiManager>();
         levelBuildManager = GameObject.Find("Game Managers and debug").GetComponent<LevelBuildManager>();
         startingTeam = 1;
-        aiObject = GameObject.Find("Ai Object");
-        aiInstance = aiObject.GetComponent<AiPlayer>();
+        
 
     }
 
@@ -97,46 +97,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-   
-
-
-
-    void AssignUnitToTeam()
-    {
-        /*for (int i = 0; i < testPrefabUnitsRed.Count; i++)
-        {
-         
-
-            if (spawnedUnit.CompareTag("Red Team"))
-            {
-                redTeam.Add(spawnedUnit);
-            }
-            else
-            {
-                blueTeam.Add(spawnedUnit);
-            }
-        }*/
-    }
-
-    /*public void ChangePhase()
-    {
-        if (gamePhase == Phase.PrevSideRed)
-        {
-            gamePhase = Phase.BattleSideBlue;
-        }
-        else if (gamePhase == Phase.PrevSideBlue)
-        {
-            gamePhase = Phase.BattleSideRed;
-        }
-    }*/
 
     public void PhaseLoop()
     {
         // player loop
         if (gamePhase == Phase.SelectingPlayerUnit)
         {
-            Debug.Log("you can now select and place your units");
-            Debug.Log("Game is waiting for player input");
+            TextMeshProUGUI statusText = uiManager.statusDisplay;
+            statusText.text = "Status:\nselect and place your units";
+            
+            uiManager.unitSelectionUi.SetActive(true);
         }
 
         
@@ -150,9 +120,12 @@ public class GameManager : MonoBehaviour
 
         if (gamePhase == Phase.SpawningAiUnits)
         {
+            uiManager.unitSelectionUi.SetActive(false);
             GameObject unit;
             Soldier soldierInstance;
             Debug.Log("Ai is spawning units");
+            
+            // I only have 1 unit type to spawn the stormtroopers
             for (int i = 0; i < aiPattern.Count; i++)
             {
                 Vector3 spawnPos = aiPattern[i];
@@ -165,7 +138,12 @@ public class GameManager : MonoBehaviour
                 // -1 because count return 1 too much
                 int worldGridId = aiInstance.AiCalculateNewSpaceId(spawnPosx, spawnPosz);
                 soldierInstance.ocupiedSpace = levelBuildManager.worldSpaceGrid[worldGridId];
+                //unitid i think does not get used
                 soldierInstance.unitId = i;
+
+                // activate player stormtrooper moveset ui
+                
+                uiManager.UpdateStatus("select unit to use their actions");
             }
 
             // player begins
@@ -175,7 +153,6 @@ public class GameManager : MonoBehaviour
             }
             
             gamePhase = Phase.BattlePlayer;
-            Debug.Log("player first move");
         }
         
         if (gamePhase == Phase.BattlePlayer)
@@ -191,11 +168,12 @@ public class GameManager : MonoBehaviour
             {
                 blueTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.Inactive;
             }
+            uiManager.UpdateStatus("its your turn select a unit to use");
         }
         
         if (gamePhase == Phase.BattleAi)
         {
-            
+            uiManager.UpdateStatus("ai is taking his turn");
             // here initiate ai loop
             for (int i = 0; i < redTeam.Count; i++)
             {
@@ -213,7 +191,7 @@ public class GameManager : MonoBehaviour
 
 
     //check after every action so you know if all units have done their actions.
-    public bool CheckTeam()
+    public bool CheckTeamActionPoints()
     {
         int amountOfUnits = redTeam.Count;
         int amount = 0;
@@ -258,6 +236,18 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void ResetUnitsId()
+    {
+        for (int i = 0; i < redTeam.Count; i++)
+        {
+            redTeam[i].GetComponent<Soldier>().unitId = i;
+        }
+        
+        for (int i = 0; i < blueTeam.Count; i++)
+        {
+            blueTeam[i].GetComponent<Soldier>().unitId = i;
+        }
+    }
 
 
 
