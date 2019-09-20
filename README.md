@@ -11,7 +11,7 @@ Controls: Swipe the club away from the ball, then let go. This will add force to
 
 ## Choices and why
 
-I'm using Android because I haven't seen other students go for that option, and I wanted to do something that stands out at least a little bit.
+I'm using Android because I haven't seen many other students go for that option, and I wanted to do something that stands out at least a little bit.
 
 I've made the pixel-art myself, i've used the PSD's for the project so I could easily adjust on the fly.
 
