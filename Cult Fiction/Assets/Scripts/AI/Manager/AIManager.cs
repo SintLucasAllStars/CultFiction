@@ -40,10 +40,6 @@ public class AIManager : MonoBehaviour
         {
             controlledAI--;
         }
-        if (isLeader)
-        {
-            groupLeader.Remove(ai);
-        }
     }
 
     private void MoveSelectedUnit(PlayerAI selectedPlayer)
