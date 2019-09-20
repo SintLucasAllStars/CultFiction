@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     public GameObject selection;
 
     
-    public UiButtonManager uiManager;
+    public UiManager uiManager;
 
     // Start is called before the first frame update
     private void Awake()
@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         gm = GameObject.Find("Game Managers and debug").GetComponent<GameManager>();
-        uiManager = GameObject.Find("Game Managers and debug").GetComponent<UiButtonManager>();
+        uiManager = GameObject.Find("Game Managers and debug").GetComponent<UiManager>();
     }
 
     // Update is called once per frame
@@ -213,7 +213,7 @@ public class Player : MonoBehaviour
         //Soldier unitScript = unit.GetComponent;
         if (unitPoints > 0)
         {
-            GameObject unitInstance = Instantiate(unit, spawnPos, Quaternion.identity);;
+            GameObject unitInstance = Instantiate(unit, new Vector3(spawnPos.x,spawnPos.y + 0.5f,spawnPos.z), Quaternion.identity);;
             Soldier soldierInstance = unitInstance.GetComponent<Soldier>();
             unitPoints = unitPoints - unitCost;
             soldierInstance.ocupiedSpace = selection;

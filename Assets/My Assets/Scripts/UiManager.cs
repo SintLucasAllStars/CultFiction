@@ -3,16 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UiButtonManager : MonoBehaviour
+public class UiManager : MonoBehaviour
 {
     private GameManager gm;
     public List<GameObject> unitMoveSet;
     public GameObject unitSelectionUi;
 
+    public List<GameObject> generalUi;
+
     
     // Start is called before the first frame update
     void Start()
     {
+        for (int i = 0; i < generalUi.Count; i++)
+        {
+            generalUi[i].SetActive(false);
+        }
         for (int i = 0; i < unitMoveSet.Count; i++)
         {
             unitMoveSet[i].SetActive(false);
@@ -82,15 +88,19 @@ public class UiButtonManager : MonoBehaviour
     {
         // stormTrooper
         
+        // move
             if (action == 0)
             {
                 gm.selectedActiveUnit.GetComponent<StormTrooper>().Move();
             }
-
+        //shoot
             if (action == 1)
             {
                 gm.selectedActiveUnit.GetComponent<StormTrooper>().Shoot();
             }
-
     }
+    
+    
+    
+    
 }

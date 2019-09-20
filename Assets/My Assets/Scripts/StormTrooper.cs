@@ -102,23 +102,30 @@ public class StormTrooper : Soldier
     public override void ShootConfirm()
     {
         base.ShootConfirm();
-        Soldier instance;
-        instance = playerInstance.selection.GetComponent<Soldier>();
-        instance.TakeDamage(2);
+        var instance = playerInstance.selection.GetComponent<Soldier>();
+        instance.TakeDamage(firePower);
         actionEnd = true;
 
+    }
+
+    public override void AiShootConfirm(int playerTeamMax)
+    {
+        base.AiShootConfirm(playerTeamMax);
+        int randomTarget = UnityEngine.Random.Range(0,playerTeamMax);
+        Soldier instance = gm.redTeam[randomTarget].GetComponent<Soldier>();
+        instance.TakeDamage(firePower);
     }
 
 
     public override IEnumerator WaitForActionEnd(int action)
     {
-        // move action
 
+        // if player calls this 
         if (gm.gamePhase != GameManager.Phase.BattleAi)
         {
+            // move action player
             if (action == 0)
             {
-                ///////// problem
                 while (actionEnd != true)
                 {
                     if (Input.GetMouseButtonDown(0))
@@ -150,12 +157,60 @@ public class StormTrooper : Soldier
                         gm.gamePhase = GameManager.Phase.BattlePlayer;
                     }
                 }
-            } 
+            }
+            
+            // shoot action player
+            if (action == 1)
+            {
+                while (actionEnd != true)
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        playerInstance.SelectionRaycast();
+
+                        if (playerInstance.selection.layer == LayerMask.NameToLayer("Ai Unit"))
+                        {
+                            ShootConfirm();
+                        }
+                    }
+
+                    yield return null;
+                }
+
+                hasShot = true;
+                if (CheckActionPoints())
+                {
+                    unitState = unitStatus.Selected;
+                    gm.gamePhase = GameManager.Phase.BattlePlayer;
+                }
+                else
+                {
+                    unitState = unitStatus.Inactive;
+                    // checks if whole team has done its actions
+                    if (gm.CheckTeam())
+                    {
+                        Debug.Log("nobody can do anymore actions");
+                        Debug.Log("Switching to ai");
+                        gm.gamePhase = GameManager.Phase.BattleAi;
+                        gm.PhaseLoop();
+                    }
+                    else
+                    {
+                        gm.gamePhase = GameManager.Phase.BattlePlayer;
+                    }
+                }
+            }
+            
+            
         }
         else
         {
+            // if ai calls this
             if (action == 0)
             {
+                
+                //waits for ai to turn action end to true
+
                 while (actionEnd != true)
                 {
 
@@ -164,50 +219,23 @@ public class StormTrooper : Soldier
 
                 hasMoved = true;
             }
+            
+            if (action == 1)
+            {
+                
+                //waits for ai to turn action end to true
+                while (actionEnd != true)
+                {
+
+                    yield return null;
+                }
+
+                hasShot = true;
+            }
         }
        
 
-        // shoot action
-        if (action == 1)
-        {
-            while (actionEnd != true)
-            {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    playerInstance.SelectionRaycast();
-
-                    if (playerInstance.selection.layer == LayerMask.NameToLayer("Ai Unit"))
-                    {
-                        ShootConfirm();
-                    }
-                }
-
-                yield return null;
-            }
-
-            hasShot = true;
-            if (CheckActionPoints())
-            {
-                unitState = unitStatus.Selected;
-                gm.gamePhase = GameManager.Phase.BattlePlayer;
-            }
-            else
-            {
-                unitState = unitStatus.Inactive;
-                // checks if whole team has done its actions
-                if (gm.CheckTeam())
-                {
-                    Debug.Log("nobody can do anymore actions");
-                    Debug.Log("Switching to ai");
-                    gm.gamePhase = GameManager.Phase.BattleAi;
-                    gm.PhaseLoop();
-                }
-                else
-                {
-                    gm.gamePhase = GameManager.Phase.BattlePlayer;
-                }
-            }
-        }
+      
 
         actionEnd = false;
     }
@@ -233,7 +261,12 @@ public class StormTrooper : Soldier
             gm.redTeam.RemoveAt(unitId);
             if (gm.redTeam.Count == 0)
             {
-                Debug.Log("everyone is dead");
+                Debug.Log("Player is dead");
+            }
+
+            if (gm.blueTeam.Count == 0)
+            {
+                Debug.Log("Ai units Dead");
             }
             gameObject.SetActive(false);
         }

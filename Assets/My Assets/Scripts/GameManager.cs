@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,7 +29,7 @@ public class GameManager : MonoBehaviour
     
 
     public LevelBuildManager levelBuildManager;
-    public UiButtonManager uiManager;
+    public UiManager uiManager;
     public List<GameObject> redTeam;
     public List<GameObject> blueTeam;
 
@@ -54,7 +56,7 @@ public class GameManager : MonoBehaviour
     {
         
         // red team starts
-        uiManager = GameObject.Find("Game Managers and debug").GetComponent<UiButtonManager>();
+        uiManager = GameObject.Find("Game Managers and debug").GetComponent<UiManager>();
         levelBuildManager = GameObject.Find("Game Managers and debug").GetComponent<LevelBuildManager>();
         startingTeam = 1;
         aiObject = GameObject.Find("Ai Object");
@@ -156,7 +158,8 @@ public class GameManager : MonoBehaviour
                 Vector3 spawnPos = aiPattern[i];
                 int spawnPosx = Mathf.FloorToInt(spawnPos.x);
                 int spawnPosz = Mathf.FloorToInt(spawnPos.z);
-                unit = Instantiate(unitDataBase[1], spawnPos, Quaternion.identity);
+                
+                unit = Instantiate(unitDataBase[1], new Vector3(spawnPos.x,spawnPos.y + 0.5f,spawnPos.z), unitDataBase[1].transform.rotation);
                 soldierInstance = unit.GetComponent<Soldier>();
                 blueTeam.Add(unit);
                 // -1 because count return 1 too much
@@ -239,14 +242,25 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void EndBattle()
+    public void EndBattle(bool winner)
     {
         //when 1 teams units are dead
+        gamePhase = Phase.BattleEnd;
+        if (winner != true)
+        {
+            uiManager.generalUi[0].SetActive(true);
+        }
     }
 
-    
-  
-     
+    // restart button
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+
+
+
 
 
 

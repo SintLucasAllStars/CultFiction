@@ -22,6 +22,8 @@ public class Soldier : MonoBehaviour
     public bool actionEnd;
     public GameObject ocupiedSpace;
     public int hp;
+    public int firePower;
+    public GameObject unitShader;
 
     public enum unitStatus
     {
@@ -77,6 +79,12 @@ public class Soldier : MonoBehaviour
     {
         
     }
+
+    public virtual void AiShootConfirm(int playerTeamMax)
+    {
+        
+    }
+
 
     public virtual void Shoot()
     {

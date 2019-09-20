@@ -47,7 +47,8 @@ public class AiPlayer : MonoBehaviour
 
     void ShootUnit()
     {
-        
+        aiUnitInstance.Shoot();
+        aiUnitInstance.AiShootConfirm(gm.redTeam.Count);
     }
 
     public IEnumerator DoUnitActions()
@@ -56,7 +57,7 @@ public class AiPlayer : MonoBehaviour
         {
             ChooseUnit(i);
             MoveUnit();
-            //ShootUnit(); 
+            ShootUnit(); 
             yield return new WaitForSeconds(1);
         }
 

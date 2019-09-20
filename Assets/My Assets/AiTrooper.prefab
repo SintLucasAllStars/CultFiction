@@ -901,7 +901,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4139068108395928071}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
@@ -912,7 +912,7 @@ Transform:
   - {fileID: 1637715393780519452}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!95 &7035104867879486830
 Animator:
   serializedVersion: 3
@@ -956,6 +956,7 @@ MonoBehaviour:
   actionEnd: 0
   ocupiedSpace: {fileID: 0}
   hp: 10
+  firePower: 2
   unitState: 0
   gm: {fileID: 0}
 --- !u!65 &6595443302216877379
