@@ -31,11 +31,6 @@ public class CameraMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Vector3 playerInfo = player.transform.transform.position;
-        //mainCamera.transform.position = new Vector3(playerInfo.x + cameraDistOffsetx, playerInfo.y + cameraDistOffsety, playerInfo.z - cameraDistOffsetz);
-
-        //transform.position = playerr.position + offset;
-
         yaw += speedH * Input.GetAxis("Mouse X");
         pitch -= speedV * Input.GetAxis("Mouse Y");
 

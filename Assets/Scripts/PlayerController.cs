@@ -55,6 +55,11 @@ public class PlayerController : MonoBehaviour
             transform.position = new Vector3(60.9f, 0.99f, -5.2f);
         }
 
+        if (col.gameObject.tag == "End5")
+        {
+            transform.position = new Vector3(74.812f, 0.99f, -5.99f);
+        }
+
         if (col.gameObject.tag == "Boost")
         {
             rb.velocity = (col.transform.forward * 8);
@@ -62,10 +67,52 @@ public class PlayerController : MonoBehaviour
             speedSound.Play();
         }
 
+        if (col.gameObject.tag == "SuperBoost")
+        {
+            rb.velocity = (col.transform.forward * 15);
+
+            speedSound.Play();
+        }
+
+        if (col.gameObject.tag == "Level1Fail")
+        {
+            transform.position = new Vector3(4.031f, 0.462f, -5.184f);
+            transform.rotation = Quaternion.identity;
+        }
+
+        if (col.gameObject.tag == "Level2Fail")
+        {
+            transform.position = new Vector3(21.55f, 0.91f, -5f);
+            transform.rotation = Quaternion.identity;
+        }
+
         if (col.gameObject.tag == "Level3Fail")
         {
             transform.position = new Vector3(36.456f, 0.91f, -5.22f);
             transform.rotation = Quaternion.identity;
+        }
+
+        if (col.gameObject.tag == "Level4Fail")
+        {
+            transform.position = new Vector3(47.565f, 0.99f, -6.605f);
+            transform.rotation = Quaternion.identity;
+        }
+
+        if (col.gameObject.tag == "Level5Fail")
+        {
+            transform.position = new Vector3(60.9f, 0.99f, -5.2f);
+            transform.rotation = Quaternion.identity;
+        }
+
+        if (col.gameObject.tag == "Level6Fail")
+        {
+            transform.position = new Vector3(4.031f, 0.462f, -5.184f);
+            transform.rotation = Quaternion.identity;
+        }
+
+        if (col.gameObject.tag == "Jones")
+        {
+            SceneManager.LoadScene("Start");
         }
     }
 }
