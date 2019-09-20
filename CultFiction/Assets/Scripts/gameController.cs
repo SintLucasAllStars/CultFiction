@@ -21,13 +21,14 @@ public class gameController : MonoBehaviour
 
     [SerializeField] private GameObject patient;
     private patientController pController;
-    [SerializeField] private AudioSource source;
-    [SerializeField] private AudioClip[] clips;
+    public bool isPhoneClicked = false;
     private int score;
 
     void Start()
     {
         SpawnPatient();
+        videoController.instance.StartVideoHandler();
+        Debug.Log("1");
     }
 
     public void SpawnPatient()
@@ -50,11 +51,5 @@ public class gameController : MonoBehaviour
         pController.RemovePatient();
         score += 100;
         uiController.instance.ShowScore(score);
-    }
-
-    public void NextAudioClip(int clipIndex)
-    {
-        source.clip = clips[clipIndex];
-        source.Play();
     }
 }

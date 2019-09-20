@@ -27,14 +27,19 @@ public class uiController : MonoBehaviour
         Time.timeScale = 0;
         isPaused = !isPaused;
     }
-
     public void ShowScore(int score)
     {
         scoreText.text = "score: " + score;
     }
 
+    public void WillYouAnswer(bool isAnswering)
+    {
+        Debug.Log("clicked");
+        gameController.instance.isPhoneClicked = isAnswering;
+    }
+
     void UpdateMistakes()
     {
 
-    } 
+    }
 }

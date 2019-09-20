@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class playerController : MonoBehaviour
 {
-    private Transform shootPoint;
     private int mistakes;
     public int Mistakes
     {
@@ -26,11 +25,6 @@ public class playerController : MonoBehaviour
 
     public Animation[] animations;
 
-
-    void Start()
-    {
-        shootPoint = this.transform.GetChild(0).transform;
-    }
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -39,10 +33,8 @@ public class playerController : MonoBehaviour
 
     void fireRay()
     {
-        Ray myray = new Ray(shootPoint.position, shootPoint.transform.position);
+        Ray myray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-
-        Debug.DrawRay(shootPoint.position, shootPoint.transform.position, Color.blue);
 
         if (Physics.Raycast(myray, out hit, Mathf.Infinity))
         {
@@ -53,7 +45,8 @@ public class playerController : MonoBehaviour
             }
             else if (checkTag(hit.transform.tag, "phone"))
             {
-                gameController.instance.NextAudioClip(1);
+                Debug.Log("Phone is clicked");
+                gameController.instance.isPhoneClicked = true;
                 return;
             }
 

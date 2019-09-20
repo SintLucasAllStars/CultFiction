@@ -16,7 +16,7 @@ public class extendedFunctions : MonoBehaviour
 
     IEnumerator _wait(float wait, Action callback)
     {
-        yield return new WaitForSeconds(wait);
+        yield return new WaitForSecondsRealtime(wait);
         callback();
     }
 }
