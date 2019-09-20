@@ -8,7 +8,14 @@ public class GameManager : Singleton<GameManager>
 
     public bool IsOpened => _isOpened;
 
-    public void ToggleOpen()
+    [SerializeField]
+    private GameObject _customer = null;
+
+    private Coroutine _customerCoroutine;
+
+    private float _time;
+
+    public void Open()
     {
         if (ObjectManager.Instance.GetChairs().Length == 0)
         {
@@ -22,6 +29,14 @@ public class GameManager : Singleton<GameManager>
             return;
         }
 
-        _isOpened = !_isOpened;
+        _isOpened = true;
+        _customerCoroutine = StartCoroutine(CustomerRoutine());
+    }
+
+    private IEnumerator CustomerRoutine()
+    {
+        yield return new WaitForSeconds(Random.Range(15, 20));
+        Instantiate(_customer, transform.position, transform.rotation);
+        StartCoroutine(CustomerRoutine());
     }
 }

@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad79953f25ef43847851f84d2b3fda1d, type: 3}
-  m_Name: Coconut_Machine
+  m_Name: Coconut_Machine_04
   m_EditorClassIdentifier: 
-  _itemName: Coconut_Machine_01
+  _itemName: Coconut_Machine_04
   _preReq:
-  - Sliced_Coconut
+  - Coconut_Machine_03
   _postCondition:
-  - Coconut_Machine_01
+  - Coconut_Machine_04
   _sprite: {fileID: 21300000, guid: 5d3a48af724bdf34bbef2a18ae93e30d, type: 3}
-  _price: 50
+  _price: 100
   _shopObject:
     _object: {fileID: 1656212385551175338, guid: bb179815ff8245142a838e57ead463e6,
       type: 3}

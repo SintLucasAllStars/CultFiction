@@ -10,7 +10,7 @@ public enum OrderMode
 public class OrderProcessor : MonoBehaviour
 {
     [SerializeField]
-    private SpriteRenderer _foodSprite, _speechBalloon, _speechBalloonFoodSprite;
+    private SpriteRenderer _foodSprite = null, _speechBalloon = null, _speechBalloonFoodSprite = null;
 
     protected Food _currentFood;
     public Food CurrentFood => _currentFood;

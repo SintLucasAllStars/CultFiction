@@ -4,6 +4,6 @@
 public class FoodShopItem : ShopItem
 {
     [SerializeField]
-    private Food _shopObject;
+    private Food _shopObject = null;
     public Food ShopObject => _shopObject;
 }
