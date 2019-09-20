@@ -1,3 +1,15 @@
+#A message to David
+
+Hey David,
+
+The game I have created is inspired by two scenes, the “The Big Lebowski” bowling scene and the “Indiana Jones” scene.
+
+Also the controls of the game are very simple.
+Move: WASD
+Start/Play again: spacebar
+
+Have fun playing!
+
 # CultFiction
 
 Watch the following cult cinema scenes very carefully, chose one detail, ANY DETAIL big or small to make a micro-game or game  prototype out of.
