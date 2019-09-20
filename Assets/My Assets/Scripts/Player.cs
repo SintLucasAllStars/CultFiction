@@ -8,10 +8,10 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     private GameManager gm;
-    public  int unitPoints = 10;
+    public int unitPoints = 10;
     public GameObject selection;
 
-    
+
     public UiManager uiManager;
 
     // Start is called before the first frame update
@@ -44,25 +44,6 @@ public class Player : MonoBehaviour
         //Mouse Input
         if (Input.GetMouseButtonDown(0))
         {
-            /*if (gm.gamePhase == GameManager.Phase.SelectingPlayerUnit)
-            {
-                // mask = LayerMask.NameToLayer("Unit Selection");
-                // make sure a unit is selected to be spawned for next phase
-                if (SelectionRaycast())
-                {
-                    Debug.Log("select unit");
-                    gm.gamePhase = GameManager.Phase.SpawningPlayerUnits;
-                }
-                else
-                {
-                    Debug.Log("didnt select unit");
-                }
-
-                //Debug.Log(mask.value);
-                return;
-            }
-*/
-
             if (gm.gamePhase == GameManager.Phase.SpawningPlayerUnits)
             {
                 // mask =  LayerMask.NameToLayer("Player Unit Spawns");
@@ -83,7 +64,7 @@ public class Player : MonoBehaviour
             if (gm.gamePhase == GameManager.Phase.BattlePlayer)
             {
                 if (SelectionRaycast())
-                {   
+                {
                     Debug.Log("Select unit action");
                 }
             }
@@ -95,7 +76,6 @@ public class Player : MonoBehaviour
                     Debug.Log("it dit it till here lol");
                 }
             }
-            
         }
 
         //keyboard input actions (specific to upper and lower cased letters)
@@ -110,12 +90,12 @@ public class Player : MonoBehaviour
         }
     }
 
-   public bool SelectionRaycast()
+    public bool SelectionRaycast()
     {
         // selection categorised by gamephase
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-       
+
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         {
             selection = hit.collider.gameObject;
@@ -146,14 +126,14 @@ public class Player : MonoBehaviour
 
         if (gm.gamePhase == GameManager.Phase.BattlePlayer)
         {
-            if (selection.layer == LayerMask.NameToLayer("Player Unit"));
+            if (selection.layer == LayerMask.NameToLayer("Player Unit")) ;
             {
                 Soldier instance = selection.GetComponent<Soldier>();
 
                 for (int i = 0; i < gm.redTeam.Count; i++)
                 {
                     Soldier listUnit = gm.redTeam[i].GetComponent<Soldier>();
-                    
+
                     // this happens when you select a different unit while other unit is selected
                     if (listUnit.unitState == Soldier.unitStatus.Selected)
                     {
@@ -170,10 +150,9 @@ public class Player : MonoBehaviour
                 {
                     uiManager.UpdateStatus("this unit has no more actions");
                 }
-                
             }
         }
-        
+
         // only do this one if you want it to return true otherwise find a other way
         // ummmm make a way so you can use this for a lot of unit actions now im limited to a few
         if (gm.gamePhase == GameManager.Phase.SelectPlayerUnitAction)
@@ -200,7 +179,6 @@ public class Player : MonoBehaviour
             {
                 return true;
             }
-
         }
 
         //Debug.DrawRay(ray.origin, ray.direction, Color.red,20 );
@@ -214,7 +192,8 @@ public class Player : MonoBehaviour
         //Soldier unitScript = unit.GetComponent;
         if (unitPoints > 0)
         {
-            GameObject unitInstance = Instantiate(unit, new Vector3(spawnPos.x,spawnPos.y + 0.5f,spawnPos.z), Quaternion.identity);;
+            GameObject unitInstance = Instantiate(unit, new Vector3(spawnPos.x, spawnPos.y + 0.5f, spawnPos.z), Quaternion.identity);
+            ;
             Soldier soldierInstance = unitInstance.GetComponent<Soldier>();
             unitPoints = unitPoints - unitCost;
             uiManager.UpdatePoints();

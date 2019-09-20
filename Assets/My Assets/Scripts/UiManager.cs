@@ -13,7 +13,6 @@ public class UiManager : MonoBehaviour
     public List<GameObject> generalUi;
     public TextMeshProUGUI statusDisplay;
 
-    
     // Start is called before the first frame update
     void Start()
     {
@@ -21,10 +20,12 @@ public class UiManager : MonoBehaviour
         {
             generalUi[i].SetActive(false);
         }
+
         for (int i = 0; i < unitMoveSet.Count; i++)
         {
             unitMoveSet[i].SetActive(false);
         }
+
         unitSelectionUi.SetActive(false);
         gm = GameObject.Find("Game Managers and debug").GetComponent<GameManager>();
         UpdatePoints();
@@ -43,7 +44,6 @@ public class UiManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     public void UnitSelectButton(int unitID)
@@ -91,33 +91,28 @@ public class UiManager : MonoBehaviour
             {
                 gm.redTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.Inactive;
             }
+
             gm.gamePhase = GameManager.Phase.BattleAi;
         }
-        
+
         gm.PhaseLoop();
     }
 
-  
-
     public void StormTrooperAction(int action)
     {
-        // stormTrooper
-        
+
         // move
-            if (action == 0)
-            {
-                gm.selectedActiveUnit.GetComponent<StormTrooper>().Move();
-                UpdateStatus("now select a space to where you want to go");
-            }
+        if (action == 0)
+        {
+            gm.selectedActiveUnit.GetComponent<StormTrooper>().Move();
+            UpdateStatus("now select a space to where you want to go");
+        }
+
         //shoot
-            if (action == 1)
-            {
-                gm.selectedActiveUnit.GetComponent<StormTrooper>().Shoot();
-                UpdateStatus("now select a enemy you want to shoot");
-            }
+        if (action == 1)
+        {
+            gm.selectedActiveUnit.GetComponent<StormTrooper>().Shoot();
+            UpdateStatus("now select a enemy you want to shoot");
+        }
     }
-    
-    
-    
-    
 }

@@ -9,7 +9,9 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public List<GameObject> unitDataBase;
+
     public List<Vector3> aiPattern;
+
     //here are the phases of battle
     public enum Phase
     {
@@ -17,17 +19,14 @@ public class GameManager : MonoBehaviour
         SelectingPlayerUnit = 2,
         SelectingAiUnit = 3,
         SpawningPlayerUnits = 4,
-        PlayerUnitPointsEmpty = 5,
-        AiUnitPointsEmpty = 6,
         SpawningAiUnits = 7,
         BattlePlayer = 8,
         SelectPlayerUnitAction = 9,
-        SelectAiUnitAction = 10, 
+        SelectAiUnitAction = 10,
         BattleAi = 11,
-        
+
         BattleEnd = 13
     }
-    
 
     public LevelBuildManager levelBuildManager;
     public UiManager uiManager;
@@ -38,6 +37,7 @@ public class GameManager : MonoBehaviour
     public GameObject selectedActiveUnit;
 
     public AiPlayer aiInstance;
+
     public Player playerInstance;
     /*public List<GameObject> testPrefabUnitsRed;
     public List<GameObject> testPrefabUnitsBlue;*/
@@ -55,13 +55,10 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
         // red team starts
         uiManager = GameObject.Find("Game Managers and debug").GetComponent<UiManager>();
         levelBuildManager = GameObject.Find("Game Managers and debug").GetComponent<LevelBuildManager>();
         startingTeam = 1;
-        
-
     }
 
     // Update is called once per frame
@@ -97,7 +94,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     public void PhaseLoop()
     {
         // player loop
@@ -105,11 +101,9 @@ public class GameManager : MonoBehaviour
         {
             TextMeshProUGUI statusText = uiManager.statusDisplay;
             statusText.text = "Status:\nselect and place your units";
-            
+
             uiManager.unitSelectionUi.SetActive(true);
         }
-
-        
 
         // Ai loop
         if (gamePhase == Phase.SelectingAiUnit)
@@ -124,15 +118,15 @@ public class GameManager : MonoBehaviour
             GameObject unit;
             Soldier soldierInstance;
             Debug.Log("Ai is spawning units");
-            
+
             // I only have 1 unit type to spawn the stormtroopers
             for (int i = 0; i < aiPattern.Count; i++)
             {
                 Vector3 spawnPos = aiPattern[i];
                 int spawnPosx = Mathf.FloorToInt(spawnPos.x);
                 int spawnPosz = Mathf.FloorToInt(spawnPos.z);
-                
-                unit = Instantiate(unitDataBase[1], new Vector3(spawnPos.x,spawnPos.y + 0.5f,spawnPos.z), unitDataBase[1].transform.rotation);
+
+                unit = Instantiate(unitDataBase[1], new Vector3(spawnPos.x, spawnPos.y + 0.5f, spawnPos.z), unitDataBase[1].transform.rotation);
                 soldierInstance = unit.GetComponent<Soldier>();
                 blueTeam.Add(unit);
                 // -1 because count return 1 too much
@@ -142,7 +136,7 @@ public class GameManager : MonoBehaviour
                 soldierInstance.unitId = i;
 
                 // activate player stormtrooper moveset ui
-                
+
                 uiManager.UpdateStatus("select unit to use their actions");
             }
 
@@ -151,10 +145,10 @@ public class GameManager : MonoBehaviour
             {
                 redTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.Active;
             }
-            
+
             gamePhase = Phase.BattlePlayer;
         }
-        
+
         if (gamePhase == Phase.BattlePlayer)
         {
             for (int i = 0; i < redTeam.Count; i++)
@@ -163,14 +157,15 @@ public class GameManager : MonoBehaviour
                 playerUnit.unitState = Soldier.unitStatus.Active;
                 playerUnit.ResetActionPoints();
             }
-            
+
             for (int i = 0; i < blueTeam.Count; i++)
             {
                 blueTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.Inactive;
             }
+
             uiManager.UpdateStatus("its your turn select a unit to use");
         }
-        
+
         if (gamePhase == Phase.BattleAi)
         {
             uiManager.UpdateStatus("ai is taking his turn");
@@ -179,16 +174,15 @@ public class GameManager : MonoBehaviour
             {
                 redTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.Inactive;
             }
-            
+
             for (int i = 0; i < blueTeam.Count; i++)
             {
                 blueTeam[i].GetComponent<Soldier>().unitState = Soldier.unitStatus.Active;
             }
-            
+
             aiInstance.TakeTurn();
         }
     }
-
 
     //check after every action so you know if all units have done their actions.
     public bool CheckTeamActionPoints()
@@ -199,7 +193,7 @@ public class GameManager : MonoBehaviour
         foreach (var soldierInstance in redTeam)
         {
             Soldier instance = soldierInstance.GetComponent<Soldier>();
-           
+
             // mayby change to check unitstate later
             if (instance.CheckActionPoints() != true)
             {
@@ -210,14 +204,12 @@ public class GameManager : MonoBehaviour
 
         if (amount == amountOfUnits)
         {
-           
             return true;
         }
         else
         {
             return false;
         }
-        
     }
 
     public void EndBattle(bool winner)
@@ -242,16 +234,10 @@ public class GameManager : MonoBehaviour
         {
             redTeam[i].GetComponent<Soldier>().unitId = i;
         }
-        
+
         for (int i = 0; i < blueTeam.Count; i++)
         {
             blueTeam[i].GetComponent<Soldier>().unitId = i;
         }
     }
-
-
-
-
-
-
 }

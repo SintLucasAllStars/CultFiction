@@ -24,7 +24,6 @@ public class StormTrooper : Soldier
                 unitState = unitStatus.DoingAction;
                 StartCoroutine(WaitForActionEnd(0));
                 // now make spaces you can move light up
- 
             }
             else
             {
@@ -41,7 +40,7 @@ public class StormTrooper : Soldier
         gameObject.transform.position = playerInstance.selection.transform.position;
         ocupiedSpace.GetComponent<GridSpace>().spaceMovable = true;
         ocupiedSpace = playerInstance.selection;
-        
+
         actionEnd = true;
     }
 
@@ -64,15 +63,14 @@ public class StormTrooper : Soldier
         zCurrent = Mathf.FloorToInt(aiCurrentPos.z);
         zMax = zCurrent + movementAllowance;
         zMin = zCurrent - movementAllowance;
-        
+
         // +1 because its exclusive i think
         int xNew = UnityEngine.Random.Range(xMin, xMax);
         int zNew = UnityEngine.Random.Range(zMin, zMax);
 
-
         // now actually move the dam unit // CLAMP DOESNT RETURN IF IT IS OUTSIDE THE GIVEN RANGE THATSA A PROBLEM rip
         // the reel problem is not that the resolt can be a id thats bigger or smaller that the min or maximum gridsize
-        newId = aiInstance.AiCalculateNewSpaceId(Mathf.Clamp(xNew, 0, gridMax), Mathf.Clamp(zNew, 0,gridMax));
+        newId = aiInstance.AiCalculateNewSpaceId(Mathf.Clamp(xNew, 0, gridMax), Mathf.Clamp(zNew, 0, gridMax));
 
         gameObject.transform.position = gm.levelBuildManager.worldSpaceGrid[newId].transform.position;
         ocupiedSpace.GetComponent<GridSpace>().spaceMovable = true;
@@ -80,9 +78,6 @@ public class StormTrooper : Soldier
 
         actionEnd = true;
     }
-
-    
-
 
     public override void Shoot()
     {
@@ -98,31 +93,26 @@ public class StormTrooper : Soldier
             Debug.Log("unit has already shot this turn");
         }
     }
-    
-    
+
     public override void ShootConfirm()
     {
         base.ShootConfirm();
         var instance = playerInstance.selection.GetComponent<Soldier>();
         instance.TakeDamage(firePower, instance);
         actionEnd = true;
-
     }
 
     public override void AiShootConfirm(int playerTeamMax)
     {
         base.AiShootConfirm(playerTeamMax);
-        int randomTarget = UnityEngine.Random.Range(0,playerTeamMax);
+        int randomTarget = UnityEngine.Random.Range(0, playerTeamMax);
         Soldier instance = gm.redTeam[randomTarget].GetComponent<Soldier>();
         instance.TakeDamage(firePower, instance);
         actionEnd = true;
-
     }
-
 
     public override IEnumerator WaitForActionEnd(int action)
     {
-
         // if player calls this 
         if (gm.gamePhase != GameManager.Phase.BattleAi)
         {
@@ -166,7 +156,7 @@ public class StormTrooper : Soldier
                     }
                 }
             }
-            
+
             // shoot action player
             if (action == 1)
             {
@@ -210,48 +200,37 @@ public class StormTrooper : Soldier
                     }
                 }
             }
-            
-            
         }
         else
         {
             // if ai calls this
             if (action == 0)
             {
-                
                 //waits for ai to turn action end to true
 
                 while (actionEnd != true)
                 {
-
                     yield return null;
                 }
 
                 hasMoved = true;
             }
-            
+
             if (action == 1)
             {
-                
                 //waits for ai to turn action end to true
                 while (actionEnd != true)
                 {
-
                     yield return null;
                 }
 
                 hasShot = true;
             }
         }
-       
-
-      
 
         actionEnd = false;
     }
 
-    
-    
     public override void Select()
     {
         base.Select();
@@ -277,7 +256,7 @@ public class StormTrooper : Soldier
                 }
                 else
                 {
-                 gm.ResetUnitsId();   
+                    gm.ResetUnitsId();
                 }
             }
 
@@ -290,13 +269,11 @@ public class StormTrooper : Soldier
                 }
                 else
                 {
-                    gm.ResetUnitsId();   
+                    gm.ResetUnitsId();
                 }
             }
+
             gameObject.SetActive(false);
         }
-
-        
-        
     }
 }

@@ -7,16 +7,20 @@ using UnityEngine;
 public class Soldier : MonoBehaviour
 {
     public Player playerInstance;
+
     public AiPlayer aiInstance;
+
     //type of unit
     public int unitId;
+
     //list id i dont use it i think
     public int worldSpaceGridId;
+
     //public GameObject worldSpaceUnit;
     public GameObject unitMoveSet;
     public int unitCost;
     public int movementAllowance;
-    
+
     public bool hasMoved;
     public bool hasShot;
     public bool actionEnd;
@@ -34,9 +38,9 @@ public class Soldier : MonoBehaviour
     }
 
     public unitStatus unitState;
+
     public GameManager gm;
     // Start is called before the first frame update
-
 
     public virtual void Start()
     {
@@ -50,47 +54,37 @@ public class Soldier : MonoBehaviour
         hasMoved = false;
         hasShot = false;
         actionEnd = false;
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-       
     }
 
     public virtual void Move()
     {
-        
     }
-    
+
     public virtual void MoveConfirm()
     {
-        
     }
 
     public virtual void AiMoveConfirm(int gridMax, int gridMinimum)
     {
-        
     }
 
     // just do this for 2D grid for now
-    
 
     public virtual void ShootConfirm()
     {
-        
     }
 
     public virtual void AiShootConfirm(int playerTeamMax)
     {
-        
     }
-
 
     public virtual void Shoot()
     {
-        
     }
 
     public virtual void Select()
@@ -105,9 +99,8 @@ public class Soldier : MonoBehaviour
 
     void EndTurn()
     {
-       
     }
-    
+
     public virtual IEnumerator WaitForActionEnd(int action)
     {
         return null;
@@ -119,13 +112,13 @@ public class Soldier : MonoBehaviour
         {
             return true;
         }
+
         return false;
     }
 
     public virtual void TakeDamage(int dmg, Soldier possibleDeath)
     {
         hp = hp - dmg;
-        
     }
 
     public void ResetActionPoints()
@@ -146,6 +139,5 @@ public class Soldier : MonoBehaviour
 
     public virtual void CheckDeath(Soldier deathTarget)
     {
-        
     }
 }
