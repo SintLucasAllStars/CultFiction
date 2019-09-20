@@ -106,7 +106,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6116a6cd312b0a14ba92fa9ec4ab4de1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldSpaceUnit: {fileID: 0}
+  playerInstance: {fileID: 0}
+  aiInstance: {fileID: 0}
+  unitId: 0
+  worldSpaceGridId: 0
+  unitMoveSet: {fileID: 0}
   unitCost: 2
+  movementAllowance: 0
+  hasMoved: 0
+  hasShot: 0
+  actionEnd: 0
+  ocupiedSpace: {fileID: 0}
+  hp: 0
+  firePower: 0
+  unitShader: {fileID: 0}
   unitState: 0
   gm: {fileID: 0}
