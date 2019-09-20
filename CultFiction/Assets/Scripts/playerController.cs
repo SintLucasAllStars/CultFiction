@@ -53,7 +53,7 @@ public class playerController : MonoBehaviour
             }
             else if (checkTag(hit.transform.tag, "phone"))
             {
-                // gameController.instance call clip
+                gameController.instance.NextAudioClip(1);
                 return;
             }
 
