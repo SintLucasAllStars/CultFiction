@@ -162,6 +162,7 @@ public class GameManager : MonoBehaviour
                 // -1 because count return 1 too much
                 int worldGridId = aiInstance.AiCalculateNewSpaceId(spawnPosx, spawnPosz);
                 soldierInstance.ocupiedSpace = levelBuildManager.worldSpaceGrid[worldGridId];
+                soldierInstance.unitId = i;
             }
 
             // player begins

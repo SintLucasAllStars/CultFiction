@@ -219,6 +219,26 @@ public class StormTrooper : Soldier
         base.Select();
     }
 
-    
-    
+    public override void TakeDamage(int dmg)
+    {
+        base.TakeDamage(dmg);
+        CheckDeath();
+    }
+
+    public override void CheckDeath()
+    {
+        base.CheckDeath();
+        if (CheckHp())
+        {
+            gm.redTeam.RemoveAt(unitId);
+            if (gm.redTeam.Count == 0)
+            {
+                Debug.Log("everyone is dead");
+            }
+            gameObject.SetActive(false);
+        }
+
+        
+        
+    }
 }

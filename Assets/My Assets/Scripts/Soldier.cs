@@ -114,11 +114,27 @@ public class Soldier : MonoBehaviour
     public virtual void TakeDamage(int dmg)
     {
         hp = hp - dmg;
+        
     }
 
     public void ResetActionPoints()
     {
         hasMoved = false;
         hasShot = false;
+    }
+
+    public bool CheckHp()
+    {
+        if (hp <= 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public virtual void CheckDeath()
+    {
+        
     }
 }
