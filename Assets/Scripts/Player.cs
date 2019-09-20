@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
         GameObject stone = Instantiate(stonePrefab, pos, Quaternion.identity);
         Rigidbody rigidbody = stone.GetComponent<Rigidbody>();
         //rigidbody.AddForce(0, 5000*power, 0);
-        Vector3 velocity = Camera.main.transform.forward * 5000;
+        Vector3 velocity = Camera.main.transform.forward * 1000;
         Debug.Log($"X: {velocity.x}, Y: {velocity.y}, Z: {velocity.z}");
         rigidbody.AddForce(velocity*power);
     }

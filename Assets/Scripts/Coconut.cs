@@ -12,6 +12,7 @@ public class Coconut : MonoBehaviour
             _gravity = true;
             Rigidbody rigidbody = GetComponent<Rigidbody>();
             rigidbody.useGravity = true;
+            rigidbody.constraints = RigidbodyConstraints.None;
         }
     }
     
