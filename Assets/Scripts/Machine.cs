@@ -5,7 +5,7 @@ using UnityEngine;
 public class Machine : TriggerInteractable
 {
     [SerializeField]
-    private FoodName _foodType = FoodName.Coconut;
+    private FoodName _foodType = FoodName.Sliced_Coconut;
     public FoodName FoodType => _foodType;
 
     new private void Start()

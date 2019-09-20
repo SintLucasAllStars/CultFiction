@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e6f61fbbaaaf0d429475977673e585e, type: 3}
-  m_Name: Sliced_Coconut
+  m_Name: Green_Tea
   m_EditorClassIdentifier: 
-  _itemName: Sliced_Coconut
-  _preReq: []
+  _itemName: Green_Tea
+  _preReq:
+  - Coconut_Machine_01
+  - Table_01
+  - Red_Tea
   _postCondition:
-  - Sliced_Coconut
-  _sprite: {fileID: 21300000, guid: 993d27e113546b64c94b668f558b1e94, type: 3}
-  _price: 5
-  _shopObject: {fileID: 11400000, guid: 61363cb3cfe64244cbc9ff4f0a5b3585, type: 2}
+  - Green_Tea
+  _sprite: {fileID: 21300000, guid: 1b64fec7675751b45afd6963951f90f8, type: 3}
+  _price: 35
+  _shopObject: {fileID: 11400000, guid: 3652f67d1a1baf2449c7f145a9cccd88, type: 2}

@@ -30,7 +30,10 @@ public class ItemPrefab : MonoBehaviour
         {
             PhysicalShopItem item = (PhysicalShopItem)_shopItem;
             if (!ObjectManager.Instance.CanPlaceObject(item.ShopObject.ObjectType))
+            {
+                ErrorMessage.Instance.AnnounceError("There is no more space left for this object");
                 return;
+            }
 
             ObjectManager.Instance.PlaceObject(item.ShopObject);
         }

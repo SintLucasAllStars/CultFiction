@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
@@ -13,7 +12,10 @@ public class GameManager : Singleton<GameManager>
 
     private Coroutine _customerCoroutine;
 
-    private float _time;
+    private float _spawnDelay;
+
+    private float _waitingTime;
+    public float WaitTime => _waitingTime;
 
     public void Open()
     {
@@ -33,10 +35,23 @@ public class GameManager : Singleton<GameManager>
         _customerCoroutine = StartCoroutine(CustomerRoutine());
     }
 
+    private void Update()
+    {
+        if (_isOpened)
+        {
+            _spawnDelay = Time.time;
+            _waitingTime = 5 + (_spawnDelay - 30) * -0.06f;
+        }
+    }
+
     private IEnumerator CustomerRoutine()
     {
-        yield return new WaitForSeconds(Random.Range(15, 20));
-        Instantiate(_customer, transform.position, transform.rotation);
+        float spawnDelay = 17 + (_spawnDelay - 30) * -0.07f;
+        yield return new WaitForSeconds(spawnDelay);
+        if(FindObjectsOfType<Customer>().Length < 12)
+        {
+            Instantiate(_customer, transform.position, transform.rotation);
+        }
         StartCoroutine(CustomerRoutine());
     }
 }

@@ -29,7 +29,7 @@ public class Order : TriggerInteractable
 
     public void SetRandomFoodType()
     {
-        List<Food> orderableFood = KitchenManager.Instance.Foods;
+        List<Food> orderableFood = KitchenManager.Instance.GetOrderableFoods();
         if (orderableFood.Count == 0)
             return;
 

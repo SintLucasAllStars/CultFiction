@@ -24,4 +24,20 @@ public class KitchenManager : Singleton<KitchenManager>
     }
 
     public void AddFood(Food food) => _foods.Add(food);
+
+    public List<Food> GetOrderableFoods()
+    {
+        List<Food> orderableFood = new List<Food>();
+        for (int i = 0; i < _foods.Count; i++)
+        {
+            for (int j = 0; j < _machines.Count; j++)
+            {
+                if (_machines[j].FoodType == _foods[i].FoodName)
+                {
+                    orderableFood.Add(_foods[i]);
+                }
+            }
+        }
+        return orderableFood;
+    }
 }

@@ -14,7 +14,7 @@ public class OrderItem : ScriptableObject
 
 public enum FoodName
 {
-    Coconut,
+    Red_Tea,
     Sliced_Coconut,
-    Drink
+    Green_Tea
 }

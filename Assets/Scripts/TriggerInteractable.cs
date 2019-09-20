@@ -16,6 +16,9 @@ public class TriggerInteractable : Interactable
 
     protected override bool Interact()
     {
+        if (!base.Interact())
+            return false;
+
         if (!_isInRange)
         {
             ErrorMessage.Instance.AnnounceError("Please get closer");
