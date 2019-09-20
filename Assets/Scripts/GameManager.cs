@@ -12,10 +12,8 @@ public class GameManager : Singleton<GameManager>
 
     private Coroutine _customerCoroutine;
 
-    private float _spawnDelay;
-
-    private float _waitingTime;
-    public float WaitTime => _waitingTime;
+    private float _timeSinceOpen;
+    public float TimeSinceOpen => _timeSinceOpen;
 
     public void Open()
     {
@@ -39,14 +37,13 @@ public class GameManager : Singleton<GameManager>
     {
         if (_isOpened)
         {
-            _spawnDelay = Time.time;
-            _waitingTime = 5 + (_spawnDelay - 30) * -0.06f;
+            _timeSinceOpen = Time.time;
         }
     }
 
     private IEnumerator CustomerRoutine()
     {
-        float spawnDelay = 17 + (_spawnDelay - 30) * -0.07f;
+        float spawnDelay = 17 + (_timeSinceOpen - 30) * -0.07f;
         yield return new WaitForSeconds(spawnDelay);
         if(FindObjectsOfType<Customer>().Length < 12)
         {

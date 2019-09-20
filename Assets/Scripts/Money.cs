@@ -13,6 +13,7 @@ public class Money : Interactable
         if (!base.Interact())
             return false;
         BankAccount.Instance.AddMoney(_reward);
+        HappinessMeter.Instance.Increase(25);
         SoundEffectManager.Instance.PlaySound(SoundEffectName.Money);
         Destroy(this.gameObject);
         return true;

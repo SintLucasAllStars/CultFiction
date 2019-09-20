@@ -22,6 +22,13 @@ public class Customer : Interactable
 
     private Coroutine _currentCoroutine;
 
+    private float _waitingTime;
+
+    private void Update()
+    {
+        _waitingTime = Time.time;
+    }
+
     private void Start()
     {
         SetMode(CustomerMode.WaitingInLine);
@@ -103,6 +110,8 @@ public class Customer : Interactable
     {
         yield return new WaitForSeconds(waitTime);
         HappinessMeter.Instance.Decrease();
-        _currentCoroutine = StartCoroutine(DecreaseHappiness(GameManager.Instance.WaitTime));
+        float waitingTime = 7 + (_waitingTime - 50) + (GameManager.Instance.TimeSinceOpen - 50) * -0.07f;
+        Debug.Log(waitingTime);
+        _currentCoroutine = StartCoroutine(DecreaseHappiness(waitingTime));
     }
 }
