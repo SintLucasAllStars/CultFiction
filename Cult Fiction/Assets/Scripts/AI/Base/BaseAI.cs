@@ -5,19 +5,30 @@ using UnityEngine.AI;
 
 public class BaseAI : MonoBehaviour
 {
-    public NavMeshAgent agent;
-    protected InterfaceAI interfaceAI;
+    public enum Behaviour {normal, attack}
+    protected Behaviour behaviour;
 
+    //Shooting and Aiming.
+    public GameObject baseBulletObject; //The projectile that the object shoots.
+    public Transform baseGunObject;
+    public Transform baseShootDir; //The direction where the object will shoot from.
     protected Transform baseTarget; //The target that the object will attack.
-    protected Transform baseShootDirection; //The direction where the object will shoot from.
-    protected GameObject baseBulletObject; //The projectile that the object shoots.
+    protected float TimestampShoot;
 
+    //debug
+    public float bulletSpeed;
+    public float baseWeaponSpeed;
+
+    //Scripts
+    protected InterfaceAI interfaceAI;
+    protected NavMeshAgent agent;
+
+
+    //On unit creation
     protected int baseId;
-
     protected float baseSpeed;
     protected int baseHealth;
 
-    protected float baseWeaponSpeed;
     protected int baseDamage;
     protected int baseRange;
     protected int baseAccuracy; //Will be based on percentage. Normal = 50;
@@ -28,7 +39,6 @@ public class BaseAI : MonoBehaviour
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
         interfaceAI = gameObject.GetComponent<InterfaceAI>();
-
         baseId = id;
         baseSpeed = speed;
         baseHealth = health;
@@ -49,16 +59,36 @@ public class BaseAI : MonoBehaviour
 
     public void Shoot(Transform target) //Shoots the baseTarget. 
     {
-        int hitAccuracy = Random.Range(1, 101);
-        if (hitAccuracy + baseAccuracy > 99)
+        GameObject bulletInstance;
+        if (Time.time >= TimestampShoot)
         {
-            target.GetComponent<BaseAI>().Hit(baseDamage);
-            GameObject bullet = Instantiate(baseBulletObject);
-        }
-        else
-        {
-            GameObject bullet = Instantiate(baseBulletObject);
-            Destroy(bullet, 5);
+            int hitAccuracy = Random.Range(1, 101);
+            Debug.Log(hitAccuracy);
+            if (hitAccuracy + baseAccuracy >= 100)
+            {
+                bulletInstance = Instantiate(baseBulletObject, baseShootDir.transform.position, baseShootDir.transform.rotation) as GameObject;
+
+                bulletInstance.GetComponent<Rigidbody>().AddForce(baseShootDir.forward * bulletSpeed);
+                TimestampShoot = Time.time + baseWeaponSpeed;
+
+                target.GetComponent<BaseAI>().Hit(baseDamage);
+
+                if (baseTarget == null)
+                {
+                    behaviour = Behaviour.normal;
+                }
+            }
+            else
+            {
+                Vector3 misFireDirection = new Vector3(baseShootDir.rotation.eulerAngles.x + Random.Range(10, 60), baseShootDir.rotation.eulerAngles.y + Random.Range(10, 60), baseShootDir.rotation.eulerAngles.z + Random.Range(10, 60));
+                bulletInstance = Instantiate(baseBulletObject, baseShootDir.transform.position, baseShootDir.transform.rotation) as GameObject;
+
+                Vector3 misfire = new Vector3(baseShootDir.forward.x, baseShootDir.forward.y + Random.Range(-0.5f, 0.5f), baseShootDir.forward.x + Random.Range(-0.5f, 0.5f));
+
+                bulletInstance.GetComponent<Rigidbody>().AddForce(misfire * bulletSpeed);
+                TimestampShoot = Time.time + baseWeaponSpeed;
+            }
+            TimestampShoot = Time.time + baseWeaponSpeed;
         }
     }
 
@@ -67,6 +97,15 @@ public class BaseAI : MonoBehaviour
         Vector3 lookRotation = new Vector3 (target.position.x, transform.position.y, target.position.z);
 
         transform.LookAt(lookRotation);
+
+        baseGunObject.LookAt(target);
+    }
+
+    protected void NoTarget()
+    {
+        behaviour = Behaviour.normal;
+        baseTarget = null;
+        baseGunObject.localPosition = Vector3.zero;
     }
 
 
@@ -82,7 +121,7 @@ public class BaseAI : MonoBehaviour
 
     public virtual void Death()
     {
-
+        Object.Destroy(gameObject);
     }
 
 
@@ -92,26 +131,27 @@ public class BaseAI : MonoBehaviour
     /// <param name="layerMask"></param>
     protected void SeeEnemy(int layerMask)
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, baseRange);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, baseRange, layerMask);
 
         int i = 0;
         while (i < hitColliders.Length)
         {
-            if (!IsObscured(hitColliders[i].transform))
+            Vector3 direction = transform.position - hitColliders[i].transform.position;
+
+            if (!IsObscured(direction, layerMask))
             {
                 baseTarget = hitColliders[i].transform;
                 i = hitColliders.Length;
-                Debug.Log("Targetted");
+                behaviour = Behaviour.attack;
             }
             i++;
         }
     }
 
-    protected bool IsObscured(Transform objectTarget)
+    protected bool IsObscured(Vector3 direction, int layerMask)
     {
-        if (Physics.Raycast(transform.position, objectTarget.position, out RaycastHit hit))
+        if (Physics.Raycast(transform.position, -direction, out RaycastHit hit, baseRange))
         {
-            Debug.Log(hit.collider.gameObject);
             if (hit.collider.gameObject.CompareTag("AI"))
             {
                 return false;
