@@ -12,7 +12,6 @@ public class CarController : MonoBehaviour
     private bool brake;
     private bool isColliding;
     private Transform lastCheckpoint;
-
     public LayerMask Road;
     public Vector3 centerMass;
     public Rigidbody rg;
@@ -26,6 +25,9 @@ public class CarController : MonoBehaviour
     public float brakeForce = 500;
     public bool OnTrack;
     public GameObject checkpoints;
+    public Vector3 resetPosition;
+    public Quaternion resetRotation;
+    public bool resetting = false;
 
     public void GetInput()
     {
@@ -34,17 +36,27 @@ public class CarController : MonoBehaviour
             horizontalInput = Input.GetAxis("P1Horizontal");
             verticalInput = Input.GetAxis("P1Vertical");
             brake = Input.GetKey(KeyCode.Space);
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                ResetPosition();
+            }
+
         }
         if (playerNum == 1)
         {
             horizontalInput = Input.GetAxis("P2Horizontal");
             verticalInput = Input.GetAxis("P2Vertical");
             brake = Input.GetKey(KeyCode.K);
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                ResetPosition();
+            }
         }
     }
     public void Start()
     {
-        lastCheckpoint = transform;
+        resetPosition = transform.position;
+        resetRotation = transform.rotation;
         rg.centerOfMass = centerMass;
         GameObject g = Instantiate(checkpoints);
         g.GetComponent<CheckpointManager>().playerNum = playerNum;
@@ -74,12 +86,12 @@ public class CarController : MonoBehaviour
     private void UpdateWheelPose(WheelCollider collider, Transform transform)
     {
         Vector3 pos = transform.position;
-        Quaternion _quat = transform.rotation;
+        Quaternion quat = transform.rotation;
 
-        collider.GetWorldPose(out pos, out _quat);
+        collider.GetWorldPose(out pos, out quat);
 
         transform.position = pos;
-        transform.rotation = _quat;
+        transform.rotation = quat;
     }
 
     private void FixedUpdate()
@@ -108,7 +120,7 @@ public class CarController : MonoBehaviour
             CarManager.instance.carState = carStates.Idle;
         }
 
-        if (brake)
+        if (brake && !resetting)
         {
             rearDriverW.brakeTorque = brakeForce;
             rearPassengerW.brakeTorque = brakeForce;
@@ -120,6 +132,20 @@ public class CarController : MonoBehaviour
             rearPassengerW.brakeTorque = 0;
         }
         isColliding = false;
+        if (playerNum == 0)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                ResetPosition();
+            }
+        }
+        if (playerNum == 1)
+        {
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                ResetPosition();
+            }
+        }
 
     }
 
@@ -135,9 +161,17 @@ public class CarController : MonoBehaviour
             {
                 lastCheckpoint = other.gameObject.transform;
                 checkpointM.NextCheckPoint(other.gameObject);
+                resetRotation = lastCheckpoint.rotation;
+                resetPosition = lastCheckpoint.position;
             }
         }
 
     }
+    private void ResetPosition()
+    {
+        Debug.Log("reset is pressed");
+        transform.position = resetPosition;
+        transform.rotation = resetRotation;
 
+    }
 }

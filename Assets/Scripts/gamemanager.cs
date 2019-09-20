@@ -17,6 +17,7 @@ public class gamemanager : MonoBehaviour
     }
     void Start()
     {
+        playMode = menu.instance.playmode;
         StartGame();
     }
 
