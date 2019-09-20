@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class CheckpointManager : MonoBehaviour
 {
     public List<GameObject> checkPoints;
@@ -39,9 +39,14 @@ public class CheckpointManager : MonoBehaviour
     {
         Destroy(checkpoint);
         checkpointCount++;
-        if (checkpointCount <= checkPoints.Count)
+        if (checkpointCount < checkPoints.Count)
         {
             checkPoints[checkpointCount].SetActive(true);
         }
+        else
+        {
+            SceneManager.LoadScene(0);
+        }
+        
     }
 }
