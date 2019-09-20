@@ -13,8 +13,8 @@ public class patientController : extendedFunctions
 
     [SerializeField] private State state;
 
-    public GameObject raduisObject;
-    public float raduisOption;
+    public GameObject radiusObject;
+    public float radiusOption;
     public patient _patient;
 
     /// <summary>
@@ -32,7 +32,7 @@ public class patientController : extendedFunctions
 
     public void InitPatient()
     {
-        _patient = new patient(this.gameObject, raduisObject, Random.Range(2, 4));
+        _patient = new patient(this.gameObject, radiusObject, Random.Range(2, 4));
         state = State.spawned;
         Wait(5f, () => { state = State.onTheTable; });
         Debug.Log(state);

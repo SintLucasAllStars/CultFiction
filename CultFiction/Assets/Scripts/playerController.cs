@@ -68,7 +68,7 @@ public class playerController : MonoBehaviour
 
     private void NoLivesLeft()
     {
-        //using it like this so that I don't need to imported over the whole schript
+        //using it like this so that I don't need to imported over the whole script
         UnityEngine.SceneManagement.SceneManager.LoadScene(2);
     }
 
