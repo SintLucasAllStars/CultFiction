@@ -17,7 +17,7 @@ public class TextMover : MonoBehaviour
     void Update()
     {
         transform.Translate(new Vector3(0, 2 * Time.deltaTime, 0));
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             SceneManager.LoadScene(scene);
         }
