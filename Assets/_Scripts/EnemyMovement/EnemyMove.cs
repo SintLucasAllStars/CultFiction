@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EnemyMove : MonoBehaviour
 { 
-    [SerializeField] Transform target;
+    public Transform target;
     [SerializeField] float movementSpeed = 10f;
     [SerializeField] float rotationalDamp = 0.5f;
 

@@ -6,11 +6,13 @@ using UnityEngine.UI;
 
 public class StartScreen : MonoBehaviour
 {
-    public Button start;
-
-    public Button quit;
 
     public void OnStart()
+    {
+        SceneManager.LoadScene("Game");
+    }
+    
+    public void OnRe()
     {
         SceneManager.LoadScene("Game");
     }
