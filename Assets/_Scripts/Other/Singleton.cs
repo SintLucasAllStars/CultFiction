@@ -31,7 +31,7 @@ public class Singleton : MonoBehaviour
 
     public void addScore(int amt)
     {
-        Score =+ amt;
+        Score += amt;
         scoreText.text = "Score" + Score;
     }
 }
