@@ -31,4 +31,4 @@ https://www.youtube.com/watch?v=tLCTSMBUfmE
 You will deliver the assignment by forking this repository, developing the game on your fork and sending a pull request.
 On the pull request description should be your name, a small text explaining what scene and the elements of the scene that inspired the game.
 
-The deadline for the pull requests is the 20th of September 2019.
+The deadline for the pull requests is the 25th of May 2020.
