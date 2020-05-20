@@ -39,4 +39,4 @@ public struct Tile
 
 }
 
-public enum TileType { Wall, Room, Path, Door };
+public enum TileType { None, Wall, Room, Path, Door };
