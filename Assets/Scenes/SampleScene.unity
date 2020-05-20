@@ -247,10 +247,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41b5b96c6135d0e479c258ee3a366feb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 3177634615260462217, guid: 306f0b6f16d7866498f384cf70584eb6, type: 3}
+  Path: {fileID: 6673802043570168278, guid: b1448312fab862a41bea893cefe30d61, type: 3}
+  Room: {fileID: 3177634615260462217, guid: 306f0b6f16d7866498f384cf70584eb6, type: 3}
+  Wall: {fileID: 2598976468819914414, guid: e969ac15925e6fe42bba6f11b217618c, type: 3}
+  region: {fileID: 8442092536241875766, guid: a912e254caf41bf41a83bd6deb2d8fe9, type: 3}
   dungeon:
-    width: 101
+    width: 51
     height: 51
-    numRoomTries: 42
-    roomExtraSize: 1
-    mazeWindingPercent: 0.4
+    numRoomTries: 100
+    roomExtraSize: 5
+    mazeWindingPercent: 0.3

@@ -7,6 +7,17 @@ public struct Tile
 {
     public GameObject tile;
     public Vector2 pos;
+    public TileType tileType;
+
+    private int region;
+    public int Region
+    {
+        get { return region; }
+        set
+        {
+            region = value;
+        }
+    }
 
     public bool HasTile()
     {
@@ -18,9 +29,14 @@ public struct Tile
         return false;
     }
 
-    public void SetTile(GameObject go)
+    public void SetTile(GameObject go, TileType type)
     {
         tile = go;
         pos = go.transform.position;
+        tileType = type;
     }
+
+
 }
+
+public enum TileType { Wall, Room, Path, Door };

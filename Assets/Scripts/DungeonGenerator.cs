@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class DungeonGenerator : MonoBehaviour
 {
-    public GameObject prefab;
+    public GameObject Path, Room, Wall;
+    public GameObject region;
+    private GameObject parent;
 
     [System.Serializable]
     public class Dungeon
@@ -34,11 +36,20 @@ public class DungeonGenerator : MonoBehaviour
     {
         tiles = new Tile[dungeon.width + 1, dungeon.height + 1];
 
-        StartCoroutine(AddRooms());
-        //StartCoroutine(CreateMaze());
+        //for(int y = 1; y < dungeon.height - 1; y++)
+        //{
+        //    for (int x = 1; x < dungeon.width -1; x++)
+        //    {
+        //        GameObject go = Instantiate(Wall, new Vector2(x, y), Quaternion.identity);
+        //        tiles[x, y].SetTile(go, TileType.Path);
+        //    }
+        //}
+
+        //StartCoroutine(AddRooms());
+        AddRooms();
     }
 
-    private IEnumerator AddRooms()
+    private void AddRooms()
     {
         for (int Iterations = 0; Iterations < dungeon.numRoomTries; Iterations++)
         {
@@ -73,8 +84,6 @@ public class DungeonGenerator : MonoBehaviour
             if (overlap)
                 continue;
 
-            Debug.Log("Times");
-
             rooms.Add(room);
 
             StartRegion();
@@ -83,16 +92,18 @@ public class DungeonGenerator : MonoBehaviour
                 for (int j = y; j < (y + height); j++)
                 {
                     Vector2 pos = new Vector2(i, j);
-                    GameObject go = Instantiate(prefab, pos, Quaternion.identity);
-                    tiles[i, j].SetTile(go);
-                    yield return new WaitForEndOfFrame();
+                    GameObject go = Instantiate(Room, pos, Quaternion.identity, parent.transform);
+                    tiles[i, j].SetTile(go, TileType.Room);
+                    tiles[i, j].Region = currentRegion;
                 }
             }
+            //yield return new WaitForEndOfFrame();
         }
-        StartCoroutine(CreateMaze());
+        //StartCoroutine(CreateMaze());
+        CreateMaze();
     }
 
-    private IEnumerator CreateMaze()
+    private void CreateMaze()
     {
         for (int y = 1; y < dungeon.height; y += 2)
         {
@@ -107,8 +118,9 @@ public class DungeonGenerator : MonoBehaviour
                 Vector2 lastDir = Vector2.zero;
 
                 StartRegion();
-                GameObject go = Instantiate(prefab, pos, Quaternion.identity);
-                tiles[(int)pos.x, (int)pos.y].SetTile(go);
+                GameObject go = Instantiate(Path, pos, Quaternion.identity, parent.transform);
+                tiles[(int)pos.x, (int)pos.y].SetTile(go, TileType.Path);
+                tiles[(int)pos.x, (int)pos.y].Region = currentRegion;
                 cells.Add(pos);
 
                 while(cells.Count != 0)
@@ -148,11 +160,13 @@ public class DungeonGenerator : MonoBehaviour
                             dir = unmadeCells[Random.Range(0, unmadeCells.Count)];
                         }
 
-                        go = Instantiate(prefab, cell + dir, Quaternion.identity);
-                        tiles[(int)(cell.x + dir.x), (int)(cell.y + dir.y)].SetTile(go);
+                        go = Instantiate(Path, cell + dir, Quaternion.identity, parent.transform);
+                        tiles[(int)(cell.x + dir.x), (int)(cell.y + dir.y)].SetTile(go, TileType.Path);
+                        tiles[(int)(cell.x + dir.x), (int)(cell.y + dir.y)].Region = currentRegion;
 
-                        go = Instantiate(prefab, cell + (dir * 2), Quaternion.identity);
-                        tiles[(int)(cell.x + (dir.x * 2)), (int)(cell.y + (dir.y * 2))].SetTile(go);
+                        go = Instantiate(Path, cell + (dir * 2), Quaternion.identity, parent.transform);
+                        tiles[(int)(cell.x + (dir.x * 2)), (int)(cell.y + (dir.y * 2))].SetTile(go, TileType.Path);
+                        tiles[(int)(cell.x + (dir.x * 2)), (int)(cell.y + (dir.y * 2))].Region = currentRegion;
 
                         cells.Add(cell + (dir * 2));
                         lastDir = dir;
@@ -162,15 +176,137 @@ public class DungeonGenerator : MonoBehaviour
                         cells.RemoveAt(cells.Count - 1);
                         lastDir = Vector2.zero;
                     }
-                    //yield return new WaitForEndOfFrame();
-                    yield return new WaitForSeconds(0.0000000001f);
                 }
+                //yield return new WaitForEndOfFrame();
             }
         }
+
+        //StartCoroutine(ConnectRooms());
+        ConnectRooms();
+    }
+
+    private void ConnectRooms()
+    {
+        List<Vector2> connectors = new List<Vector2>();
+        GameObject go;
+
+        foreach (Rect room in rooms)
+        {
+            Rect region = ConnectorRegions(room, 1f);
+
+            for(int x = (int)region.x; x < (region.x + region.width + 1); x++)
+            {
+                for (int y = (int)region.y; y < (region.y + region.height + 1); y++)
+                {
+                    if (x >= 1 && x < dungeon.width - 1 &&
+                        y >= 1 && y < dungeon.height - 1 &&
+                        !tiles[x, y].HasTile())
+                    {
+                        Vector2 pos = new Vector2(x, y);
+
+                        List<int> regions = new List<int>();
+
+                        List<Vector2Int> neighbours = new List<Vector2Int>();
+                        neighbours.Add(new Vector2Int((int)pos.x + 1, (int)pos.y));
+                        neighbours.Add(new Vector2Int((int)pos.x, (int)pos.y - 1));
+                        neighbours.Add(new Vector2Int((int)pos.x, (int)pos.y + 1));
+                        neighbours.Add(new Vector2Int((int)pos.x - 1, (int)pos.y));
+
+                        foreach(Vector2Int neighbour in neighbours)
+                        {
+                            if (neighbour.x >= 1 && neighbour.x < dungeon.width - 1 &&
+                                neighbour.y >= 1 && neighbour.y < dungeon.height - 1 &&
+                                tiles[neighbour.x, neighbour.y].HasTile())
+                            {
+                                if(!regions.Contains(tiles[neighbour.x, neighbour.y].Region))
+                                {
+                                    regions.Add(tiles[neighbour.x, neighbour.y].Region);
+                                }
+                            }
+                        }
+
+                        if(regions.Count == 2)
+                        {
+                            connectors.Add(new Vector2(x, y));
+                        }
+                    }
+                }
+            }
+
+            Vector2 connector = connectors[Random.Range(0, connectors.Count)];
+
+            go = Instantiate(Path, connector, Quaternion.identity, parent.transform);
+            tiles[(int)connector.x, (int)connector.y].SetTile(go, TileType.Door);
+            connectors.Remove(connector);
+
+            if (Random.value < 0.2f)
+            {
+                connector = connectors[Random.Range(0, connectors.Count)];
+                go = Instantiate(Path, connector, Quaternion.identity, parent.transform);
+                tiles[(int)connector.x, (int)connector.y].SetTile(go, TileType.Door);
+            }
+            connectors.Clear();
+            //yield return new WaitForEndOfFrame();
+        }
+        //StartCoroutine(RemoveDeadEnds());
+        RemoveDeadEnds();
+    }
+
+    private void RemoveDeadEnds()
+    {
+        bool isDone = false;
+        Debug.Log("!!!");
+
+        while (!isDone)
+        {
+            isDone = true;
+            for (int y = 1; y < dungeon.height - 1; y++)
+            {
+                for (int x = 1; x < dungeon.width - 1; x++)
+                {
+                    if (tiles[x, y].tileType != TileType.Path)
+                        continue;
+
+                    int exits = 0;
+
+                    List<Vector2Int> neighbours = new List<Vector2Int>();
+                    neighbours.Add(new Vector2Int(x + 1, y));
+                    neighbours.Add(new Vector2Int(x, y - 1));
+                    neighbours.Add(new Vector2Int(x, y + 1));
+                    neighbours.Add(new Vector2Int(x - 1, y));
+
+                    foreach(Vector2Int neighbour in neighbours)
+                    {
+                        if(tiles[neighbour.x, neighbour.y].HasTile() && tiles[neighbour.x, neighbour.y].tileType != TileType.Wall)
+                        {
+                            exits++;
+                        }
+                    }
+
+                    if (exits != 1)
+                        continue;
+
+                    isDone = false;
+                    Destroy(tiles[x, y].tile);
+                    GameObject go = Instantiate(Wall, new Vector2(x, y), Quaternion.identity);
+                    tiles[x, y].SetTile(go, TileType.Wall);
+                    //yield return new WaitForEndOfFrame();
+                }
+            }
+            Debug.Log(isDone);
+            //yield return new WaitForEndOfFrame();
+        }
+        Debug.Log("Done");
     }
 
     private void StartRegion()
     {
         currentRegion++;
+        parent = Instantiate(region, Vector2.zero, Quaternion.identity);
+    }
+
+    private Rect ConnectorRegions(Rect rect, float delta)
+    {
+        return new Rect(rect.x - delta, rect.y - delta, rect.width + delta, rect.height + delta);
     }
 }
