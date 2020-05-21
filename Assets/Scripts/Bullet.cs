@@ -41,7 +41,7 @@ public class Bullet : MonoBehaviour
 
     private void OnBecameInvisible()
     {
-        Transform other = GameObject.FindWithTag("Player").transform;
+        Transform other = GameManager.instance.m_player.transform;
         if (m_Active == false || Vector3.Distance(other.position, transform.position) > m_MaxDistance)
         {
             Destroy(this.gameObject);
