@@ -36,15 +36,12 @@ public class Bullet : MonoBehaviour
         {
             rb.AddForce(Vector3.up * m_Power * 100);
             Destroy(bc);
+            Destroy(gameObject.GetComponent<Rigidbody>());
         }
     }
 
     private void OnBecameInvisible()
     {
-        Transform other = GameManager.instance.m_player.transform;
-        if (m_Active == false || Vector3.Distance(other.position, transform.position) > m_MaxDistance)
-        {
-            Destroy(this.gameObject);
-        }
+        Destroy(this.gameObject);
     }
 }
