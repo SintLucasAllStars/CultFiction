@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public GameObject bullet;
 
     public float speed = 3.5f;
+    public float projectileSpeed = 5.0f;
     private float cameraFollowSpeed = 5.0f;
 
     private float horizontal, vertical;
@@ -56,10 +57,10 @@ public class Player : MonoBehaviour
 
     private void Shoot()
     {
-        Vector2 firePos = rb.position + (lookDir.normalized * 0.4f);
+        Vector2 firePos = rb.position + (lookDir.normalized * 0.55f);
 
         GameObject go = Instantiate(bullet, firePos, Quaternion.Euler(0, 0, angle));
-        go.GetComponent<Rigidbody2D>().AddForce(lookDir * 5f, ForceMode2D.Impulse);
+        go.GetComponent<Rigidbody2D>().AddForce(lookDir * projectileSpeed, ForceMode2D.Impulse);
     }
 
     private void LateUpdate()
