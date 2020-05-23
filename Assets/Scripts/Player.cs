@@ -8,6 +8,9 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     public GameObject bullet;
+    public GameObject ReloadSprite;
+
+    public Gun gun;
 
     public float speed = 3.5f;
     public float projectileSpeed = 5.0f;
@@ -19,10 +22,15 @@ public class Player : MonoBehaviour
     private Vector2 lookDir;
     private float angle;
 
+    private float myDeltaTime;
+    private bool isReloading;               
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        myDeltaTime = Time.time;
+        ReloadSprite.SetActive(false);
     }
 
     private void Update()
@@ -38,9 +46,27 @@ public class Player : MonoBehaviour
 
         Rotate();
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKey(KeyCode.Mouse0) && Time.time > myDeltaTime && !isReloading)
         {
-            Shoot();
+            if(gun.ammoInClip > 0)
+            {
+                Shoot();
+                myDeltaTime = Time.time + gun.fireRate;
+            }
+            else
+            {
+                if(gun.ammo > 0)
+                {
+                    isReloading = true;
+                    StartCoroutine(Reload());
+                }
+            }
+        }
+
+        if(Input.GetKeyDown(KeyCode.R) && gun.ammoInClip < gun.clipCapacity && gun.ammo > 0)
+        {
+            isReloading = true;
+            StartCoroutine(Reload());
         }
     }
 
@@ -59,14 +85,53 @@ public class Player : MonoBehaviour
     {
         Vector2 firePos = rb.position + (lookDir.normalized * 0.55f);
 
-        GameObject go = Instantiate(bullet, firePos, Quaternion.Euler(0, 0, angle));
+        GameObject go = Instantiate(gun.bullet, firePos, Quaternion.Euler(0, 0, angle));
         go.GetComponent<Rigidbody2D>().AddForce(lookDir.normalized * projectileSpeed, ForceMode2D.Impulse);
+        gun.ammoInClip--;
+    }
+
+    private IEnumerator Reload()
+    {
+        ReloadSprite.SetActive(true);
+        yield return new WaitForSeconds(gun.reloadTime);
+        int amountToReload = gun.clipCapacity - gun.ammoInClip;
+        if(gun.ammo < amountToReload)
+        {
+            gun.ammo = 0;
+            gun.ammoInClip += gun.ammo;
+        }
+        else
+        {
+            gun.ammo -= amountToReload;
+            gun.ammoInClip += amountToReload;
+        }
+        isReloading = false;
+        ReloadSprite.SetActive(false);
     }
 
     private void LateUpdate()
     {
         Vector3 camOffset = transform.position + (-Vector3.forward * 5.0f);
         cam.transform.position = Vector3.Lerp(cam.transform.position, camOffset, Time.deltaTime * cameraFollowSpeed);
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        Debug.Log("collision");
+        DropAmmo drop = col.gameObject.GetComponent<DropAmmo>();
+        Debug.Log(drop);
+        if (drop != null)
+        {
+            int dropAmount = drop.PickUp();
+            if(gun.ammo + dropAmount > gun.totalAmmo)
+            {
+                gun.ammo = gun.totalAmmo;
+            }
+            else
+            {
+                gun.ammo += dropAmount;
+            }
+        }
     }
 
     private int GetRotation(float angle)
