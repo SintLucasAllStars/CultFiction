@@ -26,7 +26,7 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision other)
+    /*private void OnCollisionEnter(Collision other)
     {
         transform.parent = other.gameObject.transform;
         m_Active = false;
@@ -38,7 +38,7 @@ public class Bullet : MonoBehaviour
             Destroy(bc);
             Destroy(gameObject.GetComponent<Rigidbody>());
         }
-    }
+    }*/
 
     private void OnBecameInvisible()
     {
