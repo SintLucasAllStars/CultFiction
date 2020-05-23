@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
         Vector2 firePos = rb.position + (lookDir.normalized * 0.55f);
 
         GameObject go = Instantiate(bullet, firePos, Quaternion.Euler(0, 0, angle));
-        go.GetComponent<Rigidbody2D>().AddForce(lookDir * projectileSpeed, ForceMode2D.Impulse);
+        go.GetComponent<Rigidbody2D>().AddForce(lookDir.normalized * projectileSpeed, ForceMode2D.Impulse);
     }
 
     private void LateUpdate()
