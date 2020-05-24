@@ -93,4 +93,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void GameReset()
+    {
+        m_EnemiesKilled = 0;
+        
+        GameObject[] m_DeadEnemies;
+        m_DeadEnemies = GameObject.FindGameObjectsWithTag("Dead");
+        for (int i = 0; i < m_DeadEnemies.Length; i++)
+        {
+            Destroy(m_DeadEnemies[i].gameObject);
+        }
+        
+    }
+
 }

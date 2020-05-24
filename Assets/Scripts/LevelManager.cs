@@ -27,6 +27,7 @@ public class LevelManager : MonoBehaviour
     {
         ani.Play("Level_FadeIn");
         GameManager.instance.TogglePlayer(true);
+        GameManager.instance.GameReset();
     }
 
     public void LevelChange(string sceneName)
