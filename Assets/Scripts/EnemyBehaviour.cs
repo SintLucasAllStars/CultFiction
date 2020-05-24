@@ -11,6 +11,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     private AudioSource m_AudioSource;
     [SerializeField] private AudioClip m_DeathGrunt;
+    [SerializeField] private AudioClip m_BloodSpew;
     private NavMeshAgent m_Agent;
     private Transform m_Target;
     private ParticleSystem m_Particles;
@@ -21,7 +22,7 @@ public class EnemyBehaviour : MonoBehaviour
         // Getting the Components
         m_AudioSource = GetComponent<AudioSource>();
         m_Agent = GetComponent<NavMeshAgent>();
-        m_Particles = GetComponent<ParticleSystem>();
+        m_Particles = GetComponentInChildren<ParticleSystem>();
         if (m_AudioSource == null)
         {
             Debug.Log("Please add AudioSource Component.");
@@ -43,7 +44,8 @@ public class EnemyBehaviour : MonoBehaviour
         // Disable Particle System
         m_Particles.Stop();
         
-        // Correcting Brain Settings
+        // Setting Brains
+        m_Brains += GameManager.instance.m_EnemiesKilled;
         if (m_Brains < 0)
         {
             m_Brains = 0;
@@ -75,16 +77,20 @@ public class EnemyBehaviour : MonoBehaviour
     }
 
     void Death()
-    {
-        m_Particles.Play();
-        m_AudioSource.clip = m_DeathGrunt;
-        m_AudioSource.Play();
-        
-        //Destroy(gameObject, 3f);
-        GetComponent<Animator>().enabled = false;
-        SetRigidBodyState(false);
-        SetColliderState(true);
-    }
+        {
+            m_Particles.Play();
+            m_AudioSource.clip = m_DeathGrunt;
+            m_AudioSource.Play();
+            
+            GetComponent<Animator>().enabled = false;
+            SetRigidBodyState(false);
+            SetColliderState(true);
+            this.gameObject.tag = "Untagged";
+
+            GameObject[] m_pos = GameObject.FindGameObjectsWithTag("Interest");
+            int i = Random.Range(0, m_pos.Length);
+            GameManager.instance.EnemySpawn(m_pos[i].transform.position);
+        }
 
     void SetRigidBodyState(bool state)
     {

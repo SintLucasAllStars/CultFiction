@@ -26,19 +26,18 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    /*private void OnCollisionEnter(Collision other)
+    private void OnCollisionEnter(Collision other)
     {
-        transform.parent = other.gameObject.transform;
-        m_Active = false;
-        Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
-        Collider bc = gameObject.GetComponent<Collider>();
-        if (rb != null && bc != null)
+        if (other.gameObject.tag == "Wall")
         {
-            rb.AddForce(Vector3.up * m_Power * 100);
-            Destroy(bc);
-            Destroy(gameObject.GetComponent<Rigidbody>());
+            Debug.Log("Hit a wall.");
+            transform.parent = other.gameObject.transform;
+            Rigidbody m_rb = GetComponent<Rigidbody>();
+            m_rb.isKinematic = true;
+            m_Active = false;
+            gameObject.tag = "Untagged";
         }
-    }*/
+    }
 
     private void OnBecameInvisible()
     {
