@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class EnemyBehaviour : MonoBehaviour
 {
@@ -73,11 +75,24 @@ public class EnemyBehaviour : MonoBehaviour
             m_Interests = GameObject.FindGameObjectsWithTag("Interest");
         }
         int i = Random.Range(0, m_Interests.Length);
-        m_Agent.SetDestination(m_Interests[i].transform.position);
+        
+        // Check to see if Enemy is too close to their new interest
+        float dist = Vector3.Distance(m_Interests[i].transform.position, transform.position);
+        if (dist > 5)
+        {
+            m_Agent.SetDestination(m_Interests[i].transform.position);
+        }
+        else
+        {
+            Debug.Log("Enemy was too close to their new interest, changing interest.");
+            ChangeInterests();
+        }
     }
 
-    void Death()
-        {
+    public void Death()
+    {
+            GetComponent<Rigidbody>().mass = 1;
+            Destroy(GetComponent<NavMeshAgent>());
             m_Particles.Play();
             m_AudioSource.clip = m_DeathGrunt;
             m_AudioSource.Play();
@@ -85,12 +100,13 @@ public class EnemyBehaviour : MonoBehaviour
             GetComponent<Animator>().enabled = false;
             SetRigidBodyState(false);
             SetColliderState(true);
-            this.gameObject.tag = "Untagged";
+            this.gameObject.tag = "Dead";
 
             GameObject[] m_pos = GameObject.FindGameObjectsWithTag("Interest");
             int i = Random.Range(0, m_pos.Length);
             GameManager.instance.EnemySpawn(m_pos[i].transform.position);
-        }
+            GameManager.instance.GetDeadEnemies();
+    }
 
     void SetRigidBodyState(bool state)
     {
@@ -114,19 +130,6 @@ public class EnemyBehaviour : MonoBehaviour
         GetComponent<Collider>().enabled = !state;
     }
     
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.tag == "Bullet")
-        {
-            m_Health--;
-            if (m_Health < 1)
-            {
-                Destroy(GetComponent<NavMeshAgent>());
-                Death();
-            }
-        }
-    }
-    
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Treasure")
@@ -140,13 +143,5 @@ public class EnemyBehaviour : MonoBehaviour
         }
         
         ChangeInterests();
-    }
-    
-    private void OnBecameInvisible()
-    {
-        if (m_Health < 1)
-        {
-            Destroy(this.gameObject);
-        }
     }
 }

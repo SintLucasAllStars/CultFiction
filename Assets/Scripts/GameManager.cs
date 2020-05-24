@@ -35,6 +35,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void GetDeadEnemies()
+    {
+        GameObject[] m_DeadEnemies;
+        m_DeadEnemies = GameObject.FindGameObjectsWithTag("Dead");
+        if (m_DeadEnemies.Length > 5)
+        {
+            Destroy(m_DeadEnemies[0]);
+        }
+    }
+
     public void GetTreasures()
     {
         GameObject[] m_Treasures;

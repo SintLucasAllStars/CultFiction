@@ -8,6 +8,8 @@ public class Shoot : MonoBehaviour
     private bool m_CanShoot;
     
     private Animator m_Animator;
+    private AudioSource m_AudioSource;
+    [SerializeField] private AudioClip m_Shoot;
     [SerializeField] private GameObject m_Bullet;
     [SerializeField] private Transform m_SpawnLoc;
     
@@ -15,11 +17,17 @@ public class Shoot : MonoBehaviour
     void Start()
     {
         m_Animator = GetComponent<Animator>();
+        m_AudioSource = GetComponent<AudioSource>();
         if (m_Animator == null)
         {
             Debug.Log("Animator Component missing.");
         }
+        if (m_AudioSource == null)
+        {
+            Debug.Log("Audio Source Component missing.");
+        }
 
+        m_AudioSource.clip = m_Shoot;
         Reload();
     }
 
@@ -28,9 +36,23 @@ public class Shoot : MonoBehaviour
     {
         if (Input.GetButtonUp("Fire1") && m_CanShoot == true)
         {
+            m_AudioSource.Play();
             Reload();
-            Vector3 r = new Vector3(transform.eulerAngles.x + 90, transform.eulerAngles.y - 180, 0);
-            Instantiate(m_Bullet, m_SpawnLoc.position, Quaternion.Euler(r));
+            
+            //Vector3 r = new Vector3(transform.eulerAngles.x + 90, transform.eulerAngles.y - 180, 0);
+            //Instantiate(m_Bullet, m_SpawnLoc.position, Quaternion.Euler(r));
+            
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                Debug.Log("Hit: " + hit.collider.gameObject.name);
+                if (hit.collider.gameObject.tag == "Enemy")
+                {
+                    EnemyBehaviour enemy = hit.collider.GetComponentInParent<EnemyBehaviour>();
+                    enemy.Death();
+                }
+            }
         }
     }
 
