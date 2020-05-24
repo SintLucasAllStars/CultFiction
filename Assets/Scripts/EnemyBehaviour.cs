@@ -138,7 +138,8 @@ public class EnemyBehaviour : MonoBehaviour
             {
                 Destroy(g.gameObject);
             }
-            other.tag = "Untagged"; // This treasure has been stolen and does not need to be targeted.
+            other.tag = "Interest"; // This treasure has been stolen and does not need to be targeted.
+            GameManager.instance.GetTreasures();
         }
         
         ChangeInterests();

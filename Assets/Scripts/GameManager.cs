@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-
-    public int m_EnemiesKilled;
-    public GameObject m_player;
+    
     [SerializeField] private GameObject m_EnemyPrefab;
     
-    
+    public int m_EnemiesKilled;
+    [SerializeField] private Text m_KillField;
+    [SerializeField] private Text m_GoldLeftField;
+
+    private AudioSource m_AudioSource;
+    [SerializeField] private AudioClip m_SfxStolen;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,19 +24,19 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(this.gameObject);
-            GetPlayer();
         }
         else
         {
             Destroy(this.gameObject);
         }
     }
-
-    public void GetPlayer()
+    
+    // Update is called once per frame
+    void Update()
     {
-        if (m_player == null)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            m_player = GameObject.FindWithTag("Player");
+            LevelManager.instance.LevelChange("Quit");
         }
     }
 
@@ -47,17 +52,45 @@ public class GameManager : MonoBehaviour
 
     public void GetTreasures()
     {
+        m_AudioSource = GetComponent<AudioSource>();
+        m_AudioSource.clip = m_SfxStolen;
+        m_AudioSource.Play();
+        
         GameObject[] m_Treasures;
         m_Treasures = GameObject.FindGameObjectsWithTag("Treasure");
+        m_GoldLeftField.text = m_Treasures.Length.ToString();
         if (m_Treasures.Length < 1)
         {
-            Debug.Log("You lose.");
+            LevelManager.instance.LevelChange("GameOver");
         }
     }
 
     public void EnemySpawn(Vector3 pos)
     {
         m_EnemiesKilled++;
+        if (m_EnemiesKilled <= 99999)
+        {
+            m_KillField.text = m_EnemiesKilled.ToString();
+        }
+        else
+        {
+            m_KillField.text = "A Lot";
+        }
+
         Instantiate(m_EnemyPrefab, pos, Quaternion.identity);
     }
+
+    public void TogglePlayer(bool state)
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = !state;
+            player.GetComponentInChildren<Shoot>().enabled = state;
+            player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = state;
+        }
+    }
+
 }
