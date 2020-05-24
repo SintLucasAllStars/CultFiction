@@ -20,10 +20,10 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(m_Active == true)
+        /*if(m_Active == true)
         {
             transform.Translate(Vector3.up * (m_Speed * 10) * Time.deltaTime);
-        }
+        }*/
     }
 
     private void OnCollisionEnter(Collision other)

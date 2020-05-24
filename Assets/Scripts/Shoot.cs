@@ -39,9 +39,6 @@ public class Shoot : MonoBehaviour
             m_AudioSource.Play();
             Reload();
             
-            //Vector3 r = new Vector3(transform.eulerAngles.x + 90, transform.eulerAngles.y - 180, 0);
-            //Instantiate(m_Bullet, m_SpawnLoc.position, Quaternion.Euler(r));
-            
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
@@ -51,6 +48,11 @@ public class Shoot : MonoBehaviour
                 {
                     EnemyBehaviour enemy = hit.collider.GetComponentInParent<EnemyBehaviour>();
                     enemy.Death();
+                }
+                else
+                {
+                    Vector3 r = new Vector3(transform.eulerAngles.x + 90, transform.eulerAngles.y - 180, 0);
+                    Instantiate(m_Bullet, hit.point, Quaternion.Euler(r));
                 }
             }
         }

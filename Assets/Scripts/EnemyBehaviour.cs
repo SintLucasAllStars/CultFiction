@@ -84,7 +84,6 @@ public class EnemyBehaviour : MonoBehaviour
         }
         else
         {
-            Debug.Log("Enemy was too close to their new interest, changing interest.");
             ChangeInterests();
         }
     }
