@@ -20,8 +20,12 @@ public class Bullet : MonoBehaviour
         {
             //Do Damage to AI
             collision.gameObject.GetComponent<AIController>().DoDamage(damage);
-            collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * 100, ForceMode.VelocityChange);
+            collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * 250, ForceMode.VelocityChange);
 
+        }
+        if (collision.gameObject.GetComponent<PlayerController>())
+        {
+            collision.gameObject.GetComponent<PlayerController>().DoDamage(damage);
         }
 
         Destroy(this.gameObject);

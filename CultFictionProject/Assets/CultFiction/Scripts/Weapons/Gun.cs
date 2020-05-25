@@ -6,34 +6,32 @@ using UnityEngine.VFX;
 
 public class Gun : MonoBehaviour, IInteraction
 {
-
-
-
-
     public int ammoCount;
     public VisualEffect Muzzle;
     public bool canGrab;
 
     [SerializeField]
-    private GameObject Bullet;
+    private GameObject Bullet = null;
     [SerializeField]
-    private GameObject MuzzleLoc;
+    private GameObject MuzzleLoc = null;
     [SerializeField]
-    private float GunForceStrength;
+    private float GunForceStrength = 0;
     [SerializeField]
-    private int GunDamage;
-    
-
+    private int GunDamage= 0;
     private PlayerController currentPC;
+    [SerializeField]
+    private AudioSource gunSound;
 
 
 
-    public void Fire()
+    private void Fire()
     {
+        
         var go = Instantiate(Bullet, MuzzleLoc.transform.position, Quaternion.identity);
         go.GetComponent<Bullet>().damage = GunDamage;
         go.GetComponent<Rigidbody>().AddForce(gameObject.transform.forward * 2500);
         Muzzle.Play();
+        gunSound.Play();
         ammoCount--;
         if(ammoCount <= 0)
         {

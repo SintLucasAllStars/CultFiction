@@ -12,77 +12,96 @@ public enum ArmPoses
 
 public class PlayerController : MonoBehaviour
 {
-   //public 
-   public Transform GunLoc = null;
-   public Gun currentGun;
+    [HideInInspector]
+    public Gun currentGun;
+    private Rigidbody rb = null;
+    private bool canPunch;
+    private bool isDead;
 
-   //private
-   private Rigidbody rb = null;
+    [Header("Base Settings")]
+    public int Health = 100;
+    public int speed = 100;
+    public Transform GunLoc = null;
+    
+    [SerializeField]
+    private PickUpTrigger pickUpTrigger = null;
+    
+    
+    //Joint Objects
+    [Header(" Joint Objects & Animators")]
+    [SerializeField]
+    private GameObject upperArmR = null;
+    [SerializeField]
+    private GameObject lowerArmR = null;
+    [SerializeField]
+    private GameObject upperArmL = null;
+    [SerializeField]
+    private GameObject lowerArmL = null;
+    [SerializeField]
+    private GameObject LegL = null;
+    [SerializeField]
+    private GameObject LegR = null;
+    [SerializeField]
+    private Animator RightLegAnim = null;
+    [SerializeField]
+    private Animator LeftLegAnim = null;
 
-   [SerializeField]
-   private float speed = 0;
-   [SerializeField]
-   private GameObject Hand = null;
-   [SerializeField]
-   private GameObject hips = null;
-   [SerializeField]
-   private Animator RightLegAnim = null;
-   [SerializeField]
-   private Animator LeftLegAnim = null;
-   [SerializeField]
-   private PickUpTrigger pickUpTrigger = null;
-   [SerializeField]
-   private HingeJoint upperArm;
-   [SerializeField]
-   private HingeJoint LowerArm;
-   [SerializeField]
-   private int Health;
 
-   private void Awake()
-   {
-        rb = GetComponent<Rigidbody>();
-        
-   }
-
-   private void FixedUpdate()
-   {
-        Move();
-
-        if (Input.GetMouseButtonDown(0) && !currentGun)
-        {
-            LowerArm.gameObject.GetComponent<Rigidbody>().AddForce(transform.right * 1500);
-           
-        }
-   }
-
-   private void Update()
+    private void Awake()
     {
-        
-        if (pickUpTrigger.interactableGun && Input.GetKey(KeyCode.E))
-        {
-            pickUpTrigger.interactableGun.Grab(this);
-            SetArmPos(ArmPoses.HoldGun);
-            
-        }
-
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (currentGun)
-            {
-                currentGun.Fire();
-            }
-        }
-
+        rb = GetComponent<Rigidbody>(); 
     }
 
-   private void Move()
+    private void FixedUpdate()
+    {
+        if (!isDead)
+        {
+            Move();
+
+            if (canPunch)
+            {
+                lowerArmR.GetComponent<Rigidbody>().AddForce(transform.right * 1500);
+                canPunch = false;
+            }
+        }
+    }
+
+    private void Update()
+    {
+        if (!isDead)
+        {
+              
+            if (pickUpTrigger.interactableGun && Input.GetKey(KeyCode.E))
+            {
+                pickUpTrigger.interactableGun.Grab(this);
+                SetArmPos(ArmPoses.HoldGun);
+            
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (currentGun)
+                {
+                    currentGun.Use();
+                }
+                else
+                {   
+                    canPunch = true;
+                }
+            }
+        }
+    }
+
+    //Methods
+
+    //Player Movement
+    private void Move()
     {
         float hAxis = Input.GetAxis("Horizontal");
         float vAxis = Input.GetAxis("Vertical");
 
-        Vector3 Movement = new Vector3(hAxis * speed, 0, vAxis * speed);
-        rb.AddForce(Movement);
+        Vector3 Movement = new Vector3(hAxis * speed, rb.velocity.y, vAxis * speed);
+        rb.velocity = Movement;
 
         if (hAxis > 0 || hAxis < 0 || vAxis > 0 || vAxis < 0)
         {
@@ -95,45 +114,48 @@ public class PlayerController : MonoBehaviour
             RightLegAnim.SetBool("IsWalking", false);
             LeftLegAnim.SetBool("IsWalking", false);
         }
-
-        if (Input.GetKey(KeyCode.Space))
-        {
-            rb.AddForce(transform.up * 1350);
-        }
     }
 
-   public void SetArmPos(ArmPoses newArmPose)
+    //Set Arm Posistion by Spring Target Position
+    public void SetArmPos(ArmPoses newArmPose)
     {
-
-        var upperjs = upperArm.spring;
-        var lowerjs = upperArm.spring;
+        var upperjs = upperArmR.GetComponent<HingeJoint>().spring;
+        var lowerjs = upperArmR.GetComponent<HingeJoint>().spring;
        
-
         switch (newArmPose)
         {
             case ArmPoses.None:
                 upperjs.targetPosition = 0;
-                upperArm.spring = upperjs;
+                upperArmR.GetComponent<HingeJoint>().spring = upperjs;
                 lowerjs.targetPosition = 0;
-                LowerArm.spring = lowerjs;
+                lowerArmR.GetComponent<HingeJoint>().spring = lowerjs;
                 break;
             case ArmPoses.HoldGun:
                 upperjs.targetPosition = 50;
-                upperArm.spring = upperjs;
+                upperArmR.GetComponent<HingeJoint>().spring = upperjs;
                 lowerjs.targetPosition = 90;
-                LowerArm.spring = lowerjs;
+                lowerArmR.GetComponent<HingeJoint>().spring = lowerjs;
                 break;
             case ArmPoses.Punch:
                 upperjs.targetPosition = 90;
-                upperArm.spring = upperjs;
+                upperArmR.GetComponent<HingeJoint>().spring = upperjs;
                 lowerjs.targetPosition = 90;
-                LowerArm.spring = lowerjs;
+                lowerArmR.GetComponent<HingeJoint>().spring = lowerjs;
                 break;
             default:
                 break;
         }
     }
 
-    
-    
+    public void DoDamage(int dmg)
+    {
+        Health -= dmg;
+        Health = Mathf.Clamp(Health, 0, Health);
+        if(Health <= 0)
+        {
+            GetComponent<HingeJoint>().connectedBody = null;
+            isDead = true;
+        }
+    }
+
 }

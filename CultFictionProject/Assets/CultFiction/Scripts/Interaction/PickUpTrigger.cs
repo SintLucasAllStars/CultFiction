@@ -9,7 +9,7 @@ public class PickUpTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject)
+        if (other.gameObject.GetComponent<Gun>())
         {
             interactableGun = other.gameObject.GetComponent<Gun>();
         }

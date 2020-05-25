@@ -11,37 +11,53 @@ public enum AIAttackState
 
 public class AIController : MonoBehaviour
 {
-    //private
+    [Header("Base Settings")]
+
     [SerializeField]
-    private NavMeshAgent agent;
+    public GameObject player;
+    
+    public Gun gun;
+    public Transform gunLoc;
+    public GameState gameState;
+
+    [SerializeField]
+    private int Health;
+
+    private bool canPunch = true;
+    private bool canShoot = true;
+    private Gun currentGun;
+    private bool isDead = false;
+  
+   
+    // AI Settings
+    [Header("Ai Settings")]
+
+    [SerializeField]
+    private AIAttackState attackState = AIAttackState.Punch;
+    [SerializeField]
+    private NavMeshAgent agent = null;
+
+    //Joint Objects
+    [Header(" Joint Objects & Animators")]
+
+    [SerializeField]
+    private GameObject upperArmR = null;
+    [SerializeField]
+    private GameObject lowerArmR = null;
+    [SerializeField]
+    private GameObject upperArmL = null;
+    [SerializeField]
+    private GameObject lowerArmL = null;
+    [SerializeField]
+    private GameObject LegL = null;
+    [SerializeField]
+    private GameObject LegR = null;
     [SerializeField]
     private Animator RightLegAnim = null;
     [SerializeField]
     private Animator LeftLegAnim = null;
-    [SerializeField]
-    private Rigidbody rightArm;
-    [SerializeField]
-    private Rigidbody leftArm;
-    [SerializeField]
-    private int Health;
-    private bool canPunch = true;
-    private bool canShoot = true;
 
-    private Gun currentGun;
-    [SerializeField]
-    private HingeJoint upperArm;
-    [SerializeField]
-    private HingeJoint LowerArm;
-
-
-    //Public
-    public GameObject player;
-    public bool isDead = false;
-    public Gun gun;
-    public Transform gunLoc;
-    public AIAttackState attackState;
-
-
+  
     // Start is called before the first frame update
     void Start()
     {
@@ -52,13 +68,13 @@ public class AIController : MonoBehaviour
         {
             SpawnWeapon();
             agent.stoppingDistance = 8;
-            var upS = upperArm.spring;
+            var upS = upperArmR.GetComponent<HingeJoint>().spring;
             upS.targetPosition = 50;
-            upperArm.spring = upS;
+            upperArmR.GetComponent<HingeJoint>().spring = upS;
 
-            var lwS = LowerArm.spring;
+            var lwS = lowerArmR.GetComponent<HingeJoint>().spring;
             lwS.targetPosition = 90;
-            LowerArm.spring = lwS;
+            lowerArmR.GetComponent<HingeJoint>().spring = lwS;
         }
     }
 
@@ -67,9 +83,7 @@ public class AIController : MonoBehaviour
     {
         if (!isDead)
         {
-          
             agent.SetDestination(player.transform.position);
-
             if (!Vector3.Equals(agent.velocity, Vector3.zero))
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(new Vector3(-agent.velocity.z, 0, agent.velocity.x)), 0.15F);
@@ -85,12 +99,13 @@ public class AIController : MonoBehaviour
             if(agent.remainingDistance < agent.stoppingDistance + 2 && canShoot && currentGun)
             {
                 currentGun.Use();
-                Debug.Log("pewPew");
                 StartCoroutine("AttackDelay");
                 canShoot = false;
 
             }
-           
+
+            
+
         }
        
     }
@@ -105,8 +120,8 @@ public class AIController : MonoBehaviour
 
     void punch()
     {
-        leftArm.AddForce(transform.right * 1500);
-        rightArm.AddForce(transform.right * 1500);
+        lowerArmL.GetComponent<Rigidbody>().AddForce(transform.right * 1500);
+        lowerArmR.GetComponent<Rigidbody>().AddForce(transform.right * 1500);
         StartCoroutine("AttackDelay");
         canPunch = false;
     }
@@ -122,6 +137,8 @@ public class AIController : MonoBehaviour
             LeftLegAnim.SetBool("IsWalking", false);
             gameObject.GetComponent<CapsuleCollider>().enabled = false;
             isDead = true;
+            gameState.CurrentEnemies--;
+            StartCoroutine("DespawnTimer");
         }
     }
 
@@ -134,10 +151,20 @@ public class AIController : MonoBehaviour
         currentGun = g.GetComponent<Gun>();
     }
 
+  
+
     IEnumerator AttackDelay()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(.5f);
         canPunch = true;
         canShoot = true;
     }
+
+    IEnumerator DespawnTimer()
+    {
+        yield return new WaitForSeconds(10);
+        Destroy(this.transform.parent.gameObject);
+    }
+
+    
 }
