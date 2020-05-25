@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
 
     public Gun gun;
 
+    private int health = 10;
     public float speed = 3.5f;
     private float cameraFollowSpeed = 5.0f;
 
@@ -22,7 +23,10 @@ public class Player : MonoBehaviour
     private float angle;
 
     private float myDeltaTime;
-    private bool isReloading;               
+    private bool isReloading;
+
+    public delegate void OnAction(int health, int ammo, int ammoInClip);
+    public static OnAction OnChange;
 
     private void Start()
     {
@@ -30,6 +34,7 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         myDeltaTime = Time.time;
         ReloadSprite.SetActive(false);
+        cam = Camera.main;
     }
 
     private void Update()
@@ -85,8 +90,10 @@ public class Player : MonoBehaviour
         Vector2 firePos = rb.position + (lookDir.normalized * 0.55f);
 
         GameObject go = Instantiate(gun.bullet, firePos, Quaternion.Euler(0, 0, angle));
+        go.tag = "PlayerBullet";
         go.GetComponent<Rigidbody2D>().AddForce(lookDir.normalized * gun.projectileSpeed, ForceMode2D.Impulse);
         gun.ammoInClip--;
+        OnChange?.Invoke(health, gun.ammo, gun.ammoInClip);
     }
 
     private IEnumerator Reload()
@@ -104,6 +111,7 @@ public class Player : MonoBehaviour
             gun.ammo -= amountToReload;
             gun.ammoInClip += amountToReload;
         }
+        OnChange?.Invoke(health, gun.ammo, gun.ammoInClip);
         isReloading = false;
         ReloadSprite.SetActive(false);
     }
@@ -130,11 +138,26 @@ public class Player : MonoBehaviour
                 gun.ammo += dropAmount;
             }
         }
+        OnChange?.Invoke(health, gun.ammo, gun.ammoInClip);
+    }
 
-        if (col.CompareTag("EnemyBullet"))
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.collider.CompareTag("EnemyBullet"))
         {
-            //Take damage
+            health--;
+            OnChange?.Invoke(health, gun.ammo, gun.ammoInClip);
+
+            if (health < 1)
+            {
+                GameOver();
+            }
         }
+    }
+
+    private void GameOver()
+    {
+        //load GameOver Scene
     }
 
     private int GetRotation(float angle)
@@ -184,12 +207,5 @@ public class Player : MonoBehaviour
             Debug.LogError("Angle: " + angle + " none of the directions compatible!!");
             return 1;
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, 1);
-        Gizmos.DrawWireSphere(transform.position, 4);
     }
 }

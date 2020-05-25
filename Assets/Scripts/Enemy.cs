@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     public float minAttackDistance, maxAttackDistance;
     private Vector2 playerLostPos;
     public Vector2 destination;
+    public GameObject ammoDrop;
 
     private float enemyExtraFireRate = 0.25f;
     private float enemyDecreasedProjextilePercent = 0.6f;
@@ -40,16 +41,13 @@ public class Enemy : MonoBehaviour
 
                 break;
             case State.Attack:
-                if (Vector2.Distance(rb.position, destination) < 0.1f)
-                {
-                    Debug.Log("Calculate new Pos");
-                    Vector2 randPos;
-                    randPos = rb.position;
-                    randPos += new Vector2(Random.value - 0.5f, Random.value - 0.5f) * 3f;
-                    destination = randPos;
-                }
+                //if (Vector2.Distance(rb.position, destination) < 0.1f)
+                //{
+                //    Debug.Log("Calculate new Pos");
+                //    destination = SearchPos();
+                //}
 
-                moveDir = (destination - rb.position).normalized * speed;
+                //moveDir = (destination - rb.position).normalized * speed;
 
                 Vector2 attackDir = (target.position - transform.position);
                 float angle = Mathf.Atan2(attackDir.y, attackDir.x) * Mathf.Rad2Deg - 90f;
@@ -58,7 +56,7 @@ public class Enemy : MonoBehaviour
 
                 if(Time.time > myDeltaTime)
                 {
-                    //Shoot(attackDir, angle);
+                    Shoot(attackDir, angle);
                     myDeltaTime = Time.time + (gun.fireRate + enemyExtraFireRate);
                 }
 
@@ -70,9 +68,38 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.collider.CompareTag("PlayerBullet"))
+        {
+            health--;
+
+            if(health < 1)
+            {
+                GameObject go = Instantiate(ammoDrop, transform.position, Quaternion.identity);
+                Debug.Log(go);
+                Die();
+            }
+        }
+    }
+
     private void FixedUpdate()
     {
         rb.velocity = moveDir;
+    }
+
+    private Vector2 SearchPos()
+    {
+        Vector2 randPos;
+        randPos = rb.position;
+        randPos += new Vector2(Random.value - 0.5f, Random.value - 0.5f) * 3f;
+
+        if (!DungeonGenerator.PosisValid(randPos))
+        {
+            randPos = SearchPos();
+        }
+
+        return randPos;
     }
 
     private void Shoot(Vector2 dir, float angle)
@@ -81,7 +108,13 @@ public class Enemy : MonoBehaviour
         float projectileSpeed = gun.projectileSpeed * enemyDecreasedProjextilePercent;
 
         GameObject go = Instantiate(gun.bullet, firePos, Quaternion.Euler(0, 0, angle));
+        go.tag = "EnemyBullet";
         go.GetComponent<Rigidbody2D>().AddForce(dir.normalized * projectileSpeed, ForceMode2D.Impulse);
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
     }
 
     private void ChangeState(State newState)

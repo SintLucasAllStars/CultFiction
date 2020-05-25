@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class DungeonGenerator : MonoBehaviour
 {
-    public GameObject Path, Room, Wall;
+    public GameObject[] Path, Room, Wall;
     public GameObject region;
     private GameObject parent;
+    public Camera cam;
+
+    public GameObject enemyPrefab;
+    public GameObject playerPrefab;
+    public GameObject gate;
 
     [System.Serializable]
     public class Dungeon
@@ -21,7 +26,7 @@ public class DungeonGenerator : MonoBehaviour
         public float mazeWindingPercent = 0.4f;
     }
 
-    public Tile[,] tiles;
+    public static Tile[,] tiles;
 
     List<Rect> rooms = new List<Rect>();
 
@@ -35,12 +40,10 @@ public class DungeonGenerator : MonoBehaviour
     private void Start()
     {
         tiles = new Tile[dungeon.width + 1, dungeon.height + 1];
-
-        StartCoroutine(AddRooms());
-        //AddRooms();
+        AddRooms();
     }
 
-    private IEnumerator AddRooms()
+    private void AddRooms()
     {
         for (int Iterations = 0; Iterations < dungeon.numRoomTries; Iterations++)
         {
@@ -83,18 +86,17 @@ public class DungeonGenerator : MonoBehaviour
                 for (int j = y; j < (y + height); j++)
                 {
                     Vector2 pos = new Vector2(i, j);
-                    GameObject go = Instantiate(Room, pos, Quaternion.identity, parent.transform);
+                    int index = Random.Range(0, Room.Length - 1);
+                    GameObject go = Instantiate(Room[index], pos, Quaternion.identity, parent.transform);
                     tiles[i, j].SetTile(go, TileType.Room);
                     tiles[i, j].Region = currentRegion;
                 }
             }
-            yield return new WaitForEndOfFrame();
         }
-        StartCoroutine(CreateMaze());
-        //CreateMaze();
+        CreateMaze();
     }
 
-    private IEnumerator CreateMaze()
+    private void CreateMaze()
     {
         for (int y = 1; y < dungeon.height; y += 2)
         {
@@ -109,7 +111,8 @@ public class DungeonGenerator : MonoBehaviour
                 Vector2 lastDir = Vector2.zero;
 
                 StartRegion();
-                GameObject go = Instantiate(Path, pos, Quaternion.identity, parent.transform);
+                int index = Random.Range(0, Path.Length - 1);
+                GameObject go = Instantiate(Path[index], pos, Quaternion.identity, parent.transform);
                 tiles[(int)pos.x, (int)pos.y].SetTile(go, TileType.Path);
                 tiles[(int)pos.x, (int)pos.y].Region = currentRegion;
                 cells.Add(pos);
@@ -151,11 +154,13 @@ public class DungeonGenerator : MonoBehaviour
                             dir = unmadeCells[Random.Range(0, unmadeCells.Count)];
                         }
 
-                        go = Instantiate(Path, cell + dir, Quaternion.identity, parent.transform);
+                        index = Random.Range(0, Path.Length - 1);
+                        go = Instantiate(Path[index], cell + dir, Quaternion.identity, parent.transform);
                         tiles[(int)(cell.x + dir.x), (int)(cell.y + dir.y)].SetTile(go, TileType.Path);
                         tiles[(int)(cell.x + dir.x), (int)(cell.y + dir.y)].Region = currentRegion;
 
-                        go = Instantiate(Path, cell + (dir * 2), Quaternion.identity, parent.transform);
+                        index = Random.Range(0, Path.Length - 1);
+                        go = Instantiate(Path[index], cell + (dir * 2), Quaternion.identity, parent.transform);
                         tiles[(int)(cell.x + (dir.x * 2)), (int)(cell.y + (dir.y * 2))].SetTile(go, TileType.Path);
                         tiles[(int)(cell.x + (dir.x * 2)), (int)(cell.y + (dir.y * 2))].Region = currentRegion;
 
@@ -167,18 +172,15 @@ public class DungeonGenerator : MonoBehaviour
                         cells.RemoveAt(cells.Count - 1);
                         lastDir = Vector2.zero;
                     }
-                    yield return new WaitForEndOfFrame();
                 }
-                //yield return new WaitForEndOfFrame();
             }
         }
-
-        StartCoroutine(ConnectRooms());
-        //ConnectRooms();
+        ConnectRooms();
     }
 
-    private IEnumerator ConnectRooms()
+    private void ConnectRooms()
     {
+        StartRegion();
         List<Vector2> connectors = new List<Vector2>();
         GameObject go;
 
@@ -227,24 +229,24 @@ public class DungeonGenerator : MonoBehaviour
 
             Vector2 connector = connectors[Random.Range(0, connectors.Count)];
 
-            go = Instantiate(Path, connector, Quaternion.identity, parent.transform);
+            int index = Random.Range(0, Path.Length - 1);
+            go = Instantiate(Path[index], connector, Quaternion.identity, parent.transform);
             tiles[(int)connector.x, (int)connector.y].SetTile(go, TileType.Door);
             connectors.Remove(connector);
 
             if (Random.value < 0.2f)
             {
                 connector = connectors[Random.Range(0, connectors.Count)];
-                go = Instantiate(Path, connector, Quaternion.identity, parent.transform);
+                index = Random.Range(0, Path.Length - 1);
+                go = Instantiate(Path[index], connector, Quaternion.identity, parent.transform);
                 tiles[(int)connector.x, (int)connector.y].SetTile(go, TileType.Door);
             }
             connectors.Clear();
-            yield return new WaitForEndOfFrame();
         }
-        StartCoroutine(RemoveDeadEnds());
-        //RemoveDeadEnds();
+        RemoveDeadEnds();
     }
 
-    private IEnumerator RemoveDeadEnds()
+    private void RemoveDeadEnds()
     {
         bool isDone = false;
 
@@ -279,38 +281,83 @@ public class DungeonGenerator : MonoBehaviour
 
                     isDone = false;
                     Destroy(tiles[x, y].tile);
-                    GameObject go = Instantiate(Wall, new Vector2(x, y), Quaternion.identity);
+                    int index = Random.Range(0, Wall.Length - 1);
+                    GameObject go = Instantiate(Wall[index], new Vector2(x, y), Quaternion.identity, parent.transform);
                     tiles[x, y].SetTile(go, TileType.Wall);
-                    yield return new WaitForEndOfFrame();
                 }
             }
-            //yield return new WaitForEndOfFrame();
         }
 
         CamBackground();
+        PlaceEntities();
+    }
+
+    private void PlaceEntities()
+    {
+        int roomIndex = Random.Range(0, rooms.Count - 1);
+        Rect room = rooms[roomIndex];
+
+        Instantiate(playerPrefab, new Vector2(room.x + 1, room.y + 1), Quaternion.identity);
+
+        StartRegion();
+        parent.name = "Enemies";
+        for (int i = 0; i < rooms.Count; i++)
+        {
+            if(i == rooms.Count - 1)
+            {
+                Rect rect = rooms[i];
+                Vector2 pos = new Vector2(rect.x + rect.width - 1, rect.y + rect.height - 1);
+                Instantiate(gate, pos, Quaternion.identity);
+                Destroy(tiles[(int)pos.x, (int)pos.y].tile);
+            }
+
+            if (i == roomIndex)
+                continue;
+
+
+            for (int x = (int)rooms[i].x; x < (rooms[i].x + rooms[i].width); x++)
+            {
+                for (int y = (int)rooms[i].y; y < (rooms[i].y + rooms[i].height); y++)
+                {
+                    if (Random.value < 0.08f)
+                    {
+                        Instantiate(enemyPrefab, new Vector2((int)x, (int)y), Quaternion.identity, parent.transform);
+                    }
+                }
+            }
+        }
     }
 
     private void CamBackground()
     {
-        for (int y = 1; y < dungeon.height - 1; y++)
+        for (int y = 0; y < dungeon.height; y++)
         {
-            for (int x = 1; x < dungeon.width - 1; x++)
+            for (int x = 0; x < dungeon.width; x++)
             {
                 if(!tiles[x, y].HasTile())
                 {
-                    GameObject go = Instantiate(Wall, new Vector2(x, y), Quaternion.identity);
+                    int index = Random.Range(0, Wall.Length - 1);
+                    GameObject go = Instantiate(Wall[index], new Vector2(x, y), Quaternion.identity, parent.transform);
                     tiles[x, y].SetTile(go, TileType.Wall);
                 }
             }
         }
 
-        Camera.current.backgroundColor = Color.black;
+        cam.backgroundColor = Color.black;
     }
 
     private void StartRegion()
     {
         currentRegion++;
         parent = Instantiate(region, Vector2.zero, Quaternion.identity);
+    }
+
+    public static bool PosisValid(Vector2 pos)
+    {
+        int x = (int)pos.x;
+        int y = (int)pos.y;
+
+        return (tiles[x, y].tileType != TileType.Wall);
     }
 
     private Rect ConnectorRegions(Rect rect, float delta)
