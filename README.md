@@ -32,3 +32,9 @@ You will deliver the assignment by forking this repository, developing the game 
 On the pull request description should be your name, a small text explaining what scene and the elements of the scene that inspired the game.
 
 The deadline for the pull requests is the 25th of May 2020.
+
+## Controls
+Dragging wheel left to go left 
+Dragging wheel right to go right
+
+Dragging food into the mouth to fill your food meter 
