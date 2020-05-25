@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
     public Gun gun;
 
     public float speed = 3.5f;
-    public float projectileSpeed = 5.0f;
     private float cameraFollowSpeed = 5.0f;
 
     private float horizontal, vertical;
@@ -86,7 +85,7 @@ public class Player : MonoBehaviour
         Vector2 firePos = rb.position + (lookDir.normalized * 0.55f);
 
         GameObject go = Instantiate(gun.bullet, firePos, Quaternion.Euler(0, 0, angle));
-        go.GetComponent<Rigidbody2D>().AddForce(lookDir.normalized * projectileSpeed, ForceMode2D.Impulse);
+        go.GetComponent<Rigidbody2D>().AddForce(lookDir.normalized * gun.projectileSpeed, ForceMode2D.Impulse);
         gun.ammoInClip--;
     }
 
@@ -117,7 +116,6 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log("collision");
         DropAmmo drop = col.gameObject.GetComponent<DropAmmo>();
         Debug.Log(drop);
         if (drop != null)
@@ -131,6 +129,11 @@ public class Player : MonoBehaviour
             {
                 gun.ammo += dropAmount;
             }
+        }
+
+        if (col.CompareTag("EnemyBullet"))
+        {
+            //Take damage
         }
     }
 
@@ -181,5 +184,12 @@ public class Player : MonoBehaviour
             Debug.LogError("Angle: " + angle + " none of the directions compatible!!");
             return 1;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, 1);
+        Gizmos.DrawWireSphere(transform.position, 4);
     }
 }

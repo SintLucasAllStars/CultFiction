@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Gun", menuName = "Gun")]
+[CreateAssetMenu(fileName = "New Gun", menuName = "Gun/Gun")]
 public class Gun : ScriptableObject
 {
     public GameObject bullet;
@@ -13,5 +13,5 @@ public class Gun : ScriptableObject
     public int ammoInClip;
     public float fireRate;
     public float reloadTime;
-    public int damage;
+    public float projectileSpeed;
 }
