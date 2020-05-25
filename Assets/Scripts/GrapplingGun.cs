@@ -53,18 +53,17 @@ public class GrapplingGun : MonoBehaviour
         if (Physics.Raycast(Camera.position, Camera.forward, out hit, maxDis, WhatIsGrappleable))
         {
             grapplePoint = hit.point;
-            joint = Player.gameObject.AddComponent<SpringJoint>();
+            joint = player.gameObject.AddComponent<SpringJoint>();
             joint.autoConfigureConnectedAnchor = false;
-            
 
             float disFromPoint = Vector3.Distance(Player.position, grapplePoint);
 
             joint.maxDistance = disFromPoint * 0.8f;
             joint.minDistance = disFromPoint * 0.25f;
 
-            joint.spring = 10f;
-            joint.damper = 7f;
-            joint.massScale = 4.5f;
+            joint.spring = 7.5f;
+            joint.damper = 5f;
+            joint.massScale = 10f;
 
             lr.positionCount = 2;
             currentGrapplePosition = GunTip.position;
