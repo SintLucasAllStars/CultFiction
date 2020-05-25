@@ -21,12 +21,15 @@ public class ObstacleManager : MonoBehaviour
         yield return new WaitForSeconds(timeBetweenSpawn);
         for (int i = 0; i < amountPerSpawn; i++)
         {
-            int randomX = (int)Random.Range(startpos.position.x, endpos.position.x);
-            Vector3 randomPos = new Vector3(randomX, transform.position.y, transform.position.z);
-
-            Instantiate(obstaclePrefab, randomPos, Quaternion.identity);
+            Instantiate(obstaclePrefab, GetRandomLaneSpawn(), Quaternion.identity);
         }
 
         StartCoroutine(ObstacleSpawner());
+    }
+
+    public Vector3 GetRandomLaneSpawn()
+    {
+        int randomX = (int)Random.Range(startpos.position.x, endpos.position.x);
+        return new Vector3(randomX, transform.position.y, transform.position.z);
     }
 }

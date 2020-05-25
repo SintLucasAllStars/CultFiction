@@ -6,33 +6,28 @@ public class Driving : MonoBehaviour
 {
     public Transform wheelTransform;
 
-    public float sensitivity = 800;
+    public float wheelSensitivity = 800;
     public float speedSensitivity;
     Vector3 StartMousePos;
 
 
     public float distractionForce = 20;
-    Rigidbody[] distractionRb;
+    public List<Rigidbody> distractionRb = new List<Rigidbody>();
 
-    private void Start()
-    {
-        GameObject[] temp = GameObject.FindGameObjectsWithTag("Distraction");
-        distractionRb = new Rigidbody[temp.Length];
-        for (int i = 0; i < temp.Length; i++)
-        {
-            distractionRb[i] = temp[i].GetComponent<Rigidbody>();
-        }
-        
-    }
 
     private void Update()
     {
         transform.Translate(Vector3.left * wheelTransform.rotation.z / speedSensitivity);
+
+        float positionX = Mathf.Clamp(transform.position.x, -20f, 20f);
+        transform.position = new Vector3(positionX, transform.position.y, transform.position.z);
+        
     }
 
     private void FixedUpdate()
     {
-        for (int i = 0; i < distractionRb.Length; i++)
+        // moving object in car
+        for (int i = 0; i < distractionRb.Count; i++)
         {
             distractionRb[i].AddForce(Vector3.left * wheelTransform.rotation.z * distractionForce);
         }
@@ -45,7 +40,23 @@ public class Driving : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        float mouseX = (StartMousePos.x - Input.mousePosition.x) / sensitivity;
-        wheelTransform.Rotate(0, 0, mouseX);
+        {
+            float mouseX = (StartMousePos.x - Input.mousePosition.x) / wheelSensitivity;
+            wheelTransform.Rotate(0, 0, mouseX);
+
+
+            float rotationClamped = Mathf.Clamp(wheelTransform.rotation.z, -0.5f, 0.5f);
+            wheelTransform.rotation = new Quaternion(0, 0, rotationClamped, wheelTransform.rotation.w);
+        }
+    }
+
+    public void AddRigidbody(Rigidbody rb)
+    {
+        distractionRb.Add(rb);
+    }
+
+    public void RemoveRigidbody(Rigidbody rb)
+    {
+        distractionRb.Remove(rb);
     }
 }
