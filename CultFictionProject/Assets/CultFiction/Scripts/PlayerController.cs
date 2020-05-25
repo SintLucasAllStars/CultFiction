@@ -12,45 +12,50 @@ public enum ArmPoses
 
 public class PlayerController : MonoBehaviour
 {
-    //public 
-    public Transform GunLoc = null;
-    public Gun currentGun;
+   //public 
+   public Transform GunLoc = null;
+   public Gun currentGun;
 
-    //private
-    private Rigidbody rb = null;
+   //private
+   private Rigidbody rb = null;
 
-    [SerializeField]
-    private float speed = 0;
-    [SerializeField]
-    private GameObject Hand = null;
-    [SerializeField]
-    private GameObject hips = null;
-    [SerializeField]
-    private Animator RightLegAnim = null;
-    [SerializeField]
-    private Animator LeftLegAnim = null;
-    [SerializeField]
-    private PickUpTrigger pickUpTrigger = null;
-    [SerializeField]
-    private HingeJoint upperArm;
-    [SerializeField]
-    private HingeJoint LowerArm;
-    [SerializeField]
-    private int Health;
+   [SerializeField]
+   private float speed = 0;
+   [SerializeField]
+   private GameObject Hand = null;
+   [SerializeField]
+   private GameObject hips = null;
+   [SerializeField]
+   private Animator RightLegAnim = null;
+   [SerializeField]
+   private Animator LeftLegAnim = null;
+   [SerializeField]
+   private PickUpTrigger pickUpTrigger = null;
+   [SerializeField]
+   private HingeJoint upperArm;
+   [SerializeField]
+   private HingeJoint LowerArm;
+   [SerializeField]
+   private int Health;
 
-    private void Awake()
-    {
+   private void Awake()
+   {
         rb = GetComponent<Rigidbody>();
         
-    }
+   }
 
-    private void FixedUpdate()
-    {
+   private void FixedUpdate()
+   {
         Move();
-       
-    }
 
-    private void Update()
+        if (Input.GetMouseButtonDown(0) && !currentGun)
+        {
+            LowerArm.gameObject.GetComponent<Rigidbody>().AddForce(transform.right * 1500);
+           
+        }
+   }
+
+   private void Update()
     {
         
         if (pickUpTrigger.interactableGun && Input.GetKey(KeyCode.E))
@@ -67,15 +72,11 @@ public class PlayerController : MonoBehaviour
             {
                 currentGun.Fire();
             }
-            else
-            {
-                LowerArm.gameObject.GetComponent<Rigidbody>().AddForce(transform.right * 1500);
-            }
         }
 
     }
 
-    void Move()
+   private void Move()
     {
         float hAxis = Input.GetAxis("Horizontal");
         float vAxis = Input.GetAxis("Vertical");
@@ -94,8 +95,12 @@ public class PlayerController : MonoBehaviour
             RightLegAnim.SetBool("IsWalking", false);
             LeftLegAnim.SetBool("IsWalking", false);
         }
-    }
 
+        if (Input.GetKey(KeyCode.Space))
+        {
+            rb.AddForce(transform.up * 1350);
+        }
+    }
 
    public void SetArmPos(ArmPoses newArmPose)
     {

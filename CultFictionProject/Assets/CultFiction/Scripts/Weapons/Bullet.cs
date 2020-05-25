@@ -16,10 +16,11 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         //Do Damage
-        if(collision.gameObject)
+        if(collision.gameObject.GetComponent<AIController>())
         {
             //Do Damage to AI
-            
+            collision.gameObject.GetComponent<AIController>().DoDamage(damage);
+            collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * 100, ForceMode.VelocityChange);
 
         }
 

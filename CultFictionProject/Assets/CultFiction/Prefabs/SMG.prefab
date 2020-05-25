@@ -59,9 +59,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f924ff77b075484dbc2af0854f016d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ammoCount: 1000000
   Muzzle: {fileID: 2959617326298724370}
+  canGrab: 0
   Bullet: {fileID: 2596260332013353893, guid: f2763db389c685a449e0c25e09946602, type: 3}
   MuzzleLoc: {fileID: 6683704294445635360}
+  GunForceStrength: 10
+  GunDamage: 20
 --- !u!1 &6683704294445635360
 GameObject:
   m_ObjectHideFlags: 0
