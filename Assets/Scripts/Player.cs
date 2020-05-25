@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -157,7 +158,7 @@ public class Player : MonoBehaviour
 
     private void GameOver()
     {
-        //load GameOver Scene
+        SceneManager.LoadScene(SceneManager.sceneCount);
     }
 
     private int GetRotation(float angle)
