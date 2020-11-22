@@ -10,12 +10,14 @@ public class GameManager : MonoBehaviour
     
     [SerializeField] private GameObject m_EnemyPrefab;
     
-    public int m_EnemiesKilled;
+    public int m_EnemiesKilled = 0;
     [SerializeField] private Text m_KillField;
     [SerializeField] private Text m_GoldLeftField;
 
     private AudioSource m_AudioSource;
     [SerializeField] private AudioClip m_SfxStolen;
+    
+    private bool m_Quitting;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +38,8 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            LevelManager.instance.LevelChange("Quit");
+            Debug.Log("Quitting Application...");
+            Application.Quit();
         }
     }
 

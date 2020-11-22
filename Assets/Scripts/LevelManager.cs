@@ -52,6 +52,7 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("Quitting Application...");
             Application.Quit();
         }
     }
