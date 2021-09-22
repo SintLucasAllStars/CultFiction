@@ -30,22 +30,23 @@ public class HoverMovement : MonoBehaviour
         HandleGravity();
     }
 
-    void HandleGravity()
-    {
-        velocity.y += gravity * Time.deltaTime;
-        if (groundCheck() && velocity.y < 0)
-        {
-            velocity.y = -2f;
-        }
-    }
-
     private void GetMoveInput()
     {
         pMoveInput.x = Input.GetAxisRaw("Horizontal");
         pMoveInput.y = Input.GetAxisRaw("Vertical");
         pMoveInput = Vector3.ClampMagnitude(pMoveInput, 1);
     }
-
+    void HandleGravity()
+    {
+        if(gravity < 0)
+        {
+            velocity.y += gravity * Time.deltaTime;
+            if (groundCheck())
+            {
+                velocity.y = -2f;
+            }
+        }
+    }
     private bool groundCheck()
     {
         RaycastHit hit;
