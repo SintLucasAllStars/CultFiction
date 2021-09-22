@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2190729279d0a614ebdd6ffe2e9f09ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collision: {x: 23.77, y: 3.318, z: -5.96}
+  collision: {x: 23.77, y: 1.133, z: -5.96}
   explosionRadius: 5
   secconds: 5
 --- !u!54 &1145154245
@@ -286,12 +286,20 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 198247709403516784, guid: 680cf5ea6c1d41e4f9cce6ab07ce0200, type: 3}
+      propertyPath: InitialModule.rotation3D
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 198743926911621242, guid: 680cf5ea6c1d41e4f9cce6ab07ce0200, type: 3}
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198926281452798422, guid: 680cf5ea6c1d41e4f9cce6ab07ce0200, type: 3}
       propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198926281452798422, guid: 680cf5ea6c1d41e4f9cce6ab07ce0200, type: 3}
+      propertyPath: InitialModule.rotation3D
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 199397707650064104, guid: 680cf5ea6c1d41e4f9cce6ab07ce0200, type: 3}

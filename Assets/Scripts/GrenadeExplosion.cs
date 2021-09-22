@@ -51,6 +51,7 @@ public class GrenadeExplosion : MonoBehaviour
         Destroy(gameObject);
     }
 
+    //Editor only
     private void OnDrawGizmos()
     {
         //this updates the position of the radius in the editor
