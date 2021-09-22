@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Camera cam;
 
-    private Vector3 duckingHeight = new Vector3(0.5f,0.5f,0.5f), currentHeight, walkingHeight = new Vector3(0.7f,0.7f,0.7f);
+    private Vector3 duckingHeight = new Vector3(0.5f,0.5f,0.5f), currentHeight, walkingHeight = new Vector3(0.75f,0.75f,0.75f);
 
     private void Start()
     {
@@ -62,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        //this will change the scale in a smooth way.
         transform.localScale = Vector3.Lerp (transform.localScale, currentHeight, duckingspeed * Time.deltaTime);
     }
 }
