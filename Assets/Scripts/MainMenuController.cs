@@ -15,6 +15,7 @@ public class MainMenuController : MonoBehaviour
     //When this button is clicked the scene will close the game.
     public void ExitButnClicked()
     {
+        //Quits the game.
         Application.Quit();
     }
 }
