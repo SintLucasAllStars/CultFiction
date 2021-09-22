@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GranadeExplosion : MonoBehaviour
+public class GrenadeExplosion : MonoBehaviour
 {
     public Vector3 collision;
     public float explosionRadius = 0.2f;
     public int secconds = 5;
 
-    private void Start()
+    private void Awake()
     {
         StartCoroutine(Timer());
     }
