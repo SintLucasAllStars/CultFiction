@@ -39,8 +39,8 @@ public class CarControl : MonoBehaviour
     public float maxWheelTurnAngle = 30f; // degrees
 
     // car's center of mass
-    public Vector3 centerOfMass = new Vector3(0f, 0f, 0f); // unchanged
-
+    private Vector3 _centerOfMass = new Vector3(0f, 0f, 0f); // unchanged
+    public Transform centerOfMass;
     // GUI
     //...
     public float RO_speed; // READ ONLY (Debug)
@@ -78,26 +78,27 @@ public class CarControl : MonoBehaviour
 
     void Start()
     {
-        GetComponent<Rigidbody>().centerOfMass = centerOfMass;
+        _centerOfMass = centerOfMass.position;
+        //GetComponent<Rigidbody>().centerOfMass = _centerOfMass;
 
         // Setup initial values
 
         // Front Left
-        // wheelMeshWrapperFLx = frontLeftWheelWrapper.localPosition.x;
-        // wheelMeshWrapperFLy = frontLeftWheelWrapper.localPosition.y;
-        // wheelMeshWrapperFLz = frontLeftWheelWrapper.localPosition.z;
+        wheelMeshWrapperFLx = frontLeftWheelWrapper.localPosition.x;
+        wheelMeshWrapperFLy = frontLeftWheelWrapper.localPosition.y;
+        wheelMeshWrapperFLz = frontLeftWheelWrapper.localPosition.z;
         // Front Right
-        // wheelMeshWrapperFRx = frontRightWheelWrapper.localPosition.x;
-        // wheelMeshWrapperFRy = frontRightWheelWrapper.localPosition.y;
-        // wheelMeshWrapperFRz = frontRightWheelWrapper.localPosition.z;
+        wheelMeshWrapperFRx = frontRightWheelWrapper.localPosition.x;
+        wheelMeshWrapperFRy = frontRightWheelWrapper.localPosition.y;
+        wheelMeshWrapperFRz = frontRightWheelWrapper.localPosition.z;
         // Rear Left
-        // wheelMeshWrapperRLx = rearLeftWheelWrapper.localPosition.x;
-        // wheelMeshWrapperRLy = rearLeftWheelWrapper.localPosition.y;
-        // wheelMeshWrapperRLz = rearLeftWheelWrapper.localPosition.z;
+        wheelMeshWrapperRLx = rearLeftWheelWrapper.localPosition.x;
+        wheelMeshWrapperRLy = rearLeftWheelWrapper.localPosition.y;
+        wheelMeshWrapperRLz = rearLeftWheelWrapper.localPosition.z;
         // Rear Right
-        // wheelMeshWrapperRRx = rearRightWheelWrapper.localPosition.x;
-        // wheelMeshWrapperRRy = rearRightWheelWrapper.localPosition.y;
-        // wheelMeshWrapperRRz = rearRightWheelWrapper.localPosition.z;
+        wheelMeshWrapperRRx = rearRightWheelWrapper.localPosition.x;
+        wheelMeshWrapperRRy = rearRightWheelWrapper.localPosition.y;
+        wheelMeshWrapperRRz = rearRightWheelWrapper.localPosition.z;
     }
 
 
@@ -116,10 +117,10 @@ public class CarControl : MonoBehaviour
         frontRightWheelWrapper.localEulerAngles = new Vector3(0, steerAngle, 0);
 
         // Wheel rotation
-        frontLeftWheelMesh.Rotate(0, wheelFL.rpm / 60 * 360 * Time.deltaTime, 0);
-        frontRightWheelMesh.Rotate(0, wheelFR.rpm / 60 * 360 * Time.deltaTime, 0);
-        rearLeftWheelMesh.Rotate(0, wheelRL.rpm / 60 * 360 * Time.deltaTime, 0);
-        rearRightWheelMesh.Rotate(0, wheelRR.rpm / 60 * 360 * Time.deltaTime, 0);
+        frontLeftWheelMesh.Rotate(wheelFL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
+        frontRightWheelMesh.Rotate(wheelFR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
+        rearLeftWheelMesh.Rotate(wheelRL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
+        rearRightWheelMesh.Rotate(wheelRR.rpm / 60 * 360 * Time.deltaTime, 0, 0); 
 
         // Audio
         GetComponent<AudioSource>().pitch = (torquePower / maxTorque) + 0.5f;
