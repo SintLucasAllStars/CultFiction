@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 4dc14f59e8defa74fa22584047b81e65, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -367,6 +367,10 @@ PrefabInstance:
       propertyPath: m_ForwardFriction.m_ExtremumSlip
       value: 0.4
       objectReference: {fileID: 0}
+    - target: {fileID: 7790045569446825622, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 668baa77786d86b4ea91be7150f5ae64, type: 2}
     - target: {fileID: 7835764947077313414, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
       propertyPath: m_ForwardFriction.m_ExtremumSlip
       value: 0.4
