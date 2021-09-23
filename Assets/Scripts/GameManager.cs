@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
         //Gets the location from the 2 objects at start.
         grenadeSpawner = GameObject.Find("GrenadeSpawn");
         grenadeSpawner2 = GameObject.Find("GrenadeSpawn_2");
+
         StartCoroutine(SpawnGrenade());
     }
 

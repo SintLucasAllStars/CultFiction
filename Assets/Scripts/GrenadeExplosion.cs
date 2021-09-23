@@ -10,8 +10,11 @@ public class GrenadeExplosion : MonoBehaviour
 
     public GameObject grenadeFX;
 
+    private PlayerHealth _playerHealth;
+
     private void Awake()
     {
+        _playerHealth = GameObject.Find("Player").GetComponent<PlayerHealth>();
         StartCoroutine(Timer());
     }
 
@@ -38,7 +41,21 @@ public class GrenadeExplosion : MonoBehaviour
         {
             if (hitCollider.CompareTag("Player"))
             {
+                float damageToDeal = 0;
+
                 //Kill player.
+                //Gets the distance between the player and the grenade.
+                float _dist = Vector3.Distance(transform.position, hitCollider.transform.position);
+
+                if (_dist < 2.5f)
+                {
+                    damageToDeal = 100;
+                }
+                else if (_dist >= 2.5f)
+                {
+                   damageToDeal = _dist * 10;
+                }
+                _playerHealth.Damage(damageToDeal);
             }
         }
 
