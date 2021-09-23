@@ -29,12 +29,8 @@ public class GrenadeExplosion : MonoBehaviour
         AudioSource audioSource = GetComponent<AudioSource>();
         audioSource.Play();
 
-        //spawning the grenadeFX
-        Instantiate(grenadeFX, transform.position,Quaternion.Euler (-90,0,0));
-
-        //plays the particle system.
-        //ParticleSystem ps = GetComponentInChildren<ParticleSystem>();
-        //ps.Play();
+        //spawning the grenadeFX with the right rotation.
+        GameObject FX = Instantiate(grenadeFX, transform.position,Quaternion.Euler (-90,0,0));
 
         //Creating the raycast to use for the explosion.
         var ray = new Ray(transform.position, this.transform.forward);
@@ -54,6 +50,7 @@ public class GrenadeExplosion : MonoBehaviour
 
         //destroys gameobject
         Destroy(gameObject);
+        Destroy(FX);
     }
 
     //Editor only
