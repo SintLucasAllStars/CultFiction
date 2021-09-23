@@ -30,7 +30,6 @@ public class GameManager : MonoBehaviour
         GameObject go = Instantiate(grenadePrefab, position, Quaternion.identity);
         Rigidbody rb = go.GetComponent<Rigidbody>();
         Vector3 force = new Vector3(0, grenadeHeight, grenadeWith) * 10;
-        //Debug.Log($"Force is {force}");
         rb.AddForce(force);
         rb.AddRelativeTorque(new Vector3(10f, 0f, 0f));
 

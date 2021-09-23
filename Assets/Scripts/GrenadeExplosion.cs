@@ -5,7 +5,7 @@ using UnityEngine;
 public class GrenadeExplosion : MonoBehaviour
 {
     public Vector3 collision;
-    public float explosionRadius = 0.2f;
+    private float explosionRadius = 5f;
     public int secconds = 5;
 
     public GameObject grenadeFX;
@@ -33,13 +33,13 @@ public class GrenadeExplosion : MonoBehaviour
         GameObject FX = Instantiate(grenadeFX, transform.position,Quaternion.Euler (-90,0,0));
 
         //Creating the raycast to use for the explosion.
-        var ray = new Ray(transform.position, this.transform.forward);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, 100))
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
+        foreach (var hitCollider in hitColliders)
         {
-            collision = hit.point;
-            //Debug.Log("You died");
+            if (hitCollider.CompareTag("Player"))
+            {
+                //Kill player.
+            }
         }
 
         //This is if the explosion happend, the granade, that is basicly gone, is not visable anymore.
@@ -60,6 +60,6 @@ public class GrenadeExplosion : MonoBehaviour
 
         //Draws the lines red and as an sphere.
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(collision, radius: explosionRadius);
+        Gizmos.DrawWireSphere(collision, explosionRadius);
     }
 }
