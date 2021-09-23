@@ -15,17 +15,17 @@ public class GrenadeExplosion : MonoBehaviour
         StartCoroutine(Timer());
     }
 
-    //waits the amount of seconds that is given before executing the follow function.
+    //Waits the amount of seconds that is given before executing the follow function.
     private IEnumerator Timer()
     {
         yield return new WaitForSecondsRealtime(secconds);
         StartCoroutine(Explode());
     }
 
-    //handles the explosion raycast and animation.
+    //Handles the explosion raycast and animation.
     private IEnumerator Explode()
     {
-        //plays the explosion audio.
+        //Plays the explosion audio.
         AudioSource audioSource = GetComponent<AudioSource>();
         audioSource.Play();
 
@@ -38,9 +38,8 @@ public class GrenadeExplosion : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 100))
         {
-            Debug.Log(hit.transform.gameObject);
             collision = hit.point;
-            Debug.Log("You died");
+            //Debug.Log("You died");
         }
 
         //This is if the explosion happend, the granade, that is basicly gone, is not visable anymore.
@@ -48,15 +47,15 @@ public class GrenadeExplosion : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(4.3f);
 
-        //destroys gameobject
+        //Destroys gameobject.
         Destroy(gameObject);
         Destroy(FX);
     }
 
-    //Editor only
+    //Editor only.
     private void OnDrawGizmos()
     {
-        //this updates the position of the radius in the editor
+        //This updates the position of the radius in the editor.
         collision = gameObject.transform.localPosition;
 
         //Draws the lines red and as an sphere.
