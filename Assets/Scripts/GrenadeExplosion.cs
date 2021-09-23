@@ -8,6 +8,8 @@ public class GrenadeExplosion : MonoBehaviour
     public float explosionRadius = 0.2f;
     public int secconds = 5;
 
+    public GameObject grenadeFX;
+
     private void Awake()
     {
         StartCoroutine(Timer());
@@ -27,9 +29,12 @@ public class GrenadeExplosion : MonoBehaviour
         AudioSource audioSource = GetComponent<AudioSource>();
         audioSource.Play();
 
+        //spawning the grenadeFX
+        Instantiate(grenadeFX, transform.position,Quaternion.Euler (-90,0,0));
+
         //plays the particle system.
-        ParticleSystem ps = GetComponentInChildren<ParticleSystem>();
-        ps.Play();
+        //ParticleSystem ps = GetComponentInChildren<ParticleSystem>();
+        //ps.Play();
 
         //Creating the raycast to use for the explosion.
         var ray = new Ray(transform.position, this.transform.forward);
