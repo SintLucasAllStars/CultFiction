@@ -27,6 +27,8 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth <= 0) //if the currenthealth is lower than 0 display a zero.
         {
             healthText.text = _text + 0;
+            GameManager _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            _gameManager.PlayerDeath();
         }
         else //as long the current health is more then 0, update the text.
         {

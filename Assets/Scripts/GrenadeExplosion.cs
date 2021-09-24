@@ -48,7 +48,7 @@ public class GrenadeExplosion : MonoBehaviour
                 float _dist = Vector3.Distance(transform.position, hitCollider.transform.position);
 
                 damageToDeal = _dist - 5f;
-                damageToDeal = damageToDeal * 30;
+                damageToDeal = damageToDeal * 35;
 
                 print(damageToDeal);
 
