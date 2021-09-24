@@ -47,14 +47,11 @@ public class GrenadeExplosion : MonoBehaviour
                 //Gets the distance between the player and the grenade.
                 float _dist = Vector3.Distance(transform.position, hitCollider.transform.position);
 
-                if (_dist < 2.5f)
-                {
-                    damageToDeal = 100;
-                }
-                else if (_dist >= 2.5f)
-                {
-                   damageToDeal = _dist * 10;
-                }
+                damageToDeal = _dist - 5f;
+                damageToDeal = damageToDeal * 28;
+
+                print(damageToDeal);
+
                 _playerHealth.Damage(damageToDeal);
             }
         }

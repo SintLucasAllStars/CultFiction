@@ -22,7 +22,7 @@ public class PlayerHealth : MonoBehaviour
     {
         //Sets the currentHealth and rounds it up.
         //Updates the text.
-        currentHealth = currentHealth - Mathf.Round(damage);
+        currentHealth = currentHealth + Mathf.Round(damage);
 
         if (currentHealth <= 0) //if the currenthealth is lower than 0 display a zero.
         {
