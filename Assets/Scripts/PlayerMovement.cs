@@ -12,12 +12,16 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 duckingHeight = new Vector3(0.5f,0.5f,0.5f), currentHeight, walkingHeight = new Vector3(0.75f,0.75f,0.75f);
 
+    private GameManager _gameManager;
+
     private void Start()
     {
         //Gets the rigidbody on start.
         rbPlayer = GetComponent<Rigidbody>();
         cam = Camera.main;
         currentHeight = rbPlayer.transform.localScale;
+
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     private void Update()
@@ -41,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
                 case true:
                     //Switch to walkingheight
                     currentHeight = walkingHeight;
+                    _gameManager._isDucked = false;
                     break;
                 case false:
                     //nothing to do
@@ -55,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
                 case true:
                     //Switch to duckingheight
                     currentHeight = duckingHeight;
+                    _gameManager._isDucked = true;
                     break;
                 case false:
                     //nothing to do
@@ -64,5 +70,7 @@ public class PlayerMovement : MonoBehaviour
 
         //this will change the scale in a smooth way.
         transform.localScale = Vector3.Lerp (transform.localScale, currentHeight, duckingspeed * Time.deltaTime);
+
+        _gameManager.ActivateSniper();
     }
 }

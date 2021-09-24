@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     public GameObject gameUI, deathUI;
     private Camera cam;
 
+    public bool _isDucked;
+
     private void Start()
     {
         //Makes sure the UI is on.
@@ -33,6 +35,12 @@ public class GameManager : MonoBehaviour
 
         //Disable player movement.
         var player = GameObject.Find("Player").GetComponent<PlayerMovement>().enabled = false;
+    }
+
+    public void ActivateSniper()
+    {
+        var _sniper = GameObject.Find("Sniper").GetComponent<SniperHandeler>();
+        _sniper.isDucked = _isDucked;
     }
 
     public void RestartBtnClicked()
