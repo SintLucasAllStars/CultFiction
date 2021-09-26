@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
 
     private GameObject previousPlatform;
     private string previousDirection = "Right";
+
+    public bool gameStarted = true;
     
     
     // Start is called before the first frame update
@@ -37,7 +39,7 @@ public class GameManager : MonoBehaviour
             
             //Generate next platform
             previousPlatform = i > 3? GenerateAnimatedPlatform(platformChild.position, previousDirection):GeneratePlatform(platformChild.position);
-             if(i > 3) yield return new WaitForSeconds(3/4);
+            if(i > 3) yield return new WaitForSeconds(3/4);
         }
     }
 
