@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class CarControl : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class CarControl : MonoBehaviour
     // https://gist.github.com/victorbstan/4dde0d0b4203c248423e
 
     // PUBLIC
-
+    public int KM_H;
     public bool driveable = false;
 
     // Wheel Wrapping Objects
@@ -78,6 +79,7 @@ public class CarControl : MonoBehaviour
 
     void Start()
     {
+        KM_H = 0;
         _centerOfMass = centerOfMass.position;
         //GetComponent<Rigidbody>().centerOfMass = _centerOfMass;
 
@@ -176,18 +178,35 @@ public class CarControl : MonoBehaviour
         // debug info
         RO_speed = GetComponent<Rigidbody>().velocity.magnitude;
 
-        // KEYBOARD INPUT
 
-        // FORWARD
-        if (Input.GetKey(KeyCode.W))
+        if(torquePower <= 0)
+        {
+            KM_H = 0;
+        }
+        if (torquePower >= 170)
+        {
+            KM_H = 170;
+        }
+
+
+
+            // KEYBOARD INPUT
+
+            // FORWARD
+            if (Input.GetKey(KeyCode.W))
         {
             // Debug.Log("FORWARD");
+            KM_H++;
+            Debug.Log(KM_H);
+                  
         }
 
         // BACKWARD
         if (Input.GetKey(KeyCode.S))
         {
             // Debug.Log("BACKWARD");
+            KM_H--;
+            Debug.Log(KM_H);
         }
 
         // LEFT
