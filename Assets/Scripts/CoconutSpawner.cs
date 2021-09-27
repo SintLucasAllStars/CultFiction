@@ -7,6 +7,7 @@ public class CoconutSpawner : MonoBehaviour
     public GameObject coconutPrefab;
     public Vector3 spawnPos;
     public static GameObject mainCamera;
+    private float cooldownTimer;
 
     void Start()
     {
@@ -16,8 +17,11 @@ public class CoconutSpawner : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        cooldownTimer -= Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.Space) && cooldownTimer <= 0)
         {
+            cooldownTimer = 0.3f;
             Instantiate(coconutPrefab, spawnPos, transform.rotation);
         }
     }

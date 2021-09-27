@@ -15,8 +15,10 @@ public class CoconutBehaviour : MonoBehaviour
     {
         isBroken = false;
         rb = GetComponent<Rigidbody>();
-        rb.AddForce(CoconutSpawner.mainCamera.transform.forward*220f);
-        rb.AddForce(transform.up*200f);
+        rb.AddForce(CoconutSpawner.mainCamera.transform.forward*Random.Range(160f, 280f));
+        rb.AddForce(transform.up*Random.Range(140f, 220f));
+        rb.AddForce(transform.right *Random.Range(-50f,50f));
+
     }
 
     void Update()
@@ -26,7 +28,7 @@ public class CoconutBehaviour : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (isBroken == false)
+        if (collision.gameObject.tag == "Floor" && isBroken == false)
         {
             position = this.transform.position;
             Instantiate(brokenCoconut, position, Quaternion.identity);
