@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 move = transform.right * x + transform.forward * z;
 
         controller.Move(move * speed * Time.deltaTime);
+        //(move * speed * Time.deltaTime);
 
         //RUN
         if (Input.GetKey(KeyCode.LeftShift))
@@ -37,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
         //VELOCITY
         velocity.y += gravity * Time.deltaTime;
+
         controller.Move(velocity * Time.deltaTime);
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
