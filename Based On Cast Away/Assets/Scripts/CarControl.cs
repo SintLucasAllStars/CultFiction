@@ -8,7 +8,7 @@ public class CarControl : MonoBehaviour
     // https://gist.github.com/victorbstan/4dde0d0b4203c248423e
 
     // PUBLIC
-    public int KM_H;
+    public float KM_H;
     public bool driveable = false;
 
     // Wheel Wrapping Objects
@@ -34,10 +34,10 @@ public class CarControl : MonoBehaviour
     public WheelCollider wheelRR;
 
     public float maxTorque = 190f;
-    public float brakeTorque = 100f;
+    public float brakeTorque = 100000f;
 
     // max wheel turn angle;
-    public float maxWheelTurnAngle = 30f; // degrees
+    public float maxWheelTurnAngle = 45f; // degrees
 
     // car's center of mass
     private Vector3 _centerOfMass = new Vector3(0f, 0f, 0f); // unchanged
@@ -126,6 +126,7 @@ public class CarControl : MonoBehaviour
 
         // Audio
         GetComponent<AudioSource>().pitch = (torquePower / maxTorque) + 0.5f;
+        
     }
 
     // Physics updates
@@ -143,6 +144,7 @@ public class CarControl : MonoBehaviour
             torquePower = 0f;
             wheelRL.brakeTorque = brakeTorque;
             wheelRR.brakeTorque = brakeTorque;
+           
         }
         else
         {
@@ -150,11 +152,18 @@ public class CarControl : MonoBehaviour
             torquePower = maxTorque * Mathf.Clamp(Input.GetAxis("Vertical"), -1, 1);
             wheelRL.brakeTorque = 0f;
             wheelRR.brakeTorque = 0f;
-
+           
         }
         // Apply torque
         wheelRR.motorTorque = torquePower;
         wheelRL.motorTorque = torquePower;
+
+        KM_H = RO_speed * 4;
+
+        if(RO_speed >= 190)
+        {
+            RO_speed = 190;
+        }
 
         // Debug.Log(Input.GetAxis("Vertical"));
         Debug.Log("torquePower: " + torquePower);
@@ -174,21 +183,12 @@ public class CarControl : MonoBehaviour
         RO_SteeringAngleFR = wheelFR.steerAngle;
         RO_EngineTorque = torquePower;
 
-        // SPEED
+        // SPEED+
+
         // debug info
         RO_speed = GetComponent<Rigidbody>().velocity.magnitude;
 
 
-        if(KM_H <= 0)
-        {
-            RO_speed = 0;
-            KM_H = 0;
-        }
-        if (KM_H >= 170)
-        {
-            RO_speed = 170;
-            KM_H = 170;
-        }
 
 
 
@@ -198,8 +198,6 @@ public class CarControl : MonoBehaviour
         if (Input.GetKey(KeyCode.W))
         {
             // Debug.Log("FORWARD");
-            KM_H++;
-            Debug.Log(KM_H);
                   
         }
 
@@ -207,8 +205,6 @@ public class CarControl : MonoBehaviour
         if (Input.GetKey(KeyCode.S))
         {
             // Debug.Log("BACKWARD");
-            KM_H--;
-            Debug.Log(KM_H);
         }
 
         // LEFT
