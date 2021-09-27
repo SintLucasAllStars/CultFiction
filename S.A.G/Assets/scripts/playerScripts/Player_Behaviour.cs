@@ -14,16 +14,20 @@ public class Player_Behaviour : MonoBehaviour
     [Header("ball Spawning")]
     public GameObject ballPrefab;
     public float resetTime;
-    private Rigidbody ballRB;
+    private GameObject _ball;
+    private Rigidbody _ballRB;
 
     [Header("player calculations")]
     [Space(10)]
     private float angle = 0;
     private float power = 0;
     public float maxAngle, minAngle;
-    public float maxPower;
+    public float maxPower, minPower;
     public float powerIncrease;
     public float angleIncrease;
+
+    private Vector3 force;
+    private Vector3 forward;
 
     [Header("animation control")]
     [Space(10)]
@@ -33,6 +37,7 @@ public class Player_Behaviour : MonoBehaviour
 
     private Quaternion startRotation;
     private Quaternion targetRotation;
+    private Coroutine restBall;
 
     // Start is called before the first frame update
     void Start()
@@ -57,10 +62,19 @@ public class Player_Behaviour : MonoBehaviour
                 angle += Input.GetAxis(axisName) * angleIncrease * Time.deltaTime;
                 angle = Mathf.Clamp(angle, minAngle, maxAngle);
 
-                if (Input.GetKeyUp(powerbutton))
+                if (Input.GetKeyUp(powerbutton) && power > minPower)
                 {
                     Shoot();
                 }
+            }
+        }
+        else
+        {
+            float angleDiff = Quaternion.Angle(pivot.localRotation, startRotation);
+
+            if (angleDiff < 10f)
+            {
+                BallImpulse();
             }
         }
 
@@ -72,6 +86,16 @@ public class Player_Behaviour : MonoBehaviour
     {
         shooting = true;
         CalculateSwingAngle(-power);
+        _ball.transform.Rotate(0, angle, 0);
+
+        force = (_ball.transform.forward) + (_ball.transform.up * power);
+
+
+        //forward = -_ball.transform.forward;
+        //_ball.transform.Rotate(power * -50, 0, 0);
+        //force = _ball.transform.forward;
+        //Debug.DrawLine(_ball.transform.position, _ball.transform.position + force, Color.green, resetTime);
+        //Debug.Break();
     }
 
     public void FinishShot()
@@ -79,7 +103,17 @@ public class Player_Behaviour : MonoBehaviour
         shooting = false;
         power = 0;
         angle = 0;
-        StartCoroutine(ResetTimer());
+
+        if (restBall == null)
+        {
+            restBall = StartCoroutine(ResetTimer());
+        }
+    }
+
+    public void BallImpulse()
+    {
+        _ballRB.AddForce(force, ForceMode.Impulse);
+        Destroy(_ball, 5);
     }
     #endregion
 
@@ -88,12 +122,13 @@ public class Player_Behaviour : MonoBehaviour
     {
         yield return new WaitForSeconds(resetTime);
         SpawnBall();
+        restBall = null;
     }
 
     private void SpawnBall()
     {
-        GameObject ball = Instantiate(ballPrefab, new Vector3(transform.position.x + 1.8f, transform.position.y - 0.55f, transform.position.z + .25f), Quaternion.identity);
-        ballRB =  ball.GetComponent<Rigidbody>();
+        _ball = Instantiate(ballPrefab, new Vector3(transform.position.x + 1.8f, transform.position.y - 0.55f, transform.position.z + .25f), Quaternion.identity);
+        _ballRB = _ball.GetComponent<Rigidbody>();
     }
     #endregion
 
