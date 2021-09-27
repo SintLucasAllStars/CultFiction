@@ -33,7 +33,7 @@ public class CarControl : MonoBehaviour
     public WheelCollider wheelRL;
     public WheelCollider wheelRR;
 
-    public float maxTorque = 20f;
+    public float maxTorque = 190f;
     public float brakeTorque = 100f;
 
     // max wheel turn angle;
@@ -179,12 +179,14 @@ public class CarControl : MonoBehaviour
         RO_speed = GetComponent<Rigidbody>().velocity.magnitude;
 
 
-        if(torquePower <= 0)
+        if(KM_H <= 0)
         {
+            RO_speed = 0;
             KM_H = 0;
         }
-        if (torquePower >= 170)
+        if (KM_H >= 170)
         {
+            RO_speed = 170;
             KM_H = 170;
         }
 
@@ -193,7 +195,7 @@ public class CarControl : MonoBehaviour
             // KEYBOARD INPUT
 
             // FORWARD
-            if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W))
         {
             // Debug.Log("FORWARD");
             KM_H++;

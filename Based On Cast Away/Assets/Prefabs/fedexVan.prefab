@@ -240,8 +240,8 @@ MonoBehaviour:
   wheelFR: {fileID: 6558234059943310695}
   wheelRL: {fileID: 2755402068341221340}
   wheelRR: {fileID: 7835764947077313414}
-  maxTorque: 1000
-  brakeTorque: 10000
+  maxTorque: 190
+  brakeTorque: 100000
   maxWheelTurnAngle: 45
   centerOfMass: {fileID: 760760321246766083}
   RO_speed: 0
@@ -257,7 +257,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 591664162084571266}
   serializedVersion: 2
-  m_Mass: 800
+  m_Mass: 500
   m_Drag: 0
   m_AngularDrag: 1
   m_UseGravity: 1
