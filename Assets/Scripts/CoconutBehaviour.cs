@@ -8,10 +8,15 @@ public class CoconutBehaviour : MonoBehaviour
     public GameObject brokenCoconut;
     private bool isBroken;
     private Vector3 position;
+    private Rigidbody rb;
+    //public GameObject mainCamera;
 
     void Start()
     {
         isBroken = false;
+        rb = GetComponent<Rigidbody>();
+        rb.AddForce(CoconutSpawner.mainCamera.transform.forward*220f);
+        rb.AddForce(transform.up*200f);
     }
 
     void Update()

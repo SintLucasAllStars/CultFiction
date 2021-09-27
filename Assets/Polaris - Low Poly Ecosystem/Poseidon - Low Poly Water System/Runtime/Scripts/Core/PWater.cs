@@ -791,7 +791,7 @@ namespace Pinwheel.Poseidon
                     if (Profile.EnableFoam && !isMsaaWarningLogged)
                     {
                         isMsaaWarningLogged = true;
-                        Debug.LogWarning("MSAA causes Foam artifact, consider disabling it in the Quality Settings.");
+                        //Debug.LogWarning("MSAA causes Foam artifact, consider disabling it in the Quality Settings.");
                     }
                 }
             }
