@@ -19,17 +19,26 @@ public class PlayerBehaviour : MonoBehaviour
     private GameObject leftHold;
     private GameObject rightHold;
 
+    [SerializeField] private GameObject leftItem;
+    private GameObject rightItem;
+
     public Camera mainCamera;
 
     private void Start()
     {
         isHoldingLeft = false;
         isHoldingRight = false;
+
+        leftHold = GameObject.Find("LeftHold");
+        rightHold = GameObject.Find("RightHold");
     }
 
     private void Update()
     {
-        PickUpItem();
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+        {
+            PickUpItem();
+        }
     }
 
     private void FixedUpdate()
@@ -66,50 +75,64 @@ public class PlayerBehaviour : MonoBehaviour
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(mousePosition, transform.up, out hit))
+        if (Physics.Raycast(mousePosition + Vector3.up, Vector3.down, out hit))
         {
-            if (hit.collider.CompareTag("Clickable") && Input.GetMouseButtonDown(0))
+            if (hit.collider.CompareTag("Clickable") && Input.GetMouseButtonDown(0) && !isHoldingLeft)
             {
-                Debug.Log("HIT_Left");
+                leftItem = hit.collider.gameObject;
+
+                leftItem.transform.parent = leftHold.transform;
+
+                leftItem.transform.position = leftHold.transform.position;
+
+                leftItem.GetComponent<Collider>().enabled = false;
+
+                leftItem.GetComponent<Rigidbody>().useGravity = false;
+
+                leftItem.GetComponent<Rigidbody>().velocity = new Vector3(0.0f, 0.0f, 0.0f);
 
                 isHoldingLeft = true;
+            }
+            else if (Input.GetMouseButtonDown(0) && isHoldingLeft)
+            {
+                leftItem.transform.parent = null;
 
-                hit.collider.transform.parent = leftHold.transform;
+                leftItem.GetComponent<Collider>().enabled = true;
 
-                hit.collider.transform.position = leftHold.transform.position;
+                leftItem.GetComponent<Rigidbody>().useGravity = true;
 
-                hit.collider.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                leftItem.GetComponent<Rigidbody>().AddForce(playerModel.transform.forward * 600.0f);
 
-                hit.collider.enabled = false;
+                isHoldingLeft = false;
             }
 
-            if (hit.collider.CompareTag("Clickable") && Input.GetMouseButtonDown(1))
+            if (hit.collider.CompareTag("Clickable") && Input.GetMouseButtonDown(1) && !isHoldingRight)
             {
-                Debug.Log("HIT_Right");
+                rightItem = hit.collider.gameObject;
+
+                rightItem.transform.parent = rightHold.transform;
+
+                rightItem.transform.position = rightHold.transform.position;
+
+                rightItem.GetComponent<Collider>().enabled = false;
+
+                rightItem.GetComponent<Rigidbody>().useGravity = false;
+
+                rightItem.GetComponent<Rigidbody>().velocity = new Vector3(0.0f, 0.0f, 0.0f);
 
                 isHoldingRight = true;
-
-                hit.collider.transform.parent = rightHold.transform;
-
-                hit.collider.transform.position = rightHold.transform.position;
-
-                hit.collider.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-
-                hit.collider.enabled = false;
             }
-
-            if (Input.GetMouseButtonDown(0) && isHoldingRight)
+            else if (Input.GetMouseButtonDown(1) && isHoldingRight)
             {
-                isHoldingLeft = false;
+                rightItem.transform.parent = null;
 
-                hit.collider.enabled = true;
-            }
+                rightItem.GetComponent<Collider>().enabled = true;
 
-            if (Input.GetMouseButtonDown(1) && isHoldingRight)
-            {
+                rightItem.GetComponent<Rigidbody>().useGravity = true;
+
+                rightItem.GetComponent<Rigidbody>().AddForce(playerModel.transform.forward * 600.0f);
+
                 isHoldingRight = false;
-
-                hit.collider.enabled = true;
             }
         }
     }
