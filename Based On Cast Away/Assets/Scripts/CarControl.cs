@@ -158,7 +158,8 @@ public class CarControl : MonoBehaviour
         wheelRR.motorTorque = torquePower;
         wheelRL.motorTorque = torquePower;
 
-        KM_H = RO_speed * 4;
+        KM_H = RO_speed * 5;
+        //Debug.Log("km/h = " + KM_H);
 
         if(RO_speed >= 190)
         {

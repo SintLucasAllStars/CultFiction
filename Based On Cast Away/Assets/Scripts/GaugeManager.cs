@@ -7,7 +7,7 @@ public class GaugeManager : MonoBehaviour
 {
     public GameObject pin;
     public GameObject van;
-    public int km_h;
+    public float km_h;
     public float angle;
 
     // Start is called before the first frame update
@@ -20,9 +20,9 @@ public class GaugeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        van.GetComponent<CarControl>().KM_H = km_h; 
-        angle = km_h;
+        km_h = van.GetComponent<CarControl>().KM_H;
+        angle = -km_h - -130;
         pin.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        Debug.Log(km_h);
+        //Debug.Log(km_h);
     }
 }
