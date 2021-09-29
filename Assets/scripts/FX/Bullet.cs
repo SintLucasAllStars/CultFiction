@@ -7,6 +7,9 @@ public class Bullet : MonoBehaviour
     public float speed;
     public float timeUntilDestroy;
 
+    [Space(10)]
+    public int demage;
+
     public GameObject impactPrefab;
 
     // Start is called before the first frame update
@@ -25,8 +28,18 @@ public class Bullet : MonoBehaviour
     {
         if (coll.gameObject.GetComponent<TerrainCollider>())
         {
-            Instantiate(impactPrefab, coll.collider.ClosestPoint(transform.position), Quaternion.identity);
-            //Destroy(this.gameObject, 0.2f);
+            SpawnBulletInpact(coll.gameObject);
         }
+
+        if (coll.gameObject.CompareTag("barrelStorage"))
+        {
+            SpawnBulletInpact(coll.gameObject);
+            coll.gameObject.GetComponent<BarrelStorage>().SubtractDemage(demage);
+        }
+    }
+
+    void SpawnBulletInpact(GameObject coll)
+    {
+        Instantiate(impactPrefab, coll.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
     }
 }
