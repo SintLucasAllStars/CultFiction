@@ -29,7 +29,7 @@ public class BarrelStorage : MonoBehaviour
 
     private void Explode()
     {
-        Instantiate(explosion, transform.position, Quaternion.identity);
+        Instantiate(explosion, transform.position, transform.rotation);
         explosion.transform.parent = null;
         ObjectiveManager.Instance.RevmoveBarrelStorage(this.gameObject);
         Destroy(this.gameObject, 0.1f);

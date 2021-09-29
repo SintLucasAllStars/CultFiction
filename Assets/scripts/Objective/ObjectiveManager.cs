@@ -44,6 +44,7 @@ public class ObjectiveManager : MonoBehaviour
     public void RevmoveBarrelStorage(GameObject barrelStorage)
     {
         barrelStorages.Remove(barrelStorage);
+        print("Item removed");
         CheckForObjectiveCompletion();
     }
 
