@@ -87,11 +87,13 @@ public class Player_Behaviour : MonoBehaviour
     {
         shooting = true;
         CalculateSwingAngle(-power);
-        _ball.transform.Rotate(0, angle, 0);
 
-        force = (_ball.transform.forward) + (_ball.transform.up * power);
-        force.Normalize();
-        force *= (power * forceMultiplier);
+        if (restBall is null)
+        {
+            force = (_ball.transform.forward) + (_ball.transform.up * power);
+            force.Normalize();
+            force *= (power * forceMultiplier);
+        }
     }
 
     public void FinishShot()
@@ -131,6 +133,11 @@ public class Player_Behaviour : MonoBehaviour
     #region animation
     public void Animate()
     {
+        if (restBall is null)
+        {
+            _ball.transform.rotation = Quaternion.Euler(0, angle, 0);
+        }
+
         float speed = 0;
         if (!shooting)
         {

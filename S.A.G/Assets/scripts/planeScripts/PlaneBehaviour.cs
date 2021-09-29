@@ -23,7 +23,7 @@ public class PlaneBehaviour : MonoBehaviour
     {
         FlyForward();
 
-        if (transform.position.z < -10)
+        if (transform.position.z < -5)
         {
             Destroy(gameObject);
         }
@@ -31,20 +31,19 @@ public class PlaneBehaviour : MonoBehaviour
 
     private void FlyForward()
     {
-        transform.Translate(transform.forward * FlightSpeed * Time.deltaTime, Space.World);
-        propellor.transform.Rotate(0, 0, (36 * FlightSpeed) * Time.deltaTime);
-
-        Collider[] otherplanes = Physics.OverlapSphere(transform.position, dodgeRange);
-        foreach (Collider item in otherplanes)
-        {
-            if (item.CompareTag("AirPlane") && item != this.gameObject)
-            {
-                MoveOutOfTheWay(item.gameObject.transform);
-            }
-        }
-
         if (!_PlaneRb.useGravity)
         {
+            transform.Translate(transform.forward * FlightSpeed * Time.deltaTime, Space.World);
+            propellor.transform.Rotate(0, 0, (36 * FlightSpeed) * Time.deltaTime);
+
+            Collider[] otherplanes = Physics.OverlapSphere(transform.position, dodgeRange);
+            foreach (Collider item in otherplanes)
+            {
+                if (item.CompareTag("AirPlane") && item != this.gameObject)
+                {
+                    MoveOutOfTheWay(item.gameObject.transform);
+                }
+            }
             transform.position = new Vector3(Mathf.Clamp(transform.position.x, -15, 15), Mathf.Clamp(transform.position.y, 17.5f, 25), transform.position.z);
         }
 
@@ -52,7 +51,8 @@ public class PlaneBehaviour : MonoBehaviour
 
     public void Crash()
     {
-        print("crash");
+        gameObject.tag = "Untagged";
+        GetComponent<BoxCollider>().enabled = false;
         _PlaneRb.useGravity = true;
         _PlaneRb.constraints = RigidbodyConstraints.None;
         _PlaneRb.AddForce(transform.forward * FlightSpeed, ForceMode.Impulse);

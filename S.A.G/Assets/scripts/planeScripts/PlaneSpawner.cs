@@ -26,6 +26,6 @@ public class PlaneSpawner : MonoBehaviour
 
     private void SpawnPlane()
     {
-        Instantiate(Plane, new Vector3(Random.Range(-15, 15), Random.Range(17.5f, 25), 200), Quaternion.Euler(0, 180, 0));
+        Instantiate(Plane, new Vector3(Random.Range(-15, 15), Random.Range(17.5f, 20), 200), Quaternion.Euler(0, 180, 0));
     }
 }
