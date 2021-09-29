@@ -31,7 +31,7 @@ public class SniperHandeler : MonoBehaviour
             //Play the shoot sound.
             sniperShot.Play();
             shotIsShot = true;
-            yield return new WaitForSecondsRealtime(shottime);
+            yield return new WaitForSecondsRealtime(0.5f);
 
             //This checks of the player is still ducked after the shot is fired.
             if (!isDucked)
@@ -51,12 +51,12 @@ public class SniperHandeler : MonoBehaviour
         }
         else
         {
-            if (shotIsShot)
+            if (shotIsShot && isDucked)
             {
                 Debug.Log("cancel shot");
 
                 //Plays an bullet passing sound FX.
-                yield return new WaitForSecondsRealtime(shottime);
+                yield return new WaitForSecondsRealtime(0.5f);
                 bulletPassing.Play();
             }
 
