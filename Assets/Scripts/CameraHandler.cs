@@ -79,6 +79,9 @@ public class CameraHandler : MonoBehaviour
                     Instantiate(Mortar_FX,mortar_transform.position, mortar_transform.rotation);
                     Mortar_Spawn.GetComponent<AudioSource>().Play();
 
+                    var _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+                    _gameManager.StartCoroutine(_gameManager.Win());
+
                     //Reset pickedUp
                     pickedUp = false;
                 }
