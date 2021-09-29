@@ -25,6 +25,7 @@ public class Player_Behaviour : MonoBehaviour
     public float maxPower, minPower;
     public float powerIncrease;
     public float angleIncrease;
+    public float forceMultiplier;
 
     private Vector3 force;
     private Vector3 forward;
@@ -89,13 +90,8 @@ public class Player_Behaviour : MonoBehaviour
         _ball.transform.Rotate(0, angle, 0);
 
         force = (_ball.transform.forward) + (_ball.transform.up * power);
-
-
-        //forward = -_ball.transform.forward;
-        //_ball.transform.Rotate(power * -50, 0, 0);
-        //force = _ball.transform.forward;
-        //Debug.DrawLine(_ball.transform.position, _ball.transform.position + force, Color.green, resetTime);
-        //Debug.Break();
+        force.Normalize();
+        force *= (power * forceMultiplier);
     }
 
     public void FinishShot()
@@ -112,8 +108,8 @@ public class Player_Behaviour : MonoBehaviour
 
     public void BallImpulse()
     {
-        _ballRB.AddForce(force, ForceMode.Impulse);
-        Destroy(_ball, 5);
+        _ballRB.velocity = force;
+        _ball.GetComponent<BallBehaviour>().ArmGolfBallGrenade();
     }
     #endregion
 
