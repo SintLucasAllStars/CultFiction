@@ -16,7 +16,7 @@ public class GaugeManager : MonoBehaviour
 
     }
 
-    // Update is called once per frame
+    // get current speed form car and apply to rotation of the gaugemeter pin
     void Update()
     {
         km_h = van.GetComponent<CarControl>().KM_H;

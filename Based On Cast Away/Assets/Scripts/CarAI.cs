@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class MenuManager : MonoBehaviour
+public class CarAI : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -15,11 +14,5 @@ public class MenuManager : MonoBehaviour
     void Update()
     {
         
-    }
-
-    //switch to game scene
-    public void StartGame()
-    {
-        SceneManager.LoadScene("ingame");
     }
 }

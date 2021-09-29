@@ -23,6 +23,7 @@ public class RaceManager : MonoBehaviour
         
     }
 
+    //start sequence for start race
     IEnumerator StartRace()
     {
         counterBackground.SetActive(true);

@@ -7,9 +7,14 @@ public class CarControl : MonoBehaviour
     // NOTE: Companion script for wheel suspensions, attach to each wheel.
     // https://gist.github.com/victorbstan/4dde0d0b4203c248423e
 
+
     // PUBLIC
     public float KM_H;
     public bool driveable = false;
+
+    public bool switchcam;
+    public GameObject ThirdpersonCamera;
+    public GameObject FirstpersonCamera;
 
     // Wheel Wrapping Objects
     public Transform frontLeftWheelWrapper;
@@ -101,6 +106,8 @@ public class CarControl : MonoBehaviour
         wheelMeshWrapperRRx = rearRightWheelWrapper.localPosition.x;
         wheelMeshWrapperRRy = rearRightWheelWrapper.localPosition.y;
         wheelMeshWrapperRRz = rearRightWheelWrapper.localPosition.z;
+
+        switchcam = true;
     }
 
 
@@ -110,6 +117,23 @@ public class CarControl : MonoBehaviour
         if (!driveable)
         {
             return;
+        }
+
+        //camera switch
+
+        if (Input.GetKey(KeyCode.H) && switchcam == false)
+        {
+            
+            FirstpersonCamera.SetActive(true);
+            ThirdpersonCamera.SetActive(false);
+            switchcam = true;
+        }
+
+        if (Input.GetKey(KeyCode.H) && switchcam == true)
+        {
+            FirstpersonCamera.SetActive(false);
+            ThirdpersonCamera.SetActive(true);
+            switchcam = false;
         }
 
         // SETUP WHEEL MESHES
@@ -125,7 +149,7 @@ public class CarControl : MonoBehaviour
         rearRightWheelMesh.Rotate(wheelRR.rpm / 60 * 360 * Time.deltaTime, 0, 0); 
 
         // Audio
-        GetComponent<AudioSource>().pitch = (torquePower / maxTorque) + 0.5f;
+        //GetComponent<AudioSource>().pitch = (torquePower / maxTorque) + 0.5f;
         
     }
 
