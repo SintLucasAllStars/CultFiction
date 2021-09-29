@@ -102,8 +102,6 @@ public class CarControl : MonoBehaviour
         wheelMeshWrapperRRx = rearRightWheelWrapper.localPosition.x;
         wheelMeshWrapperRRy = rearRightWheelWrapper.localPosition.y;
         wheelMeshWrapperRRz = rearRightWheelWrapper.localPosition.z;
-
-        switchcam = true;
     }
 
 

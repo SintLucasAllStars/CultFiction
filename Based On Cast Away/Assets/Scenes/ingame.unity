@@ -303,6 +303,11 @@ PrefabInstance:
       objectReference: {fileID: 2059435220}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87a2b2d666da5ad498077de80b5df92c, type: 3}
+--- !u!1 &622123801 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1195824097265303388, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+  m_PrefabInstance: {fileID: 1252531106}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -958,6 +963,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: fedexVan
       objectReference: {fileID: 0}
+    - target: {fileID: 972500194221784900, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+      propertyPath: Gauge
+      value: 
+      objectReference: {fileID: 1876513966}
     - target: {fileID: 2755402068341221340, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
       propertyPath: m_ForwardFriction.m_ExtremumSlip
       value: 0.4
@@ -969,6 +978,62 @@ PrefabInstance:
     - target: {fileID: 4416743973679675016, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
       propertyPath: m_ForwardFriction.m_ExtremumSlip
       value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592154029084125576, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592154029084125576, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592154029383581098, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+      propertyPath: m_Name
+      value: gauge incar
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592154029383581099, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592154029383581099, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592154029383581099, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 15.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592154029383581099, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592154029383581099, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592154029383581099, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592154029383581099, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592154029383581099, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 4.002
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592154029383581099, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592154030433462963, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592154030433462963, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6558234059943310695, guid: f04744f9b29a83f438d6989c585ea19a, type: 3}
       propertyPath: m_ForwardFriction.m_ExtremumSlip
@@ -1210,6 +1275,11 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3406.7695, y: 921.26196, z: 3.0904925e-12}
   m_Center: {x: -45316.4, y: 65930.39, z: -0.000009670854}
+--- !u!1 &1876513966 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5902134399213134070, guid: 87a2b2d666da5ad498077de80b5df92c, type: 3}
+  m_PrefabInstance: {fileID: 445553575}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1905843356 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5508285475091362088, guid: e2460df69a7f9c647befa1c56025cac6, type: 3}
@@ -1325,6 +1395,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2066905958}
   - component: {fileID: 2066905957}
+  - component: {fileID: 2066905959}
   m_Layer: 0
   m_Name: GaugeManager
   m_TagString: Untagged
@@ -1362,6 +1433,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2066905959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066905956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bbb2912dc388534fb2fa238995659d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pin: {fileID: 622123801}
+  van: {fileID: 2059435220}
+  km_h: 0
+  angle: 0
 --- !u!1001 &1849194111989652252
 PrefabInstance:
   m_ObjectHideFlags: 0
