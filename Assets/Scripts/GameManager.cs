@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
     public float timeRemaining;
     public Text timerText;
 
+    //Var for godmode.
+    private bool godmode = false;
+
     private void Start()
     {
         //Makes sure the UI is on.
@@ -30,29 +33,44 @@ public class GameManager : MonoBehaviour
         //This will count down the time and update the UI component with it.
         if (timeRemaining > 0)
         {
-            timeRemaining -= Time.deltaTime;
-            timerText.text = "Time: " + Mathf.Round(timeRemaining);
+            if (!godmode)
+            {
+                timeRemaining -= Time.deltaTime;
+                timerText.text = "Time: " + Mathf.Round(timeRemaining);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.P) && Input.GetKeyDown(KeyCode.O))
+        {
+            //Activate Godmode.
+            godmode = true;
+            timerText.text = "GODMODE";
+            timerText.color = Color.red;
+            Debug.LogWarning("GODMODE ACTIVATED");
         }
     }
 
     public void PlayerDeath()
     {
-        //Opens the right UI.
-        deathUI.SetActive(true);
-        gameUI.SetActive(false);
+        if (!godmode)
+        {
+            //Opens the right UI.
+            deathUI.SetActive(true);
+            gameUI.SetActive(false);
 
-        //Gets the camera with the 'MainCamera' tag.
-        cam = Camera.main;
-        //Removes and locks the cursor in the middle of the screen.
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+            //Gets the camera with the 'MainCamera' tag.
+            cam = Camera.main;
+            //Removes and locks the cursor in the middle of the screen.
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
 
-        //Disable camera movement.
-        cam.GetComponent<CameraHandler>().enabled = false;
+            //Disable camera movement.
+            cam.GetComponent<CameraHandler>().enabled = false;
 
-        //Disable player movement.
-        var player = GameObject.Find("Player").GetComponent<PlayerMovement>();
-        player.enabled = false;
+            //Disable player movement.
+            var player = GameObject.Find("Player").GetComponent<PlayerMovement>();
+            player.enabled = false;
+        }
     }
 
     public void ActivateSniper()

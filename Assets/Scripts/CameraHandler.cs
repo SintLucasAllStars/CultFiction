@@ -7,10 +7,13 @@ public class CameraHandler : MonoBehaviour
     public float horizontalSpeed = 1f;
 
     private Transform hand;
+    private bool pickedUp;
 
     private float xRotation = 0.0f;
     private float yRotation = 0.0f;
     private Camera cam;
+
+    public GameObject Mortar_FX;
 
     private void Start()
     {
@@ -48,17 +51,36 @@ public class CameraHandler : MonoBehaviour
                 //Debug.DrawRay(cam.transform.position, cam.transform.forward * 100.0f, Color.red);
                 //Debug.Log(hit.collider.name);
 
-                var _pickup = hit.collider.gameObject;
+                var objectHit = hit.collider.gameObject;
 
                 //If the player pickup the object, the position of it will change so it looks like it is in his hands.
-                if (_pickup.name == "Pickup_Object")
+                if (objectHit.name == "Pickup_Object")
                 {
+                    pickedUp = true;
                     //Sets the position of the pickup object relative to the hand position.
-                    _pickup.transform.position = hand.transform.position;
+                    objectHit.transform.position = hand.transform.position;
                     //Sets the pickup object as an child of the hand, if the camera moves the object will update.
-                    _pickup.transform.SetParent(hand);
+                    objectHit.transform.SetParent(hand);
                     //Rotates the pickup object so it is right up.
-                    _pickup.transform.Rotate(new Vector3(-90,0,0));
+                    objectHit.transform.Rotate(new Vector3(-90,0,0));
+                }
+                else if (objectHit.name == "Droppoint" && pickedUp)
+                {
+                    Debug.Log("Dropping");
+
+                    GameObject Mortar_Spawn = GameObject.Find("Mortar_FX_Spawn");
+
+                    //Disables the mesh from the pickup object.
+                    GameObject mortar_bullet = GameObject.Find("Pickup_Object");
+                    mortar_bullet.SetActive(false);                    
+
+                    //Play FX.
+                    var mortar_transform = Mortar_Spawn.GetComponent<Transform>();
+                    Instantiate(Mortar_FX,mortar_transform.position, mortar_transform.rotation);
+                    Mortar_Spawn.GetComponent<AudioSource>().Play();
+
+                    //Reset pickedUp
+                    pickedUp = false;
                 }
             }
         }
