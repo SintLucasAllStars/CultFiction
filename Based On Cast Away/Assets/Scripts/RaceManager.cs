@@ -9,6 +9,7 @@ public class RaceManager : MonoBehaviour
     public TextMeshProUGUI counterText;
     public GameObject counterBackground;
     public GameObject playervan;
+    public GameObject timecontroller;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +37,7 @@ public class RaceManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(1); 
         counterText.text = "GO!";
         yield return new WaitForSecondsRealtime(1);
+        timecontroller.GetComponent<TimerController>().BeginTimer();
         counterBackground.SetActive(false);
         playervan.GetComponent<CarControl>().driveable = true;
         yield return null;
