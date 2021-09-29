@@ -7,11 +7,13 @@ public class NutBehaviour : MonoBehaviour
     public Animation anim;
     public StoneBehaviour sB;
     private bool playOnce;
+    private ParticleSystem pS;
 
     void Start()
     {
         anim = gameObject.GetComponent<Animation>();
         playOnce = false;
+        pS = GetComponent<ParticleSystem>();
     }
 
     void Update()
@@ -20,6 +22,7 @@ public class NutBehaviour : MonoBehaviour
         if (waitD >= 2.4f && !sB.noNuts)
         {
             anim.Play("TiltNut");
+            pS.Play();
         }
         else if (sB.noNuts)
         {
