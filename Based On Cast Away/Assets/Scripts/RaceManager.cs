@@ -10,18 +10,30 @@ public class RaceManager : MonoBehaviour
     public GameObject counterBackground;
     public GameObject playervan;
     public GameObject timecontroller;
+    public GameObject finish;
+    public GameObject checkpoint;
     // Start is called before the first frame update
     void Start()
     {
         playervan.GetComponent<CarControl>().driveable = false;
         counterBackground.SetActive(false);
+        checkpoint.SetActive(true);
         StartCoroutine("StartRace");
+        finish.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (playervan.GetComponent<CarControl>().finished == true)
+        {
+            timecontroller.GetComponent<TimerController>().EndTimer();
+        }
+        if (playervan.GetComponent<CarControl>().checkpointed == true)
+        {
+            finish.SetActive(true);
+            checkpoint.SetActive(false);
+        }
     }
 
     //start sequence for start race

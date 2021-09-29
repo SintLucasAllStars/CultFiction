@@ -11,7 +11,8 @@ public class CarControl : MonoBehaviour
     // PUBLIC
     public float KM_H;
     public bool driveable = false;
-
+    public bool finished;
+    public bool checkpointed;
     // Wheel Wrapping Objects
     public Transform frontLeftWheelWrapper;
     public Transform frontRightWheelWrapper;
@@ -102,6 +103,8 @@ public class CarControl : MonoBehaviour
         wheelMeshWrapperRRx = rearRightWheelWrapper.localPosition.x;
         wheelMeshWrapperRRy = rearRightWheelWrapper.localPosition.y;
         wheelMeshWrapperRRz = rearRightWheelWrapper.localPosition.z;
+        finished = false;
+        checkpointed = false;
     }
 
 
@@ -226,6 +229,17 @@ public class CarControl : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             // Debug.Log("SPACE");
+        }
+    }
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "finish")
+        {
+            finished = true;
+        }
+        if (other.tag == "checkpoint")
+        {
+            checkpointed = true;
         }
     }
 }
