@@ -5,6 +5,7 @@ using UnityEngine;
 public class Despawner : MonoBehaviour
 {
     float despawnTimer;
+    public float seconds;
 
     void Start()
     {
@@ -14,7 +15,7 @@ public class Despawner : MonoBehaviour
     void Update()
     {
         despawnTimer += Time.deltaTime;
-        if (despawnTimer >= 5f)
+        if (despawnTimer >= seconds)
         {
             Destroy(this.gameObject);
         }
