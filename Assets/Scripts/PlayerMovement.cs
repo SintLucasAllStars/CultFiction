@@ -22,6 +22,11 @@ public class PlayerMovement : MonoBehaviour
         currentHeight = rbPlayer.transform.localScale;
 
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        if (currentHeight == duckingHeight)
+        {
+            _gameManager._isDucked = true;
+        }
     }
 
     private void Update()

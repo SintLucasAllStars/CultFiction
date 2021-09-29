@@ -50,7 +50,7 @@ public class GrenadeExplosion : MonoBehaviour
                 damageToDeal = _dist - 5f;
                 damageToDeal = damageToDeal * 35;
 
-                print(damageToDeal);
+                //print(damageToDeal);
 
                 _playerHealth.Damage(damageToDeal);
             }

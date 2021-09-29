@@ -2,13 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    //Var for UI and camera.
     public GameObject gameUI, deathUI;
     private Camera cam;
 
+    //Var for ducking methode.
     public bool _isDucked;
+
+    //Var for timer.
+    public float timeRemaining;
+    public Text timerText;
 
     private void Start()
     {
@@ -16,6 +23,16 @@ public class GameManager : MonoBehaviour
         gameUI.SetActive(true);
         //Sets the deathScreen off.
         deathUI.SetActive(false);
+    }
+
+    private void Update()
+    {
+        //This will count down the time and update the UI component with it.
+        if (timeRemaining > 0)
+        {
+            timeRemaining -= Time.deltaTime;
+            timerText.text = "Time: " + Mathf.Round(timeRemaining);
+        }
     }
 
     public void PlayerDeath()
@@ -34,7 +51,8 @@ public class GameManager : MonoBehaviour
         cam.GetComponent<CameraHandler>().enabled = false;
 
         //Disable player movement.
-        var player = GameObject.Find("Player").GetComponent<PlayerMovement>().enabled = false;
+        var player = GameObject.Find("Player").GetComponent<PlayerMovement>();
+        player.enabled = false;
     }
 
     public void ActivateSniper()
