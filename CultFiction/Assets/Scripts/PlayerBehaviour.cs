@@ -22,6 +22,8 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField] private GameObject leftItem;
     private GameObject rightItem;
 
+    private Rigidbody rb;
+
     public Camera mainCamera;
 
     private void Start()
@@ -31,6 +33,8 @@ public class PlayerBehaviour : MonoBehaviour
 
         leftHold = GameObject.Find("LeftHold");
         rightHold = GameObject.Find("RightHold");
+
+        rb = gameObject.GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -48,6 +52,24 @@ public class PlayerBehaviour : MonoBehaviour
         CameraBehaviour();
 
         PlayerRotateToMouse();
+    }
+
+    private void OnTriggerEnter(Collider col)
+    {
+        if (col.gameObject.CompareTag("Arrow") || col.gameObject.CompareTag("Spike"))
+        {
+            gameObject.GetComponent<PlayerBehaviour>().enabled = false;
+
+            rb.constraints = RigidbodyConstraints.None;
+
+            rb.AddForce(Vector3.up * Random.Range(100, 800));
+            rb.AddForce(Vector3.right * Random.Range(-800, 800));
+            rb.AddForce(Vector3.forward * Random.Range(-800, 800));
+
+            rb.AddTorque(Vector3.up * Random.Range(-800, 800));
+            rb.AddTorque(Vector3.right * Random.Range(-800, 800));
+            rb.AddTorque(Vector3.forward * Random.Range(-800, 800));
+        }
     }
 
     private void PlayerMovement()
