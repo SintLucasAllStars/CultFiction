@@ -149,7 +149,7 @@ public class CarControl : MonoBehaviour
         rearRightWheelMesh.Rotate(wheelRR.rpm / 60 * 360 * Time.deltaTime, 0, 0); 
 
         // Audio
-        //GetComponent<AudioSource>().pitch = (torquePower / maxTorque) + 0.5f;
+        GetComponent<AudioSource>().pitch = (torquePower / maxTorque) + 1f;
         
     }
 

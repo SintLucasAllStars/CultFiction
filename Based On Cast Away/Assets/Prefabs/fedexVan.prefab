@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 4418308595078672104}
   - component: {fileID: 2786721824332700327}
   - component: {fileID: 6628535138861805361}
-  - component: {fileID: 1672133021267030826}
+  - component: {fileID: 6797061126457418615}
   m_Layer: 0
   m_Name: fedexVan
   m_TagString: Untagged
@@ -261,7 +261,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 591664162084571266}
   serializedVersion: 2
-  m_Mass: 400
+  m_Mass: 300
   m_Drag: 0
   m_AngularDrag: 1
   m_UseGravity: 1
@@ -269,7 +269,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!82 &1672133021267030826
+--- !u!82 &6797061126457418615
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -279,11 +279,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: dd1c66ae721ee4b4e995d1fc71dd14a9, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.75
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
