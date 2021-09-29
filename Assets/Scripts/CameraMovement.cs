@@ -4,14 +4,26 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
+    public bool blockInput;
+    public int camAngle;
+
     void Start()
     {
-        
+        blockInput = false;
+        camAngle = 45;
     }
 
     void Update()
     {
-        Vector3 mousePos = Input.mousePosition;
-        transform.rotation = Quaternion.Euler(-mousePos.y/100, 40+mousePos.x/100, 0f);
+        FollowMouse();
+    }
+
+    void FollowMouse()
+    {
+        if (!blockInput)
+        {
+            Vector3 mousePos = Input.mousePosition;
+            transform.eulerAngles = new Vector3(-mousePos.y / 100, camAngle + mousePos.x / 100, 0f);
+        }
     }
 }
