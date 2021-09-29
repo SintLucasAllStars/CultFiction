@@ -12,10 +12,6 @@ public class CarControl : MonoBehaviour
     public float KM_H;
     public bool driveable = false;
 
-    public bool switchcam;
-    public GameObject ThirdpersonCamera;
-    public GameObject FirstpersonCamera;
-
     // Wheel Wrapping Objects
     public Transform frontLeftWheelWrapper;
     public Transform frontRightWheelWrapper;
@@ -119,23 +115,7 @@ public class CarControl : MonoBehaviour
             return;
         }
 
-        //camera switch
-
-        if (Input.GetKey(KeyCode.H) && switchcam == false)
-        {
-            
-            FirstpersonCamera.SetActive(true);
-            ThirdpersonCamera.SetActive(false);
-            switchcam = true;
-        }
-
-        if (Input.GetKey(KeyCode.H) && switchcam == true)
-        {
-            FirstpersonCamera.SetActive(false);
-            ThirdpersonCamera.SetActive(true);
-            switchcam = false;
-        }
-
+        
         // SETUP WHEEL MESHES
 
         // Turn the mesh wheels
