@@ -13,6 +13,7 @@ public class CarControl : MonoBehaviour
     public bool driveable = false;
     public bool finished;
     public bool checkpointed;
+    public bool box;
     // Wheel Wrapping Objects
     public Transform frontLeftWheelWrapper;
     public Transform frontRightWheelWrapper;
@@ -105,6 +106,7 @@ public class CarControl : MonoBehaviour
         wheelMeshWrapperRRz = rearRightWheelWrapper.localPosition.z;
         finished = false;
         checkpointed = false;
+        box = false;
     }
 
 
@@ -240,6 +242,13 @@ public class CarControl : MonoBehaviour
         if (other.tag == "checkpoint")
         {
             checkpointed = true;
+        }
+        if (other.tag == "box")
+        {   
+            Debug.Log("hit");
+            box = true;
+            Destroy(other.gameObject);
+            
         }
     }
 }
