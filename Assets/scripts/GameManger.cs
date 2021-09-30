@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,6 +10,7 @@ public class GameManger : MonoBehaviour {
     [HideInInspector]
     public float speed;
     public Text scoreText;
+    public Text deathText;
     public GameObject pipe;
     private bool gameStopped;
 
@@ -25,14 +23,13 @@ public class GameManger : MonoBehaviour {
     public void ScoreIncrement() {
         Score++;
         speed *= 1.02f;
-        print(speed);
         scoreText.text = $"{Score}";
     }
 
     public void DeathState() {
-        print("You're dead");
         Time.timeScale = 0;
         gameStopped = true;
+        deathText.gameObject.SetActive(true);
     }
 
     private void Update() {
@@ -43,13 +40,9 @@ public class GameManger : MonoBehaviour {
     }
 
     IEnumerator PipeLoop() {
-        for (int i = 0; i < Mathf.Infinity; i++) {
-            SpawnPipe();
+        while (true) {
+            Instantiate(pipe, transform.position + new Vector3(10, Random.Range(-2.5f,2.5f)), Quaternion.identity, transform);
             yield return new WaitForSeconds(1/speed);
         }
-    }
-
-    void SpawnPipe() {
-        Instantiate(pipe, transform.position + new Vector3(10, Random.Range(-2.5f,2.5f)), Quaternion.identity, transform);
     }
 }
