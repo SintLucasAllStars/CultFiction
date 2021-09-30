@@ -7,8 +7,10 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     //Var for UI and camera.
-    public GameObject gameUI, deathUI, winUI;
+    public GameObject gameUI, deathUI, endUI;
     private Camera cam, winCam;
+
+    public Text endText;
 
     //Var for ducking methode.
     public bool _isDucked;
@@ -17,10 +19,16 @@ public class GameManager : MonoBehaviour
     public float timeRemaining;
     public Text timerText;
 
-    private GameObject player;
+    private GameObject player, endCam;
 
     //Var for godmode.
     private bool godmode = false;
+
+    //Array for the end explosion
+    GameObject[] bomb;
+    public GameObject ExplosionFX;
+    private Coroutine endEx;
+    private float fadeTime;
 
     private void Start()
     {
@@ -28,8 +36,8 @@ public class GameManager : MonoBehaviour
         gameUI.SetActive(true);
         //Sets the deathScreen off.
         deathUI.SetActive(false);
-        //Sets the winScreen off.
-        winUI.SetActive(false);
+        //Sets the endScreen off.
+        endUI.SetActive(false);
 
         //Gets and disables the win cam.
         winCam = GameObject.Find("WinCam").GetComponent<Camera>();
@@ -37,6 +45,11 @@ public class GameManager : MonoBehaviour
         
         //Gets the player.
         player = GameObject.Find("Player");
+
+        cam = Camera.main;
+
+        endCam = GameObject.Find("EndCam");
+        endCam.SetActive(false);
     }
 
     private void Update()
@@ -58,6 +71,10 @@ public class GameManager : MonoBehaviour
                 timeRemaining -= Time.deltaTime;
                 timerText.text = "Time: " + Mathf.Round(timeRemaining);
             }
+        }
+        if (timeRemaining <= 0 && endEx is null)
+        {
+             endEx = StartCoroutine(End());
         }
     }
 
@@ -89,6 +106,49 @@ public class GameManager : MonoBehaviour
         _sniper.isDucked = _isDucked;
     }
 
+    private IEnumerator End()
+    {
+        //Disable the gameUI.
+        gameUI.SetActive(false);
+
+        //Enable EndUI.
+        endText.text = "WE LOST THE WAR";
+        endUI.SetActive(true);
+
+        //Switch camera.
+        endCam.SetActive(true);
+
+        cam.enabled = false;
+
+        //Disable player movement.
+        player.GetComponent<PlayerMovement>().enabled = false;
+
+        //Play rocket sound.
+        AudioSource _v1Sound = GameObject.Find("V1Rocket").GetComponent<AudioSource>();
+        _v1Sound.Play();
+
+        //Gets all the bomb locations.
+        bomb = GameObject.FindGameObjectsWithTag("BombEnd");
+
+        yield return new WaitForSecondsRealtime(4);
+
+        //Play explosion sound.
+        AudioSource _v1Exp = GameObject.Find("ExplosionSound").GetComponent<AudioSource>();
+        _v1Exp.Play();
+
+        //Spawn explosions.
+        foreach (var item in bomb)
+        {
+            print(item.GetComponent<Transform>().position);
+            Instantiate(ExplosionFX, item.transform.position, Quaternion.Euler (-90,0,0));
+        }
+
+        fadeTime = 3;
+
+        //FadeIn and switch screen.
+        StartCoroutine(FadeIn(fadeTime));
+    }
+
     public IEnumerator Win()
     {
         //Switch camara.
@@ -97,7 +157,6 @@ public class GameManager : MonoBehaviour
         winCam.enabled = true;
 
         //Disables the player camera.
-        cam = Camera.main;
         cam.GetComponent<Camera>().enabled = false;
 
         //Turns of the audio of the player camara.
@@ -114,27 +173,31 @@ public class GameManager : MonoBehaviour
 
         //Enables the UI.
         gameUI.SetActive(false);
-        winUI.SetActive(true);
+
+        endText.text = "WE WON THE WAR";
+        endUI.SetActive(true);
 
         //Plays the song.
         AudioSource american_song = GameObject.Find("WinAudio").GetComponent<AudioSource>();
         american_song.Play();
 
+        fadeTime = 15;
+
         //Enables the aplha to be changed.
-        StartCoroutine(FadeIn());
+        StartCoroutine(FadeIn(fadeTime));
     }
 
-    IEnumerator FadeIn()
+    IEnumerator FadeIn(float time)
     {
         Image image = GameObject.Find("Background").GetComponent<Image>();
 
         float targetAlpha = 1.0f;
         Color curColor = image.color;
-        yield return new WaitForSecondsRealtime(15);
+        yield return new WaitForSecondsRealtime(time);
         while (Mathf.Abs(curColor.a - targetAlpha) > 0.0001f)
         {
             Debug.Log(image.material.color.a);
-            curColor.a = Mathf.Lerp(curColor.a, targetAlpha, 3f * Time.deltaTime);
+            curColor.a = Mathf.Lerp(curColor.a, targetAlpha, 4f * Time.deltaTime);
             image.color = curColor;
             yield return null;
         }
