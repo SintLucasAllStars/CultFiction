@@ -10,14 +10,16 @@ public class GameManger : MonoBehaviour {
     [HideInInspector]
     public float speed;
     public Text scoreText;
-    public Text deathText;
+    public GameObject deathText;
     public GameObject pipe;
     private bool gameStopped;
+    private AudioSource audioSource;
 
     private void Start() {
         speed = 1;
         StartCoroutine(PipeLoop());
         scoreText.text = $"{Score}";
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void ScoreIncrement() {
@@ -30,6 +32,7 @@ public class GameManger : MonoBehaviour {
         Time.timeScale = 0;
         gameStopped = true;
         deathText.gameObject.SetActive(true);
+        audioSource.Play();
     }
 
     private void Update() {
