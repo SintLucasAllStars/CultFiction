@@ -14,6 +14,7 @@ public class GameManger : MonoBehaviour {
     public GameObject pipe;
     private bool gameStopped;
     private AudioSource audioSource;
+    public Text startText;
 
     private void Start() {
         speed = 1;
@@ -29,6 +30,9 @@ public class GameManger : MonoBehaviour {
     }
 
     public void DeathState() {
+        // don't stop a stopped game again.
+        if (gameStopped) return;
+        
         Time.timeScale = 0;
         gameStopped = true;
         deathText.gameObject.SetActive(true);
@@ -36,7 +40,9 @@ public class GameManger : MonoBehaviour {
     }
 
     private void Update() {
-        if (gameStopped && Input.GetButtonDown("Jump")) {
+        if (Input.GetButtonDown("Jump"))
+            startText.gameObject.SetActive(false);
+        if (gameStopped && Input.GetButtonDown("Jump") && !audioSource.isPlaying) {
             Time.timeScale = 1;
             SceneManager.LoadScene(0);
         }

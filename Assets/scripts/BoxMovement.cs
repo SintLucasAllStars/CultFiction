@@ -25,7 +25,7 @@ public class BoxMovement : MonoBehaviour {
     private void Flap() {
         rb.velocity = Vector2.zero;
         rb.AddForce(force);
-        audioSource.pitch = gm.speed;
+        audioSource.pitch = gm.speed*gm.speed;
         audioSource.Play();
     }
 
