@@ -10879,7 +10879,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 396505498}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -16.268307, y: 0.7277286, z: -1.2417097}
+  m_LocalPosition: {x: -26, y: 0.7277286, z: -1.2417097}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2140389150}
@@ -36632,17 +36632,17 @@ Transform:
   - {fileID: 916331041}
   - {fileID: 15959723}
   - {fileID: 60873927}
-  - {fileID: 1291196412}
   - {fileID: 281931898}
   - {fileID: 282490101}
   - {fileID: 802072047}
-  - {fileID: 2144328549}
   - {fileID: 1310098996}
   - {fileID: 1466375854}
-  - {fileID: 1814031144}
-  - {fileID: 965382339}
-  - {fileID: 2060049168}
   - {fileID: 1592215388}
+  - {fileID: 1814031144}
+  - {fileID: 2060049168}
+  - {fileID: 965382339}
+  - {fileID: 2144328549}
+  - {fileID: 1291196412}
   - {fileID: 1230896621}
   m_Father: {fileID: 0}
   m_RootOrder: 11
@@ -56184,8 +56184,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grenadePrefab: {fileID: 1079204774077328, guid: e770b7819208e4f4082a28b0e77efa00, type: 3}
-  seccondsGrenadeInterval: 8
-  seccondsGrenadeRange: 12
+  seccondsGrenadeInterval: 3
+  seccondsGrenadeRange: 5
   grenadeHeight: 36.5
   grenadeWith: 29.5
 --- !u!1001 &2144328548

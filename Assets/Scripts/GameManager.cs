@@ -100,6 +100,14 @@ public class GameManager : MonoBehaviour
         cam = Camera.main;
         cam.GetComponent<Camera>().enabled = false;
 
+        //Turns of the audio of the player camara.
+        AudioListener camAudio = GameObject.Find("MainCamera").GetComponent<AudioListener>(); ;
+        camAudio.enabled = false;
+
+        //Disables the whole player so he can't break the game while in the win menu.
+        GameObject player = GameObject.Find("Player");
+        player.SetActive(false);
+
         //Disable grenade spawner.
         GameObject grenadeSpawner = GameObject.Find("GrenadeSpawners");
         grenadeSpawner.SetActive(false);
