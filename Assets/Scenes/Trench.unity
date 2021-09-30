@@ -33,7 +33,7 @@ RenderSettings:
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
   m_DefaultReflectionMode: 0
-  m_DefaultReflectionResolution: 16
+  m_DefaultReflectionResolution: 64
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
@@ -10104,12 +10104,14 @@ Transform:
   - {fileID: 1029792993}
   - {fileID: 1444704817}
   - {fileID: 1847526161}
+  - {fileID: 1351577190}
   - {fileID: 521437546}
   - {fileID: 1910479890}
   - {fileID: 171487237}
   - {fileID: 1603909162}
   - {fileID: 520141784}
   - {fileID: 1590985678}
+  - {fileID: 1460104951}
   - {fileID: 220608242}
   - {fileID: 1807213631}
   - {fileID: 1793265319}
@@ -10130,8 +10132,6 @@ Transform:
   - {fileID: 1309062273}
   - {fileID: 1408251}
   - {fileID: 256281976}
-  - {fileID: 1351577190}
-  - {fileID: 1460104951}
   - {fileID: 9002118271712748546}
   - {fileID: 1168582543}
   - {fileID: 1354621464}
@@ -10147,6 +10147,7 @@ Transform:
   - {fileID: 1572045522}
   - {fileID: 3978558936528576556}
   - {fileID: 464138230}
+  - {fileID: 869858540}
   - {fileID: 375214487}
   - {fileID: 1810932325}
   - {fileID: 764347592}
@@ -10165,7 +10166,6 @@ Transform:
   - {fileID: 1622244521}
   - {fileID: 1170221293}
   - {fileID: 159233760}
-  - {fileID: 869858540}
   - {fileID: 671004676}
   - {fileID: 1876493946}
   - {fileID: 454916207}
@@ -25944,7 +25944,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 332357257}
-  m_RootOrder: 213
+  m_RootOrder: 195
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &874623576
 GameObject:
@@ -41310,7 +41310,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 332357257}
-  m_RootOrder: 178
+  m_RootOrder: 152
   m_LocalEulerAnglesHint: {x: -118.065, y: -34.682983, z: -4.970001}
 --- !u!82 &1351577191
 AudioSource:
@@ -44831,7 +44831,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 1.5697812, z: 0.5}
   m_Children: []
   m_Father: {fileID: 332357257}
-  m_RootOrder: 179
+  m_RootOrder: 159
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1460104952
 BoxCollider:
