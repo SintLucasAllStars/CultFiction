@@ -10,10 +10,11 @@ public class CameraSwitch : MonoBehaviour
     private Camera cam;
 
     //[HideInInspector]
-    public bool thirdPersonView;
+    private bool thirdPersonView;
     // Start is called before the first frame update
     void Start()
     {
+        thirdPersonView = true;
         cam = Camera.main;
     }
 

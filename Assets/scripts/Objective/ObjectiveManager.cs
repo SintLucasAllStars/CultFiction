@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ObjectiveManager : MonoBehaviour
 {
@@ -53,7 +54,7 @@ public class ObjectiveManager : MonoBehaviour
         if (barrelStorages.Count <= 0)
         {
             //completed objective
-            print("Objective completed");
+            SceneManager.LoadScene("WinScene");
         }
     }
 }

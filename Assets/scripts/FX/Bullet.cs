@@ -26,7 +26,7 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision coll)
     {
-        if (coll.gameObject.GetComponent<TerrainCollider>())
+        if (coll.gameObject.GetComponent<TerrainCollider>() || coll.gameObject.GetComponent<MeshCollider>())
         {
             SpawnBulletInpact(coll.gameObject);
         }
