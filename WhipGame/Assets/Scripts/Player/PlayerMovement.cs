@@ -1,44 +1,43 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public CharacterController controller;
-
-    private int speed = 10;
+    //##MOVEMENT##
+    private float walkSpeed = 10;
 
     private Vector3 velocity;
-    private float gravity = -20.3f;
-
+    private float gravity = -20f;
+    public CharacterController controller;
     public Transform groundCheck;
-    private float groundDistance = 0.4f;
     public LayerMask groundMask;
+    private float groundDistance = 0.4f;
 
     private bool isGrounded;
-    public float jumpHeight = 3f;
+    private float jumpHeight = 4.3f;
 
-    void Update()
+    void FixedUpdate()
     {
         //MOVEMENT
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
 
-        Vector3 move = transform.right * x + transform.forward * z;
 
-        controller.Move(move * speed * Time.deltaTime);
-        //(move * speed * Time.deltaTime);
+        //Debug.Log(h);
+        //Debug.Log(v);
+
+        Vector3 move = transform.right * h + transform.forward * v;
+
+        controller.Move(move * walkSpeed * Time.deltaTime);
 
         //RUN
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            speed = 15;
+            walkSpeed = 15;
         }
-        else { speed = 10; }
+        else { walkSpeed = 10; }
 
         //VELOCITY
         velocity.y += gravity * Time.deltaTime;
-
         controller.Move(velocity * Time.deltaTime);
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
@@ -52,5 +51,10 @@ public class PlayerMovement : MonoBehaviour
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
+    }
+
+    public bool IsPlayerGrounded()
+    {
+        return isGrounded;
     }
 }
