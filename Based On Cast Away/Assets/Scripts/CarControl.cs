@@ -109,16 +109,20 @@ public class CarControl : MonoBehaviour
         box = false;
     }
 
-
+    
     // Visual updates
     void Update()
     {
+        Debug.Log(RO_speed);
         if (!driveable)
         {
             return;
         }
 
-        
+        if(box == true)
+        {
+            StartCoroutine("speedBoost");
+        }
         // SETUP WHEEL MESHES
 
         // Turn the mesh wheels
@@ -172,6 +176,7 @@ public class CarControl : MonoBehaviour
         {
             RO_speed = 190;
         }
+
 
         // Debug.Log(Input.GetAxis("Vertical"));
         //Debug.Log("torquePower: " + torquePower);
@@ -250,5 +255,13 @@ public class CarControl : MonoBehaviour
             Destroy(other.gameObject);
             
         }
+    }
+
+    IEnumerator speedBoost()
+    {
+        RO_speed = 190;
+        yield return new WaitForSecondsRealtime(5);
+        box = false;
+        yield return null;
     }
 }
