@@ -22,4 +22,8 @@ public class MenuManager : MonoBehaviour
     {
         SceneManager.LoadScene("ingame");
     }
+    public void Exit()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 }
