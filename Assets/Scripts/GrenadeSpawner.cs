@@ -25,10 +25,23 @@ public class GrenadeSpawner : MonoBehaviour
     private IEnumerator SpawnGrenade()
     {
         int interval;
+        GameObject go;
 
         //The grenade will be spawned in random times, on the X axis between the grenadeSpawners.
         var position = new Vector3(Random.Range(grenadeSpawner.transform.position.x, grenadeSpawner2.transform.position.x), grenadeSpawner.transform.position.y, grenadeSpawner.transform.position.z);
-        GameObject go = Instantiate(grenadePrefab, position, Quaternion.identity);
+
+        //This offset is needed to the whole trench is coverd in grenade fire.
+        if (position.x <= -26)
+        {
+            Vector3 offsetZ = new Vector3(position.x, position.y, -30);
+
+            go = Instantiate(grenadePrefab, offsetZ, Quaternion.identity);
+        }
+        else
+        {
+            go = Instantiate(grenadePrefab, position, Quaternion.identity);
+        }
+        
         Rigidbody rb = go.GetComponent<Rigidbody>();
         Vector3 force = new Vector3(0, grenadeHeight, grenadeWith) * 10;
         rb.AddForce(force);
