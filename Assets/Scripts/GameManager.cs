@@ -88,9 +88,8 @@ public class GameManager : MonoBehaviour
 
             //Gets the camera with the 'MainCamera' tag.
             cam = Camera.main;
-            //Removes and locks the cursor in the middle of the screen.
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+
+            UnlockCursor();
 
             //Disable camera movement.
             cam.GetComponent<CameraHandler>().enabled = false;
@@ -203,7 +202,17 @@ public class GameManager : MonoBehaviour
         }
 
         //If the fade is done, load another scene.
+
+        UnlockCursor();
+
         SceneManager.LoadScene(0);
+    }
+
+    private void UnlockCursor()
+    {
+        //Gives the player the cursor back.
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void RestartBtnClicked()
