@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class BoxMovement : MonoBehaviour {
     private Rigidbody2D rb;
@@ -8,12 +9,15 @@ public class BoxMovement : MonoBehaviour {
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
         gm = FindObjectOfType<GameManger>();
+        Flap();
     }
     
     private void Update() {
         if (Input.GetButtonDown("Jump")) {
             Flap();
         }
+        if (transform.position.y >= 10 || transform.position.y <= -10)
+            gm.DeathState();
     }
 
     private void Flap() {
@@ -30,4 +34,5 @@ public class BoxMovement : MonoBehaviour {
         if (other.gameObject.CompareTag("ScoreIncrease"))
             gm.ScoreIncrement();
     }
+
 }
