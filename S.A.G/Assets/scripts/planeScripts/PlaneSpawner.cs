@@ -5,10 +5,13 @@ using UnityEngine;
 public class PlaneSpawner : MonoBehaviour
 {
     public GameObject Plane;
+    public LevelData[] levelData;
+    GameManager manager = GameManager.manager;
 
     private void Start()
     {
-       StartCoroutine(WaveSpawnController(4 ,3, 5, 1));
+        manager.UpdatePlaneAmount(levelData[manager.dificulty].waveAmount * levelData[manager.dificulty].planesPerWave);
+        StartCoroutine(WaveSpawnController(levelData[manager.dificulty].waveAmount, levelData[manager.dificulty].planesPerWave, levelData[manager.dificulty].timeBetweenWaves, levelData[manager.dificulty].timeBetweenPlanes));
     }
 
     private IEnumerator WaveSpawnController(int waveAmount, int planesPerWave, float timeBetweenWaves = 0, float timeBetweenPlanes = 0)
@@ -26,6 +29,6 @@ public class PlaneSpawner : MonoBehaviour
 
     private void SpawnPlane()
     {
-        Instantiate(Plane, new Vector3(Random.Range(-15, 15), Random.Range(17.5f, 20), 200), Quaternion.Euler(0, 180, 0));
+        Instantiate(Plane, new Vector3(Random.Range(-15, 15), Random.Range(17.5f, 20), 300), Quaternion.Euler(0, 180, 0));
     }
 }

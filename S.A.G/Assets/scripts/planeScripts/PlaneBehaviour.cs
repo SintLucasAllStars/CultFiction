@@ -25,6 +25,11 @@ public class PlaneBehaviour : MonoBehaviour
 
         if (transform.position.z < -5)
         {
+            if (!_PlaneRb.useGravity)
+            {
+                GameManager.manager.scoreDecrease();
+                GameManager.manager.UpdatePlaneKillCount();
+            }
             Destroy(gameObject);
         }
     }
@@ -51,6 +56,8 @@ public class PlaneBehaviour : MonoBehaviour
 
     public void Crash()
     {
+        GameManager.manager.scoreIncrease();
+        GameManager.manager.UpdatePlaneKillCount();
         gameObject.tag = "Untagged";
         GetComponent<BoxCollider>().enabled = false;
         _PlaneRb.useGravity = true;

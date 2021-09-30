@@ -16,6 +16,7 @@ public class Player_Behaviour : MonoBehaviour
     public float resetTime;
     private GameObject _ball;
     private Rigidbody _ballRB;
+    private BallBehaviour ballScript;
 
     [Header("player calculations")]
     [Space(10)]
@@ -58,15 +59,13 @@ public class Player_Behaviour : MonoBehaviour
                 power += powerIncrease * Time.deltaTime;
                 power = Mathf.Min(power, maxPower);
             }
-            else
-            {
-                angle += Input.GetAxis(axisName) * angleIncrease * Time.deltaTime;
-                angle = Mathf.Clamp(angle, minAngle, maxAngle);
 
-                if (Input.GetKeyUp(powerbutton) && power > minPower)
-                {
-                    Shoot();
-                }
+            angle += Input.GetAxis(axisName) * angleIncrease * Time.deltaTime;
+            angle = Mathf.Clamp(angle, minAngle, maxAngle);
+
+            if (Input.GetKeyUp(powerbutton) && power > minPower)
+            {
+                Shoot();
             }
         }
         else
@@ -88,19 +87,18 @@ public class Player_Behaviour : MonoBehaviour
         shooting = true;
         CalculateSwingAngle(-power);
 
-        if (restBall is null)
-        {
-            force = (_ball.transform.forward) + (_ball.transform.up * power);
-            force.Normalize();
-            force *= (power * forceMultiplier);
-        }
+        //if (restBall is null)
+        //{
+        //    force = (_ball.transform.forward) + (_ball.transform.up * power);
+        //    force.Normalize();
+        //    force *= (power * forceMultiplier);
+        //}
     }
 
     public void FinishShot()
     {
         shooting = false;
         power = 0;
-        angle = 0;
 
         if (restBall == null)
         {
@@ -111,7 +109,8 @@ public class Player_Behaviour : MonoBehaviour
     public void BallImpulse()
     {
         _ballRB.velocity = force;
-        _ball.GetComponent<BallBehaviour>().ArmGolfBallGrenade();
+        ballScript.ArmGolfBallGrenade();
+        ballScript.DisableGuideLine();
     }
     #endregion
 
@@ -127,6 +126,7 @@ public class Player_Behaviour : MonoBehaviour
     {
         _ball = Instantiate(ballPrefab, new Vector3(transform.position.x + 1.8f, transform.position.y - 0.55f, transform.position.z + .25f), Quaternion.identity);
         _ballRB = _ball.GetComponent<Rigidbody>();
+        ballScript = _ball.GetComponent<BallBehaviour>();
     }
     #endregion
 
@@ -136,6 +136,18 @@ public class Player_Behaviour : MonoBehaviour
         if (restBall is null)
         {
             _ball.transform.rotation = Quaternion.Euler(0, angle, 0);
+
+            if (power == 0)
+            {
+                ballScript.UpdateGuideLine(2.5f, 5, minPower);
+            }
+            else
+            {
+                force = (_ball.transform.forward) + (_ball.transform.up * power);
+                force.Normalize();
+                force *= (power * forceMultiplier);
+                ballScript.UpdateGuideLine(force.y, force.z, power);
+            }
         }
 
         float speed = 0;
