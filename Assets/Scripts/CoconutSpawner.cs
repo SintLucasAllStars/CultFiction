@@ -25,6 +25,7 @@ public class CoconutSpawner : MonoBehaviour
     public GameObject stonePrefabInstance;
     public GameObject nutPrefab;
     public GameObject nutPrefabInstance;
+    public RectTransform barFill;
 
     void Start()
     {
@@ -65,6 +66,7 @@ public class CoconutSpawner : MonoBehaviour
     {
         statCount.text = "Husks: " + huskAmount + "/20 \nCoconuts: " + coconutAmount;
         waterCount.text = "Coconut Water:\n" + coconutWater + "/2000ML";
+        barFill.sizeDelta = new Vector2(50, Mathf.Clamp((350f / 2000f) * coconutWater,0f,350f));
     }
 
     public void AddCoconutCount()
@@ -76,7 +78,7 @@ public class CoconutSpawner : MonoBehaviour
     void MoveCamera()
     {
         
-        if (huskAmount <= 19 && !camDone)
+        if (huskAmount <= 0 && !camDone)
         {      
             cameraMovement.blockInput = true;
 

@@ -51,7 +51,7 @@ public class StoneBehaviour : MonoBehaviour
             squishSound.Play();
         }
 
-        if (turnCount == 5)
+        if (turnCount >= 5)
         {
             if (!anim.isPlaying)
             {
