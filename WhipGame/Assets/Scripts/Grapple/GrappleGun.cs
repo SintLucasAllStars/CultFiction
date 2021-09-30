@@ -21,7 +21,7 @@ public class GrappleGun : MonoBehaviour
     {
         lr = GetComponent<LineRenderer>();
         playerMove = GetComponentInParent<PlayerMovement>();
-        Debug.Log("playermove: " + playerMove);
+        //Debug.Log("playermove: " + playerMove);
     }
 
     private void Update()

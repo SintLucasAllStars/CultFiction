@@ -147,17 +147,17 @@ PrefabInstance:
     - target: {fileID: 5059031678674461610, guid: 6fca04a9b55cbea45a87cbf73bb10650,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -18.512913
+      value: -17.6
       objectReference: {fileID: 0}
     - target: {fileID: 5059031678674461610, guid: 6fca04a9b55cbea45a87cbf73bb10650,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.3241587
+      value: -0.67
       objectReference: {fileID: 0}
     - target: {fileID: 5059031678674461610, guid: 6fca04a9b55cbea45a87cbf73bb10650,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 33.910812
+      value: 26.26
       objectReference: {fileID: 0}
     - target: {fileID: 5059031678674461610, guid: 6fca04a9b55cbea45a87cbf73bb10650,
         type: 3}
@@ -1593,7 +1593,7 @@ GameObject:
   - component: {fileID: 1122749091}
   m_Layer: 0
   m_Name: Capsule
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2680,6 +2680,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  Banana: {fileID: 3955430730930501805, guid: aea01bbecff0408428a7ac4b2bd18f0c, type: 3}
 --- !u!95 &1966166374
 Animator:
   serializedVersion: 3

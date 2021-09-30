@@ -11,7 +11,7 @@ public class Pickup : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(score);
+        //Debug.Log(score);
         coinsText.GetComponent<Text>().text = "Coins: " + Coins.ToString();
     }
 
