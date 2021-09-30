@@ -8,12 +8,14 @@ public class NutBehaviour : MonoBehaviour
     public StoneBehaviour sB;
     private bool playOnce;
     private ParticleSystem pS;
+    private AudioSource moveSound;
 
     void Start()
     {
         anim = gameObject.GetComponent<Animation>();
         playOnce = false;
         pS = GetComponent<ParticleSystem>();
+        moveSound = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -23,6 +25,7 @@ public class NutBehaviour : MonoBehaviour
         {
             anim.Play("TiltNut");
             pS.Play();
+            moveSound.PlayDelayed(1.4f);
         }
         else if (sB.noNuts)
         {
