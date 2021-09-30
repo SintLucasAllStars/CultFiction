@@ -5,6 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
+    private GameObject noteCanvas;
+
+    private void Start()
+    {
+        noteCanvas =  GameObject.Find("NoteCanvas");
+        noteCanvas.SetActive(false);
+
+    }
+
     //When this button is clicked the scene will switch to the playable scene.
     public void PlayBtnClicked()
     {
@@ -17,5 +26,15 @@ public class MainMenuController : MonoBehaviour
     {
         //Quits the game.
         Application.Quit();
+    }
+
+    public void HowToPlayClicked()
+    {
+        noteCanvas.SetActive(true);
+    }
+
+    public void CloseClicked()
+    {
+        noteCanvas.SetActive(false);
     }
 }
