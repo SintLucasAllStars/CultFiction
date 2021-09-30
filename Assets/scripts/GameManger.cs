@@ -37,11 +37,14 @@ public class GameManger : MonoBehaviour {
             Time.timeScale = 1;
             SceneManager.LoadScene(0);
         }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+            Application.Quit();
     }
 
     IEnumerator PipeLoop() {
         while (true) {
-            Instantiate(pipe, transform.position + new Vector3(10, Random.Range(-2.5f,2.5f)), Quaternion.identity, transform);
+            Instantiate(pipe, transform.position + new Vector3(11, Random.Range(-2.5f,2.5f)), Quaternion.identity, transform);
             yield return new WaitForSeconds(1/speed);
         }
     }
