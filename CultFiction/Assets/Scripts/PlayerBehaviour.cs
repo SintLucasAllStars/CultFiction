@@ -12,9 +12,13 @@ public class PlayerBehaviour : MonoBehaviour
     public bool isHoldingRight;
 
     public Vector3 offset;
+    public Vector3 lightOffset;
     private Vector3 mousePosition;
 
     public GameObject playerModel;
+    public GameObject hat;
+
+    public GameObject light;
 
     private GameObject leftHold;
     private GameObject rightHold;
@@ -43,6 +47,8 @@ public class PlayerBehaviour : MonoBehaviour
         {
             PickUpItem();
         }
+
+        light.transform.position = gameObject.transform.position + lightOffset;
     }
 
     private void FixedUpdate()
@@ -62,6 +68,8 @@ public class PlayerBehaviour : MonoBehaviour
 
             rb.constraints = RigidbodyConstraints.None;
 
+            hat.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+
             rb.AddForce(Vector3.up * Random.Range(100, 800));
             rb.AddForce(Vector3.right * Random.Range(-800, 800));
             rb.AddForce(Vector3.forward * Random.Range(-800, 800));
@@ -69,6 +77,10 @@ public class PlayerBehaviour : MonoBehaviour
             rb.AddTorque(Vector3.up * Random.Range(-800, 800));
             rb.AddTorque(Vector3.right * Random.Range(-800, 800));
             rb.AddTorque(Vector3.forward * Random.Range(-800, 800));
+
+            hat.GetComponent<Collider>().enabled = true;
+
+            hat.transform.parent = null;
         }
     }
 
