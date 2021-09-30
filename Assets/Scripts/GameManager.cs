@@ -158,6 +158,10 @@ public class GameManager : MonoBehaviour
         //Disables the player camera.
         cam.GetComponent<Camera>().enabled = false;
 
+        //Disables the sniper script.
+        SniperHandeler sniper = GameObject.Find("Sniper").GetComponent<SniperHandeler>();
+        sniper.enabled = false;
+
         //Turns of the audio of the player camara.
         AudioListener camAudio = GameObject.Find("MainCamera").GetComponent<AudioListener>(); ;
         camAudio.enabled = false;
