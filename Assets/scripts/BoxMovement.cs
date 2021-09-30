@@ -14,7 +14,6 @@ public class BoxMovement : MonoBehaviour {
         if (Input.GetButtonDown("Jump")) {
             Flap();
         }
-        gm.ScoreIncrement();
     }
 
     private void Flap() {
@@ -25,5 +24,10 @@ public class BoxMovement : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("PipeSection"))
             gm.DeathState();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.CompareTag("ScoreIncrease"))
+            gm.ScoreIncrement();
     }
 }
