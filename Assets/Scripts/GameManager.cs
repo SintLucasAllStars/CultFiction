@@ -36,6 +36,11 @@ public class GameManager : MonoBehaviour
         {
             GetTimeTable(Time.time - startTime);
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     public void SetTimer(bool goTime = true)
