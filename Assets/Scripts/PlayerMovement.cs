@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && !delay)
         {
             forward = !forward;
-            if (float.Parse(string.Join("", gm.data.score)) < 50)
+            if (float.Parse(string.Join("", gm.data.score)) < 30)
             {
                 StartCoroutine(CreateDelay());
             }
