@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
     private GameObject _deathScreen;
     [SerializeField]
     private GameObject _menu;
+    [SerializeField] 
+    private GameObject _tutorial;
 
     private GameObject previousPlatform;
     private List<GameObject> allPlatforms = new List<GameObject>();
@@ -129,7 +131,14 @@ public class GameManager : MonoBehaviour
     public void GoToMenu()
     {
         _deathScreen.GetComponentInChildren<Canvas>().enabled = false;
+        _tutorial.GetComponentInChildren<Canvas>().enabled = false;
         _menu.GetComponentInChildren<Canvas>().enabled = true;
+    }
+
+    public void GoToTutorial()
+    {
+        _menu.GetComponentInChildren<Canvas>().enabled = false;
+        _tutorial.GetComponentInChildren<Canvas>().enabled = true;
     }
 
     public void DeathScreen()
