@@ -10,6 +10,7 @@ public class HoverMovement : MonoBehaviour
     public Vector3 curGrav;
 
     [Header("Settings")]
+    public float losePer;
     public List<Thruster> thrusters;
     public List<Booster> boosters;
     public List<Rudder> rudders;
@@ -18,6 +19,9 @@ public class HoverMovement : MonoBehaviour
     public float airGravity = 75f;
     public float hoverGravity = 60f;
 
+    float reffer;
+    Quaternion startPos;
+    private float lerp;
     private Rigidbody rb;
     private RaycastHit hit;
     private Vector3 pMoveInput;
@@ -25,6 +29,19 @@ public class HoverMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        RotateRight(true);
+    }
+
+    void RotateRight(bool start = false)
+    {
+        
+        if (start) { startPos = Quaternion.identity; }
+        else
+        {
+            float curRot = transform.eulerAngles.y;
+            Quaternion targetRotation = Quaternion.Euler(startPos.x, transform.eulerAngles.y, startPos.z);
+            rb.MoveRotation(targetRotation);
+        }
     }
 
     void FixedUpdate()
@@ -32,12 +49,15 @@ public class HoverMovement : MonoBehaviour
         curSpeed = Vector3.Dot(rb.velocity, transform.forward);
         GetPlayerInput();
         GroundDetection();
+        RotateRight();
         AddForces();
     }
 
 
     void AddForces()
     {
+        rb.velocity = rb.velocity * losePer;
+        rb.angularVelocity = rb.angularVelocity * losePer;
         foreach (Thruster t in thrusters)
         {
             t.ThrustForce(rb);
@@ -51,6 +71,7 @@ public class HoverMovement : MonoBehaviour
             r.TurnForce(rb, pMoveInput.x);
         }
         rb.AddForce(curGrav);
+
     }
 
     void GroundDetection()
