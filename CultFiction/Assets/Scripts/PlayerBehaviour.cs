@@ -19,6 +19,7 @@ public class PlayerBehaviour : MonoBehaviour
     public GameObject hat;
 
     public GameObject light;
+    public GameObject resetText;
 
     private GameObject leftHold;
     private GameObject rightHold;
@@ -81,6 +82,8 @@ public class PlayerBehaviour : MonoBehaviour
             hat.GetComponent<Collider>().enabled = true;
 
             hat.transform.parent = null;
+
+            resetText.active = true;
         }
     }
 

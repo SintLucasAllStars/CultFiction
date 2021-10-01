@@ -9,6 +9,8 @@ public class WinCon : MonoBehaviour
         if (col.gameObject.name == "Relic")
         {
             Debug.Log("WIN !!!");
+
+            Application.Quit();
         }
     }
 }
