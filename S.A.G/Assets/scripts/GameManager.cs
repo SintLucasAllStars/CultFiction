@@ -63,6 +63,8 @@ public class GameManager : MonoBehaviour
         killCount++;
         if(killCount >= planeAmountInLevel)
         {
+            killCount = 0;
+            score = 0;
             SceneManager.LoadScene("MainScreen");
         }
     }
