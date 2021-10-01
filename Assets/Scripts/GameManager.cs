@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
-using Random = System.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,19 +13,35 @@ public class GameManager : MonoBehaviour
     private int startPlatformLength;
     [SerializeField]
     private List<string> childrenNames;
+    [SerializeField]
+    private TextMeshProUGUI scoreText;
+    [SerializeField]
+    private TextMeshProUGUI countDownText;
+    [SerializeField]
+    private TextMeshProUGUI deathScoreText;
+    [SerializeField]
+    private GameObject _scorebord;
+    [SerializeField]
+    private GameObject _deathScreen;
+    [SerializeField]
+    private GameObject _menu;
 
     private GameObject previousPlatform;
-    private string previousAnimDirection = "Right";
+    private List<GameObject> allPlatforms = new List<GameObject>();
+    private bool previousAnimDirection;
     private bool previousDirection;
+    public bool gameStarted;
 
     private int amountLeft;
     private int amountRight;
 
-    private Random rnd = new Random();
-
-    public bool gameStarted = true;
+    private System.Random rnd = new System.Random();
 
     public static GameManager gameManager;
+    
+    public PlayerData data;
+    
+    private bool scoreDelay;
 
     private void Awake()
     {
@@ -33,11 +49,30 @@ public class GameManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    // Start is called before the first frame update
-    IEnumerator Start()
+    private void Start()
+    {
+        _menu.GetComponentInChildren<Canvas>().enabled = true;
+        GeneratePlatform(Vector3.zero - Vector3.zero, false);
+    }
+
+    private void Update()
+    {
+        if (scoreDelay && gameStarted)
+        {
+            scoreDelay = !scoreDelay;
+            StartCoroutine(SetScoreDelay());
+            data.score = data.FloatToStringList(float.Parse(string.Join("", data.score)) + 1);
+            scoreText.text = string.Join("", data.score);
+            data.speed = data.FloatToStringList(float.Parse(string.Join("", data.speed)) + .1f);
+        }
+    }
+
+    IEnumerator SpawnPlatform()
     {
         //Generate the first platform with a 2 grid offset;
         previousPlatform = GeneratePlatform(Vector3.zero - Vector3.forward * 3 * 2, false);
+        
+        allPlatforms.Add(previousPlatform);
         
         //Create the next platforms
         for (int i = 0; i < startPlatformLength; i++)
@@ -45,12 +80,66 @@ public class GameManager : MonoBehaviour
             Transform platformChild = extractPositionChild(previousPlatform, previousDirection);
             
             //Generate next platform
-            previousPlatform = i > 3? GenerateAnimatedPlatform(platformChild.position, previousAnimDirection):GeneratePlatform(platformChild.position, false);
+            previousPlatform = i > 3? GenerateAnimatedPlatform(platformChild.position, previousAnimDirection? "Left":"Right"):GeneratePlatform(platformChild.position, false);
+            allPlatforms.Add(previousPlatform);
             if(i > 3) yield return new WaitForSeconds(3/4);
         }
     }
+    
+    IEnumerator SetScoreDelay()
+    {
+        yield return new WaitForSeconds(4/float.Parse(string.Join("", data.speed)));
+        scoreDelay = !scoreDelay;
+    }
 
-    public void CollisionCaller(GameObject originPlatform)
+    IEnumerator StartGame()
+    {
+        data = new PlayerData(2);
+        StartCoroutine(SpawnPlatform());
+        scoreText.text = "0";
+        countDownText.text = "3";
+        yield return new WaitForSeconds(1);
+        countDownText.text = "2";
+        yield return new WaitForSeconds(1);
+        countDownText.text = "1";
+        yield return new WaitForSeconds(1);
+        countDownText.text = "";
+        gameStarted = true;
+        scoreDelay = true;
+    }
+
+    public void RestartGame()
+    {
+        foreach (var ap in allPlatforms) Destroy(ap);
+        if (allPlatforms.Count > 0) allPlatforms.Clear();
+        previousDirection = false;
+        deathScoreText.text = "Your score: ";
+        _deathScreen.GetComponentInChildren<Canvas>().enabled = false;
+        _scorebord.GetComponentInChildren<Canvas>().enabled = true;
+        StartCoroutine(StartGame());
+    }
+
+    public void StartGameFromMenu()
+    {
+        _menu.GetComponentInChildren<Canvas>().enabled = false;
+        _scorebord.GetComponentInChildren<Canvas>().enabled = true;
+        StartCoroutine(StartGame());
+    }
+
+    public void GoToMenu()
+    {
+        _deathScreen.GetComponentInChildren<Canvas>().enabled = false;
+        _menu.GetComponentInChildren<Canvas>().enabled = true;
+    }
+
+    public void DeathScreen()
+    {
+        _scorebord.GetComponentInChildren<Canvas>().enabled = false;
+        _deathScreen.GetComponentInChildren<Canvas>().enabled = true;
+        deathScoreText.text += string.Join("", data.getScore());
+    }
+
+    public void CollisionCaller()
     {
         if (amountLeft == 0 && amountRight == 0)
         {
@@ -58,19 +147,25 @@ public class GameManager : MonoBehaviour
             if (previousDirection) amountLeft = rnd.Next(1, 10);
             else amountRight = rnd.Next(1, 10);
         }
-        
-        Debug.Log(amountLeft + " " + amountRight);
 
         if (amountLeft > 0)
         {
-            previousPlatform = GenerateAnimatedPlatform(extractPositionChild(previousPlatform, previousDirection).position, "Left");
+            previousPlatform = GenerateAnimatedPlatform(extractPositionChild(previousPlatform, previousDirection).position, previousAnimDirection? "Left":"Right");
+            allPlatforms.Add(previousPlatform);
             amountLeft--;
         }
 
         if (amountRight > 0)
         {
-            previousPlatform = GenerateAnimatedPlatform(extractPositionChild(previousPlatform, previousDirection).position, "Right");
+            previousPlatform = GenerateAnimatedPlatform(extractPositionChild(previousPlatform, previousDirection).position, previousAnimDirection? "Left":"Right");
+            allPlatforms.Add(previousPlatform);
             amountRight--;
+        }
+
+        if (allPlatforms.Count > 15)
+        {
+            Destroy(allPlatforms[0]);
+            allPlatforms.RemoveAt(0);
         }
     }
 
@@ -101,9 +196,9 @@ public class GameManager : MonoBehaviour
         //Start animation
         GameObject ap = GeneratePlatform(position, true);
         Animator apa = ap.GetComponent<Animator>();
-        apa.SetFloat(side, 1);
+        apa.SetFloat(side, float.Parse(string.Join("", data.speed)) * .5f);
         apa.Play($"PlatformAnimation{side}");
-        previousAnimDirection = (previousAnimDirection == "Right") ? "Left" : "Right";
+        previousAnimDirection = !previousAnimDirection;
         return ap;
     }
 }

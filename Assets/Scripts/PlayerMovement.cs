@@ -1,20 +1,19 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField]
     private GameManager gm;
 
-    [SerializeField]
-    private float speed = 3f;
-
-    private float time = .5f;
+    private float delayTime = .5f;
 
     private bool forward = true;
     private bool delay;
+
+    void Start()
+    {
+        gm = GameManager.gameManager;
+    }
 
     // Update is called once per frame
     void Update()
@@ -24,27 +23,32 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && !delay)
         {
             forward = !forward;
-            StartCoroutine(CreateDelay());
+            if (float.Parse(string.Join("", gm.data.score)) < 50)
+            {
+                StartCoroutine(CreateDelay());
+            }
         }
-        
-        if (transform.position.y < -2) die();
+
+        if (transform.position.y < -1) die();
     }
 
     IEnumerator CreateDelay()
     {
         delay = true;
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(delayTime);
         delay = false;
     }
 
     void MoveForward()
     {
-        transform.position += (forward? Vector3.forward * speed : Vector3.left * speed ) * Time.deltaTime;
+        transform.position += (forward? Vector3.forward * float.Parse(gm.data.StringListToFloat(gm.data.speed)) : Vector3.left * float.Parse(gm.data.StringListToFloat(gm.data.speed)) ) * Time.deltaTime;
     }
 
     void die()
     {
+        gm.gameStarted = false;
         gameObject.transform.position = Vector3.up;
         forward = true;
+        gm.DeathScreen();
     }
 }
