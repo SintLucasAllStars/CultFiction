@@ -53,5 +53,20 @@ public class Health : MonoBehaviour
             invTimer = 2;
             Hp--;
         }
+
+        if (hit.gameObject.CompareTag("Water") && invTimer <= 0)
+        {
+            transform.position = new Vector3(162, 24, 120);
+            Hp--;
+        }
+    }
+
+    private void OnTriggerEnter(Collider trigger)
+    {
+        if (trigger.gameObject.CompareTag("Water") && invTimer <= 0)
+        {
+            transform.position = new Vector3(162, 24, 120);
+            Hp--;
+        }
     }
 }

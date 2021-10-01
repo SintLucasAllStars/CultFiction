@@ -1,5 +1,4 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class Pickup : MonoBehaviour
@@ -7,6 +6,7 @@ public class Pickup : MonoBehaviour
     private float score = 0;
     private float Coins;
 
+    public TempleBehavior templeBehaviour;
     public GameObject coinsText;
 
     void Update()
@@ -19,7 +19,7 @@ public class Pickup : MonoBehaviour
     {
         if (collider.gameObject.CompareTag("Pickup"))
         {
-            score++;
+            templeBehaviour.duckCount++;
             Destroy(collider.gameObject);
         }
 
