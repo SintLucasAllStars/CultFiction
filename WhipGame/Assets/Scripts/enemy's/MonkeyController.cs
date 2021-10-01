@@ -36,12 +36,12 @@ public class MonkeyController : MonoBehaviour
             //IF monkey is close to player it starts trowing banana's
             if (hit.transform.CompareTag("Player") && hit.distance < minDist +1)
             {
-                Debug.Log("I can attack you");
+                //Debug.Log("I can attack you");
                 AttackPlayer();
             }
         }
 
-        Debug.Log(canAttack);
+        //Debug.Log(canAttack);
     }
 
     private void AttackPlayer()

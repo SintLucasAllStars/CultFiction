@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
 {
@@ -11,12 +12,52 @@ public class Health : MonoBehaviour
     public Sprite emptyyheart;
     private float invTimer;
 
+    public bool Dead;
+
     void Update()
     {
-        if (invTimer >= -1) {
-            invTimer -= Time.deltaTime;
+        Debug.Log(Dead);
+        if (invTimer >= -1) invTimer -= Time.deltaTime;
+
+        UpdateHearts();
+
+        if(Hp <= 0)
+        {
+            SceneManager.LoadScene(2);
+        }
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.gameObject.CompareTag("Enemy") && invTimer <= 0)
+        {
+            invTimer = 2;
+            Hp--;
         }
 
+        if (hit.gameObject.CompareTag("Water") && invTimer <= 0)
+        {
+            transform.position = new Vector3(162, 24, 120);
+            Hp--;
+        }
+
+        if (hit.gameObject.CompareTag("Door") && invTimer <= 0)
+        {
+            SceneManager.LoadScene(0);
+        }
+    }
+
+    private void OnTriggerEnter(Collider trigger)
+    {
+        if (trigger.gameObject.CompareTag("Water") && invTimer <= 0)
+        {
+            transform.position = new Vector3(162, 24, 120);
+            Hp--;
+        }
+    }
+
+    private void UpdateHearts()
+    {
         //hp controller and hearts display
         if (Hp > numhearts)
         {
@@ -43,30 +84,6 @@ public class Health : MonoBehaviour
             {
                 hearts[i].enabled = false;
             }
-        }
-    }
-
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.gameObject.CompareTag("Enemy") && invTimer <= 0)
-        {
-            invTimer = 2;
-            Hp--;
-        }
-
-        if (hit.gameObject.CompareTag("Water") && invTimer <= 0)
-        {
-            transform.position = new Vector3(162, 24, 120);
-            Hp--;
-        }
-    }
-
-    private void OnTriggerEnter(Collider trigger)
-    {
-        if (trigger.gameObject.CompareTag("Water") && invTimer <= 0)
-        {
-            transform.position = new Vector3(162, 24, 120);
-            Hp--;
         }
     }
 }

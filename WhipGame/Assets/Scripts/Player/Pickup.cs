@@ -5,6 +5,7 @@ public class Pickup : MonoBehaviour
 {
     private float score = 0;
     private float Coins;
+    public GameObject Temple;
 
     public TempleBehavior templeBehaviour;
     public GameObject coinsText;
@@ -13,6 +14,8 @@ public class Pickup : MonoBehaviour
     {
         //Debug.Log(score);
         coinsText.GetComponent<Text>().text = "Coins: " + Coins.ToString();
+
+        if (score >= 4) Temple.gameObject.SetActive(true);
     }
 
     private void OnTriggerEnter(Collider collider)
