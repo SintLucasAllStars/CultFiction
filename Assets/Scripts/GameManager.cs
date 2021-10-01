@@ -28,6 +28,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] 
     private GameObject _tutorial;
 
+    public AudioSource source;
+    
+    public AudioClip move;
+    public AudioClip death;
+
     private GameObject previousPlatform;
     private List<GameObject> allPlatforms = new List<GameObject>();
     private bool previousAnimDirection;

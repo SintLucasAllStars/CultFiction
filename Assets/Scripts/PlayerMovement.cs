@@ -3,27 +3,28 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private GameManager gm;
+    private GameManager _gm;
 
-    private float delayTime = .5f;
+    private float _delayTime = .5f;
 
-    private bool forward = true;
-    private bool delay;
+    private bool _forward = true;
+    private bool _delay;
 
     void Start()
     {
-        gm = GameManager.gameManager;
+        _gm = GameManager.gameManager;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (gm.gameStarted) MoveForward();
+        if (_gm.gameStarted) MoveForward();
         
-        if (Input.GetButtonDown("Jump") && !delay)
+        if (Input.GetButtonDown("Jump") && !_delay && _gm.gameStarted)
         {
-            forward = !forward;
-            if (float.Parse(string.Join("", gm.data.score)) < 30)
+            _forward = !_forward;
+            _gm.source.PlayOneShot(_gm.move, .1f);
+            if (float.Parse(string.Join("", _gm.data.score)) < 30)
             {
                 StartCoroutine(CreateDelay());
             }
@@ -34,21 +35,22 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator CreateDelay()
     {
-        delay = true;
-        yield return new WaitForSeconds(delayTime);
-        delay = false;
+        _delay = true;
+        yield return new WaitForSeconds(_delayTime);
+        _delay = false;
     }
 
     void MoveForward()
     {
-        transform.position += (forward? Vector3.forward * float.Parse(gm.data.StringListToFloat(gm.data.speed)) : Vector3.left * float.Parse(gm.data.StringListToFloat(gm.data.speed)) ) * Time.deltaTime;
+        transform.position += (_forward? Vector3.forward * float.Parse(_gm.data.StringListToFloat(_gm.data.speed)) : Vector3.left * float.Parse(_gm.data.StringListToFloat(_gm.data.speed)) ) * Time.deltaTime;
     }
 
     void die()
     {
-        gm.gameStarted = false;
+        _gm.source.PlayOneShot(_gm.death, 1);
+        _gm.gameStarted = false;
         gameObject.transform.position = Vector3.up;
-        forward = true;
-        gm.DeathScreen();
+        _forward = true;
+        _gm.DeathScreen();
     }
 }
