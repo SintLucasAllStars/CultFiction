@@ -15,6 +15,7 @@ public class CoconutSpawner : MonoBehaviour
 
     private int huskAmount;
     private int coconutAmount;
+    private int totalCoconutAmount;
     private int coconutWater;
 
     private AudioSource throwSound;
@@ -27,12 +28,18 @@ public class CoconutSpawner : MonoBehaviour
     public GameObject nutPrefabInstance;
     public RectTransform barFill;
 
+    public GameObject endCanvas;
+    public GameObject gameCanvas;
+    public GameObject inGameMenuCanvas;
+    public Text statBoxText;
+    public Text resultText;
+
     void Start()
     {
         spawnPos = new Vector3(-7.86f, 1.76f, -6.54f);
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         
-        huskAmount = 20;
+        huskAmount = 16;
         coconutAmount = 0;
         coconutWater = 0;
 
@@ -47,11 +54,17 @@ public class CoconutSpawner : MonoBehaviour
         cooldownTimer -= Time.deltaTime;
         GetInput();
         MoveCamera();
+        ShowEndScreen();
     }
 
     void GetInput()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && huskAmount > 0 && cooldownTimer <= 0)
+        if (cameraMovement.blockInput)
+        {
+            cooldownTimer = 4f;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && huskAmount > 0 && cooldownTimer <= 0 && !cameraMovement.blockInput)
         {
             huskAmount--;
             UpdateStats();
@@ -60,11 +73,20 @@ public class CoconutSpawner : MonoBehaviour
             coconut.GetComponent<CoconutBehaviour>().cS = this;
             throwSound.Play();
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape) && gameCanvas.activeSelf && !inGameMenuCanvas.activeSelf)
+        {
+            inGameMenuCanvas.SetActive(true);
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape) && inGameMenuCanvas.activeSelf)
+        {
+            inGameMenuCanvas.SetActive(false);
+        }
     }
 
     void UpdateStats()
     {
-        statCount.text = "Husks: " + huskAmount + "/20 \nCoconuts: " + coconutAmount;
+        statCount.text = "Husks: " + huskAmount + "/16 \nCoconuts: " + coconutAmount;
         waterCount.text = "Coconut Water:\n" + coconutWater + "/2000ML";
         barFill.sizeDelta = new Vector2(50, Mathf.Clamp((350f / 2000f) * coconutWater,0f,350f));
     }
@@ -72,6 +94,7 @@ public class CoconutSpawner : MonoBehaviour
     public void AddCoconutCount()
     {
         coconutAmount++;
+        totalCoconutAmount++;
         UpdateStats();
     }
 
@@ -113,6 +136,38 @@ public class CoconutSpawner : MonoBehaviour
         {
             nutPrefabInstance = Instantiate(nutPrefab);
             nutPrefabInstance.GetComponent<NutBehaviour>().sB = stn;
+        }
+    }
+
+    void ShowEndScreen()
+    {
+        if (huskAmount <= 0 && coconutAmount <= 0)
+        {
+            gameCanvas.SetActive(false);
+            endCanvas.SetActive(true);
+
+            if (coconutWater >= 2000)
+            {
+                resultText.text = "You're staying hydrated!";
+            }
+            else if (coconutWater >= 1900 && coconutWater <= 1999)
+            {
+                resultText.text = "You've got barely enough water! Try getting more!";
+            }
+            else if (coconutWater <= 1899)
+            {
+                resultText.text = "You're dehydrated!";
+            }
+
+            if (coconutWater >= 2000)
+            {
+                statBoxText.text = "You've collected " + totalCoconutAmount + " coconuts.\nThese gave you " + coconutWater + "ML of coconut water.\nYou have " + (coconutWater-2000) + "ML more than needed.";
+            }
+            else if (coconutWater <= 1999)
+            {
+                statBoxText.text = "You've collected " + totalCoconutAmount + " coconuts.\nThese gave you " + coconutWater + "ML of coconut water.\nYou have " + (2000-coconutWater) + "ML less than needed.";
+            }
+            
         }
     }
 

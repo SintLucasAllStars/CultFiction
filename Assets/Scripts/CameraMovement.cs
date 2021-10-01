@@ -9,7 +9,7 @@ public class CameraMovement : MonoBehaviour
 
     void Start()
     {
-        blockInput = false;
+        blockInput = true;
         camAngle = 45;
     }
 
