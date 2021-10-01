@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HoverMovement : MonoBehaviour
 {
+    bool timerStart = false;
+
     [Header("Don't change")]
     public float curSpeed;
     public bool isHovering;
@@ -28,6 +30,7 @@ public class HoverMovement : MonoBehaviour
 
     void Start()
     {
+        timerStart = false;
         rb = GetComponent<Rigidbody>();
         RotateRight(true);
     }
@@ -41,6 +44,15 @@ public class HoverMovement : MonoBehaviour
             float curRot = transform.eulerAngles.y;
             Quaternion targetRotation = Quaternion.Euler(startPos.x, transform.eulerAngles.y, startPos.z);
             rb.MoveRotation(targetRotation);
+        }
+    }
+
+    private void Update()
+    {
+        if (pMoveInput != Vector3.zero && timerStart == false)
+        {
+            GameManager.instance.SetTimer();
+            timerStart = true;
         }
     }
 
